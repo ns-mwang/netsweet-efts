@@ -31,7 +31,7 @@ ${"\r"}<#--Line Break-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, JPMC to fill in automatically-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
-<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}<#rt><#--Originating Financial Institution, Chase Routing Number-->
+<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 <#--- Entry Detail Record (6) --->
@@ -44,25 +44,25 @@ ${"\r"}<#--Line Break-->
     <#assign payAmount = formatAmount(getAmount(payment))>
     <#assign totalPayments = totalPayments + 1>
     <#assign recordCount = recordCount + 1>
-    <#assign traceNumber = ${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}${setPadding(recordCount,"left","0",7)}>
+    <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#--Entry Hash Calculation sum(P5 to P11)-->
     <#assign P5 = ebank.custrecord_2663_entity_acct_no>
     <#assign p6 = payAmount>
     <#assign p7 = ebank.custrecord_2663_entity_bank_code>
     <#assign p10 = 0>
-    <#assign P11 = traceNumber>
+    <#assign P11 = traceNumber?number>
     <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->27<#rt><#--Transaction Code (27: Checking Dollars)-->
-<#--P03-->${ebank.custrecord_2663_entity_bank_no?substring(0, 7)}<#rt><#--Receiving DFI ID (Routing Number)-->
-<#--P04-->${ebank.custrecord_2663_entity_bank_no?substring(8)}<#rt><#--Check Digit the 9th digit of routing number-->
-<#--P05-->${setPadding(custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
+<#--P03-->${ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)}<#rt><#--Receiving DFI ID (Routing Number)-->
+<#--P04-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Digit the 9th digit of routing number <substring(8)>-->
+<#--P05-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
 <#--P06-->${setPadding(payAmount,"left","0",10)}<#rt><#--Dollar Amount-->
 <#--P07-->${setPadding(ebank.custrecord_2663_entity_bank_code,"right"," ",15)}<#rt><#--Individual Identification Number-->
 <#--P08-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Individual Name-->
-<#--P09-->${setLength(recordCount,2)}<#rt><#--Discretionary Data-->
+<#--P09-->01<#rt><#--Discretionary Data-->
 <#--P10-->0<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r"}<#--Line Break--><#rt>
@@ -77,7 +77,7 @@ ${"\r"}<#--Line Break--><#rt>
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
 <#--P08-->${setLength(" ",19)}<#rt><#--Message Authentication Code Leave Blank (19)-->
 <#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
-<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
+<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 <#--- File Control Record (9) --->
