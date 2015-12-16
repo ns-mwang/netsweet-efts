@@ -1,7 +1,7 @@
 <#--Author: Michael Wang | mwang@netsuite.com-->
 <#--Chase Nacha Format: CCS Application; Transaction Type CCD-->
 <#-- cached values -->
-<#assign totalAmount = formatAmount(computeTotalAmount(payments),"dec")>
+<#assign totalAmount = formatAmount(computeTotalAmount(payments))>
 <#-- template building -->
 #OUTPUT START#
 <#--- Filed Header Record (1) --->
@@ -31,7 +31,7 @@ ${"\r"}<#--Line Break-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, JPMC to fill in automatically-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
-<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num}<#rt><#--Originating Financial Institution, Chase Routing Number-->
+<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}<#rt><#--Originating Financial Institution, Chase Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 <#--- Entry Detail Record (6) --->
@@ -41,29 +41,30 @@ ${"\r"}<#--Line Break-->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
-    <#assign payAmount = getAmount(payment)>
+    <#assign payAmount = formatAmount(getAmount(payment))>
     <#assign totalPayments = totalPayments + 1>
     <#assign recordCount = recordCount + 1>
+    <#assign traceNumber = ${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}${setPadding(recordCount,"left","0",7)}>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#--Entry Hash Calculation sum(P5 to P11)-->
     <#assign P5 = ebank.custrecord_2663_entity_acct_no>
-    <#assign p6 = formatAmount(payAmount)>
+    <#assign p6 = payAmount>
     <#assign p7 = ebank.custrecord_2663_entity_bank_code>
     <#assign p10 = 0>
-    <#assign P11 = payment.tranid>
+    <#assign P11 = traceNumber>
     <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->27<#rt><#--Transaction Code (27: Checking Dollars)-->
 <#--P03-->${ebank.custrecord_2663_entity_bank_no?substring(0, 7)}<#rt><#--Receiving DFI ID (Routing Number)-->
 <#--P04-->${ebank.custrecord_2663_entity_bank_no?substring(8)}<#rt><#--Check Digit the 9th digit of routing number-->
-<#--P05-->${setPadding(custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--DFI Account Number-->
-<#--P06-->${setPadding(formatAmount(payAmount),"left","0",10)}<#rt><#--Dollar Amount-->
+<#--P05-->${setPadding(custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
+<#--P06-->${setPadding(payAmount,"left","0",10)}<#rt><#--Dollar Amount-->
 <#--P07-->${setPadding(ebank.custrecord_2663_entity_bank_code,"right"," ",15)}<#rt><#--Individual Identification Number-->
 <#--P08-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Individual Name-->
 <#--P09-->${setLength(recordCount,2)}<#rt><#--Discretionary Data-->
 <#--P10-->0<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
-<#--P11-->${setPadding(payment.tranid,"left","0",15)}<#rt><#--Trace Number-->
+<#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r"}<#--Line Break--><#rt>
 </#list>
 <#--- Batch Control Record (8) --->
@@ -76,7 +77,7 @@ ${"\r"}<#--Line Break--><#rt>
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
 <#--P08-->${setLength(" ",19)}<#rt><#--Message Authentication Code Leave Blank (19)-->
 <#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
-<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
+<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?substring(0, 7)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 <#--- File Control Record (9) --->
