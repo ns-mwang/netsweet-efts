@@ -55,7 +55,7 @@ ${"\r"}<#--Line Break-->
     <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
-<#--P02-->27<#rt><#--Transaction Code (27: Checking Dollars)-->
+<#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
 <#--P03-->${ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)}<#rt><#--Receiving DFI ID (Routing Number)-->
 <#--P04-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Digit the 9th digit of routing number <substring(8)>-->
 <#--P05-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
