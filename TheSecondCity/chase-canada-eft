@@ -1,0 +1,73 @@
+<#--Author: Michael Wang | mwang@netsuite.com-->
+<#--Chase Global ACH Canada GDFF-->
+<#-- cached values -->
+<#assign totalAmount = formatAmount(computeTotalAmount(payments))>
+<#-- template building -->
+#OUTPUT START#
+<#--- Filed Header Record (FH) --->
+<#--P01-->FH,<#rt><#--Record Type Code (FH)-->
+<#--P02-->0000000000,<#rt><#--Importing Client ID (AN10)-->
+<#--P03-->${pfa.custrecord_2663_file_creation_timestamp?string("yyyyMMdd")},<#rt><#--File Creation Date (yyyyMMdd)-->
+<#--P04-->${pfa.custrecord_2663_file_creation_timestamp?string("HHmmss")},<#rt><#--File Creation Time (HHmmss)--><#rt>
+<#--P05-->01100<#rt><#--Format Version 11.00-->
+${"\r"}<#--Line Break-->
+<#--- Transaction Record (TR) --->
+<#assign totalPayments = 0>
+<#assign recordCount = 0>
+<#assign entryHash = 0>
+<#list payments as payment>
+    <#assign ebank = ebanks[payment_index]>
+    <#assign entity = entities[payment_index]>
+    <#assign payAmount = formatAmount(getAmount(payment))>
+    <#assign totalPayments = totalPayments + 1>
+    <#assign recordCount = recordCount + 1>
+    <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
+    <#assign paidTransactions = transHash[payment.internalid]>
+    <#--Entry Hash Calculation sum(P5 to P11)-->
+    <#assign P5 = ebank.custrecord_2663_entity_acct_no>
+    <#assign p6 = payAmount>
+    <#assign p7 = ebank.custrecord_2663_entity_bank_code>
+    <#assign p10 = 0>
+    <#assign P11 = traceNumber?number>
+    <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
+    <#--Entry Hash Calculation End-->
+<#--P01-->TR,<#rt><#--Record Type Code (TR)-->
+<#--P02-->${pfa.id},<#rt><#--Customer defined reference number-->
+<#--P03-->${pfa.custrecord_2663_process_date?string("yyyyMMdd")},<#rt><#--Value Date (yyyyMMdd)-->
+<#--P04-->CA,<#rt><#--Destination Country Code-->
+<#--P05-->,<#rt><#--Reserved-->
+<#--P06-->${setPadding(ebank.custrecord_2663_entity_bank_code,"right"," ",9)},<#rt><#--Destination Bank ID-->
+<#--P07-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",12)},<#rt><#--Destination Account Number-->
+<#--P08-->,<#rt><#--Reserved-->
+<#--P09-->${setPadding(payAmount,"left","0",10)},<#rt><#--Transaction Amount-->
+<#--P10-->CAD,<#rt><#--Currency-->
+<#--P11-->GIR,<#rt><#--Payment Method-->
+<#--P12-->01,<#rt><#--Transaction Type 01: Direct Credit-->
+<#--P13-->,<#rt><#--Reserved-->
+<#--P14-->${cbank.custpage_eft_custrecord_2663_acct_num},<#rt><#--Originator Account Number-->
+<#--P15-->,<#rt><#--Reserved-->
+<#--P16-->,<#rt><#--Reserved-->
+<#--P17-->${setPadding(buildEntityName(entity),"right"," ",30)},<#rt><#--Destination Account Name (Beneficiary). (AN30)-->
+<#--P18-->,<#rt><#--Reserved-->
+<#--P19-->,<#rt><#--Reserved-->
+<#--P20-->,<#rt><#--Reserved-->
+<#--P21-->,<#rt><#--Reserved-->
+<#--P22-->,<#rt><#--Reserved-->
+<#--P23-->,<#rt><#--Reserved-->
+<#--P24-->,<#rt><#--Reserved-->
+<#--P25-->,<#rt><#--Reserved-->
+<#--P26-->,<#rt><#--Reserved-->
+<#--P27-->,<#rt><#--Reserved-->
+<#--P28-->,<#rt><#--Sender's Text 1. Payment Details Line 1 (AN15). Optional-->
+<#--P29-P41-->${setLength(",",13)}<#rt><#--Reserved Field 29 to 41 -->
+<#--P42-->430,<#rt><#--Canadian Payment Association Transaction Code (Code 430 - Bill Payment)-->
+<#--P43-P54-->${setLength(",",11)}<#rt><#--Reserved Field 43 to 54, Field 54 is the last field no comma -->
+${"\r"}<#--Line Break--><#rt>
+</#list>
+<#--- File Trailer Record (FT) --->
+<#--Entry Hash Value sum of P4 to P11-->
+<#--P01-->FT<#rt><#--Record Type Code (9)-->
+<#--P02-->${setPadding(recordCount,"left","0",10)}<#rt><#--Number of transactions in file-->
+<#--P03-->${setPadding(recordCount + 2,"left","0",10)}<#rt><#--Number of lines in file, including FH and FT-->
+<#--P04-->${setPadding(totalAmount,"left","0",25)}<#rt><#--Total payment amount in file-->
+#OUTPUT END#
