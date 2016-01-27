@@ -59,5 +59,5 @@ ${"\r"}<#--Line Break--><#rt>
 <#--P01-->FT,<#rt><#--Record Type Code (9)-->
 <#--P02-->${recordCount},<#rt><#--Number of transactions in file-->
 <#--P03-->${recordCount + 2},<#rt><#--Number of lines in file, including FH and FT-->
-<#--P04-->${totalAmount},<#rt><#--Total payment amount in file-->
+<#--P04-->${formatAmount(totalAmount,"dec")}<#rt><#--Total payment amount in file-->
 #OUTPUT END#
