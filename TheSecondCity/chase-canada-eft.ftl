@@ -27,8 +27,8 @@ ${"\r"}<#--Line Break-->
 <#--P03-->${pfa.custrecord_2663_process_date?string("yyyyMMdd")},<#rt><#--Value Date (yyyyMMdd)-->
 <#--P04-->CA,<#rt><#--Destination Country Code-->
 <#--P05-->,<#rt><#--Reserved-->
-<#--P06-->${setPadding(ebank.custrecord_2663_entity_bank_code,"right"," ",9)},<#rt><#--Destination Bank ID. 099999999 Bank + Branch Transit-->
-<#--P07-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",12)},<#rt><#--Destination Account Number-->
+<#--P06-->${ebank.custrecord_2663_entity_bank_code},<#rt><#--Destination Bank ID. 099999999 Bank + Branch Transit-->
+<#--P07-->${setPadding(ebank.custrecord_2663_entity_acct_no,"left","0",12)},<#rt><#--Destination Account Number-->
 <#--P08-->,<#rt><#--Reserved-->
 <#--P09-->${setPadding(payAmount,"left","0",10)},<#rt><#--Transaction Amount-->
 <#--P10-->${getCurrencySymbol(payment.currency)},<#rt><#--Payment Currency USD or CAD-->
