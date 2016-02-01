@@ -23,7 +23,7 @@ ${"\r"}<#--Line Break-->
     <#assign recordCount = recordCount + 1>
     <#assign paidTransactions = transHash[payment.internalid]>
 <#--P01-->TR,<#rt><#--Record Type Code (TR)-->
-<#--P02-->${payment.memo},<#rt><#--Customer defined reference number. Bill Payment Memo ex. 00000001/1-->
+<#--P02-->${payment.memo?replace("/","_")},<#rt><#--Customer defined reference number. Bill Payment Memo ex. 00000001_1-->
 <#--P03-->${pfa.custrecord_2663_process_date?string("yyyyMMdd")},<#rt><#--Value Date (yyyyMMdd)-->
 <#--P04-->CA,<#rt><#--Destination Country Code-->
 <#--P05-->,<#rt><#--Reserved-->
@@ -49,7 +49,7 @@ ${"\r"}<#--Line Break-->
 <#--P25-->,<#rt><#--Reserved-->
 <#--P26-->,<#rt><#--Reserved-->
 <#--P27-->,<#rt><#--Reserved-->
-<#--P28-->${payment.memo},<#rt><#--Sender's Text 1. Payment Details Line 1 (AN15). Optional-->
+<#--P28-->${payment.memo?replace("/","_")},<#rt><#--Sender's Text 1. Payment Details Line 1 (AN15). Optional-->
 <#--P29-P41-->,,,,,,,,,,,,,<#rt><#--Reserved Field 29 to 41 -->
 <#--P42-->452,<#rt><#--Canadian Payment Association Transaction Code (Code 452 - Expense Payment)-->
 <#--P43-P54-->,,,,,,,,,,,<#rt><#--Reserved Field 43 to 54, Field 54 is the last field no comma -->
