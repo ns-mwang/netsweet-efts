@@ -6,7 +6,7 @@
 #OUTPUT START#
 <#--- Filed Header Record (FH) --->
 <#--P01-->FH,<#rt><#--Record Type Code (FH)-->
-<#--P02-->,<#rt><#--Importing Client ID NOT USED (AN10)-->
+<#--P02-->SECONDCITY,<#rt><#--Importing Client ID (AN10)-->
 <#--P03-->${pfa.custrecord_2663_file_creation_timestamp?string("yyyyMMdd")},<#rt><#--File Creation Date (yyyyMMdd)-->
 <#--P04-->${pfa.custrecord_2663_file_creation_timestamp?string("HHmmss")},<#rt><#--File Creation Time (HHmmss)--><#rt>
 <#--P05-->01100<#rt><#--Format Version 11.00-->
@@ -59,5 +59,5 @@ ${"\r"}<#--Line Break--><#rt>
 <#--P01-->FT,<#rt><#--Record Type Code (9)-->
 <#--P02-->${recordCount},<#rt><#--Number of transactions in file-->
 <#--P03-->${recordCount + 2},<#rt><#--Number of lines in file, including FH and FT-->
-<#--P04-->${formatAmount(computeTotalAmount(payments),"dec")}<#rt><#--Total payment amount in file-->
+<#--P04-->${totalAmount}<#rt><#--Total payment amount in file-->
 #OUTPUT END#
