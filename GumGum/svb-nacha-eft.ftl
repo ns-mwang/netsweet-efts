@@ -1,5 +1,5 @@
 <#--Author: Michael Wang | mwang@netsuite.com-->
-<#--Chase Nacha Format: CCS Application; Transaction Type CCD-->
+<#--SVB Nacha Format: CCS Application; Transaction Type CCD-->
 <#-- cached values -->
 <#assign totalAmount = formatAmount(computeTotalAmount(payments))>
 <#-- template building -->
@@ -7,15 +7,15 @@
 <#--- Filed Header Record (1) --->
 <#--P01-->1<#rt><#--Record Type Code (1)-->
 <#--P02-->01<#rt><#--Priority Code-->
-<#--P03--> 021000021<#rt><#--Immediate Destination b021000021 (b = blank)-->
-<#--P04-->0000000000<#rt><#--Imedediate Origin (Assigned by JPMC)-->
+<#--P03--> ${cbank.custpage_eft_custrecord_2663_bank_num}<#rt><#--Immediate Destination _121140399 ("_" = blank)-->
+<#--P04-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Imedediate Origin/Company Identification (Assigned by SVB)-->
 <#--P05-->${pfa.custrecord_2663_file_creation_timestamp?string("yyMMdd")}<#rt><#--File Creation Date (yyMMdd)-->
 <#--P06-->${pfa.custrecord_2663_file_creation_timestamp?string("HHmm")}<#rt><#--File Creation Time (HHmm)-->
 <#--P07-->A<#rt><#--File ID Modifier-->
 <#--P08-->094<#rt><#--Record Size-->
 <#--P09-->10<#rt><#--Blocking Factor-->
 <#--P10-->1<#rt><#--Format Code-->
-<#--P11-->${setLength("JPMORGAN CHASE",23)}<#rt><#--Immediate Destination Name-->
+<#--P11-->${setLength("SILICON VALLEY BANK",23)}<#rt><#--Immediate Destination Name-->
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
 ${"\r"}<#--Line Break-->
@@ -26,12 +26,12 @@ ${"\r"}<#--Line Break-->
 <#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
 <#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by JPMC-->
 <#--P06-->CCD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength("SecondCity",10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P07-->${setLength("GUMGUM INC",10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
-<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, JPMC to fill in automatically-->
+<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
-<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number-->
+<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 <#--- Entry Detail Record (6) --->
