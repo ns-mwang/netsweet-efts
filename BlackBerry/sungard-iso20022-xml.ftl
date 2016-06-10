@@ -1,22 +1,33 @@
 <#-- Author: Michael Wang | mwang@netsuite.com -->
-<#-- Bank Format: iso 20022 xml -->
+<#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 <#-- template building -->
 #OUTPUT START#
 <?xml version="1.0" encoding="UTF-8"?>
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
 <CstmrCdtTrfInitn>
 
 <GrpHdr>
-	<MsgId>RBS${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}_${pfa.custrecord_2663_process_date?date?string("yyyy-MM-dd")}_ID${pfa.id}</MsgId> <#--Max Length = 35;Format = RBS_FileCreationDate_PFA.ID-->
+	<MsgId>${cbank.custrecord_2663_file_name_prefix?}${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}-${pfa.id}</MsgId> <#--Max Length = 35;Format = -->
 	<CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
 	<NbOfTxs>${payments?size?c}</NbOfTxs>
 	<CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
 	<InitgPty>
-		<Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+		<Id>
+			<OrgId>
+				<#if cbank.custrecord_2663_bic?has_content>
+				<BIOCrBEI>${cbank.custrecord_2663_bic}</BIOCrBEI>
+				<#else>
+				<Othr>
+					<Id>${cbank.custrecord_2663_bank_comp_id}</Id>
+				</Othr>
+				</#if>
+			</OrgId>
+		</Id>
 	</InitgPty>
+	<#--<Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>-->
 </GrpHdr>
 
 <#-- Looping through each payments in the Payment File Administration -->
