@@ -10,7 +10,7 @@
 <CstmrCdtTrfInitn>
 
 <GrpHdr>
-	<MsgId>${cbank.custrecord_2663_file_name_prefix?}${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}-${pfa.id}</MsgId> <#--Max Length = 35;Format = -->
+	<MsgId>${cbank.custrecord_2663_file_name_prefix?}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
 	<CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
 	<NbOfTxs>${payments?size?c}</NbOfTxs>
 	<CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
@@ -54,7 +54,7 @@
 		</#if>
 	</#if>
 <PmtInf>
-	<PmtInfId>RBS_${pfa.id}_${payments?size?c}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
+	<PmtInfId>${cbank.custrecord_2663_file_name_prefix?}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
 	<PmtMtd>TRF</PmtMtd>
 	<NbOfTxs>1</NbOfTxs> <#-- Number of transactions will always be 1. One Bill per Payment<PmtInf> -->
 	<CtrlSum>${formatAmount(getAmount(payment),"dec")}</CtrlSum>
@@ -97,8 +97,8 @@
 	</#if>
 	<CdtTrfTxInf>
 		<PmtId>
-			<InstrId>GBT_${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}_ID${payment.tranid}</InstrId>
-			<EndToEndId>GBT_${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}_ID${payment.tranid}</EndToEndId>
+			<InstrId>${cbank.custrecord_2663_file_name_prefix?}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
+			<EndToEndId>${cbank.custrecord_2663_file_name_prefix?}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
 		</PmtId>
 		<Amt>
 			<InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</InstdAmt>
