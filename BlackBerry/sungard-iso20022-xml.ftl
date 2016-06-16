@@ -10,20 +10,18 @@
 <CstmrCdtTrfInitn>
 
 <GrpHdr>
-	<MsgId>${cbank.custrecord_2663_file_name_prefix?}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
+	<MsgId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
 	<CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
 	<NbOfTxs>${payments?size?c}</NbOfTxs>
 	<CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
 	<InitgPty>
 		<Id>
 			<OrgId>
-				<#if cbank.custrecord_2663_bic?has_content>
 				<BIOCrBEI>${cbank.custrecord_2663_bic}</BIOCrBEI>
-				<#else>
+				
 				<Othr>
 					<Id>${cbank.custrecord_2663_bank_comp_id}</Id>
 				</Othr>
-				</#if>
 			</OrgId>
 		</Id>
 	</InitgPty>
@@ -35,39 +33,25 @@
 	<#assign paidTransactions = transHash[payment.internalid]>
 	<#assign ebank = ebanks[payment_index]>
 	<#assign entity = entities[payment_index]>
-	<#-- Check for SEPA(Single Euro Payments Area) Payments -->
-	<#if ebank.custrecord_2663_bank_payment_method == "Wire">
-		<#assign isWire = "true">
-		<#assign isSEPA = "false">
-		<#assign isACH = "false">
-	<#else>
-		<#assign isWire = "false">
-		<#if getCurrencySymbol(payment.currency) == "EUR">
-			<#assign isSEPA = "true">
-		<#else>
-			<#assign isSEPA = "false">
-		</#if>
-		<#if ebank.custrecord_2663_bank_payment_method == "ACH">
-			<#assign isACH = "true">
-		<#else>
-			<#assign isACH = "false">
-		</#if>
-	</#if>
+	<#list paidTransactions as transaction>
+
 <PmtInf>
-	<PmtInfId>${cbank.custrecord_2663_file_name_prefix?}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
+	<PmtInfId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
 	<PmtMtd>TRF</PmtMtd>
 	<NbOfTxs>1</NbOfTxs> <#-- Number of transactions will always be 1. One Bill per Payment<PmtInf> -->
 	<CtrlSum>${formatAmount(getAmount(payment),"dec")}</CtrlSum>
 	<PmtTpInf>
 		<SvcLvl>
 		<#-- Non SEPA = NURG, Urgent = URGP -->
-		<#if isWire == "true">
+			<#if transaction.custbody__bb_vb_prr_type == 'DOMESTIC_WIRE' || 'DOMESTIC_WIRE_CANADA' || 'DOSMESTIC_WIRE_US' || 'FOREIGN_WIRE'>
 			<Cd>URGP</Cd>
-		<#elseif isSEPA == "true">
+			</#if>
+			<#if transaction.custbody__bb_vb_prr_type == 'SEPA'>
 			<Cd>SEPA</Cd>
-		<#else>
+			</#if>
+			<#if transaction.custbody__bb_vb_prr_type == 'ACH-CCD' || 'ACH-CTX'>
 			<Cd>NURG</Cd>
-		</#if>
+			</#if>
 		</SvcLvl>
 	</PmtTpInf>
 	<ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
@@ -89,16 +73,14 @@
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR -->
-	<#if isSEPA == "true">
+	<#if transaction.custbody__bb_vb_prr_type == 'SEPA'>
 	<ChrgBr>SLEV</ChrgBr>
 	</#if>
-	<#if isWire == "true" || isACH == "true">
 	<ChrgBr>SHAR</ChrgBr>
-	</#if>
 	<CdtTrfTxInf>
 		<PmtId>
-			<InstrId>${cbank.custrecord_2663_file_name_prefix?}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
-			<EndToEndId>${cbank.custrecord_2663_file_name_prefix?}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
+			<InstrId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
+			<EndToEndId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
 		</PmtId>
 		<Amt>
 			<InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</InstdAmt>
@@ -106,18 +88,11 @@
 		<CdtrAgt>
 			<FinInstnId>
 			<#--Check if entity has BIC/Swift Code-->
-			<#if isSEPA == "true">
-				<#if ebank.custrecord_2663_entity_bic?has_content>
 					<BIC>${ebank.custrecord_2663_entity_bic}</BIC>
-				</#if>
 			<#--If no BIC/Swift Code, a routing number will be used (Most US Banks)-->	
-			<#else>
-				<#if isWire == "true">
 					<Othr>
 						<Id>${ebank.custrecord_2663_entity_bank_no}</Id>
 					</Othr>
-				</#if>
-			</#if>
 			</FinInstnId>
 		</CdtrAgt>
 		<Cdtr>
@@ -128,33 +103,22 @@
 		</Cdtr>
 		<CdtrAcct>
 		<#--Check if entity has IBAN number (European Banks)-->
-		<#if isSEPA == "true" &&
-		<#if ebank.custrecord_2663_entity_iban?has_content>
 			<Id>
 				<IBAN>${ebank.custrecord_2663_entity_iban}</IBAN>
 			</Id>
 		<#--Check if entity only has bank account number-->	
-		<#else>
-			<#if isWire == "true">
 				<Id>
 					<Othr>
 						<Id>${ebank.custrecord_2663_entity_acct_no}</Id>
 					</Othr>
 				</Id>
-			</#if>
-		</#if>
 		</CdtrAcct>
 		<RmtInf>
-		<#list paidTransactions as transaction>
-			<#if transaction.tranid?has_content>
 			<Ustrd>${cbank.custrecord_2663_legal_name}_${convertToLatinCharSet(buildEntityName(entity))}_${formatAmount(getAmount(payment),"dec")}${getCurrencySymbol(payment.currency)}_${transaction.tranid}</Ustrd>
-			<#else>
-			<Ustrd>${cbank.custrecord_2663_legal_name}_${convertToLatinCharSet(buildEntityName(entity))}_${formatAmount(getAmount(payment),"dec")}${getCurrencySymbol(payment.currency)}_${payment.transactionnumber}(Netsuite#)</Ustrd>
-			</#if>
-		</#list>
 		</RmtInf>
 	</CdtTrfTxInf>
 </PmtInf>
+	</#list>
 </#list>
 
 </CstmrCdtTrfInitn>
