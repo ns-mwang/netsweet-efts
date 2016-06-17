@@ -17,11 +17,20 @@
 	<InitgPty>
 		<Id>
 			<OrgId>
-				<BIOCrBEI>${cbank.custrecord_2663_bic}</BIOCrBEI>
-				
+			<#-- Payment Types That Use Swift Codes -->
+				<#if transaction.custbody__bb_vb_prr_type == "SEPA" || "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
+				<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>
+			<#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+				<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CCD" || "ACH-CTX">
 				<Othr>
-					<Id>${cbank.custrecord_2663_bank_comp_id}</Id>
+					<Id>${cbank.custrecord_2663_bank_code}</Id>
 				</Othr>
+			<#-- Other Payment Types Default To Bank Code -->
+				<#else>
+				<Othr>
+					<Id>${cbank.custrecord_2663_bank_code}</Id>
+				</Othr>
+				</#if>
 			</OrgId>
 		</Id>
 	</InitgPty>
@@ -33,8 +42,7 @@
 	<#assign paidTransactions = transHash[payment.internalid]>
 	<#assign ebank = ebanks[payment_index]>
 	<#assign entity = entities[payment_index]>
-	<#list paidTransactions as transaction>
-
+	<#list paidTransactions as transaction><#-- Looping through each vendor bill in the bill payment record -->
 <PmtInf>
 	<PmtInfId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
 	<PmtMtd>TRF</PmtMtd>
@@ -42,16 +50,26 @@
 	<CtrlSum>${formatAmount(getAmount(payment),"dec")}</CtrlSum>
 	<PmtTpInf>
 		<SvcLvl>
-		<#-- Non SEPA = NURG, Urgent = URGP -->
-			<#if transaction.custbody__bb_vb_prr_type == 'DOMESTIC_WIRE' || 'DOMESTIC_WIRE_CANADA' || 'DOSMESTIC_WIRE_US' || 'FOREIGN_WIRE'>
+		<#-- Check if RBC Bank: RBC Requires Prtry tag -->
+		<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") == true>
+			<Prtry>NORM</Prtry>
+		<#else>
+		<#-- Check Payment Type to assign code settings: Non SEPA = NURG, Urgent = URGP -->
+			<#if transaction.custbody__bb_vb_prr_type == "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
 			<Cd>URGP</Cd>
-			</#if>
-			<#if transaction.custbody__bb_vb_prr_type == 'SEPA'>
+			<#elseif transaction.custbody__bb_vb_prr_type == "SEPA">
 			<Cd>SEPA</Cd>
-			</#if>
-			<#if transaction.custbody__bb_vb_prr_type == 'ACH-CCD' || 'ACH-CTX'>
+			<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CCD">
 			<Cd>NURG</Cd>
+			<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CTX">
+			<Cd>NURG</Cd>
+			<LclInstrm>
+        		<Cd>CTX</Cd>
+            </LclInstrm>
+            <#else>
+            <Cd>NURG</Cd>
 			</#if>
+		</#if>
 		</SvcLvl>
 	</PmtTpInf>
 	<ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
@@ -63,13 +81,20 @@
 	</Dbtr>
 	<DbtrAcct>
 		<Id>
+		<#-- SEPA Payment Type uses IBAN (International Bank Account Number) -->
+		<#if transaction.custbody__bb_vb_prr_type == "SEPA">
 			<IBAN>${cbank.custpage_eft_custrecord_2663_iban}</IBAN>
+		<#else>
+			<Othr>
+				<Id>${cbank.custpage_eft_custrecord_2663_acct_num}</Id>
+			</Othr>
+		</#if>
 		</Id>
 		<Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
 	</DbtrAcct>
 	<DbtrAgt>
 		<FinInstnId>
-			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
+			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR -->
@@ -87,9 +112,7 @@
 		</Amt>
 		<CdtrAgt>
 			<FinInstnId>
-			<#--Check if entity has BIC/Swift Code-->
 					<BIC>${ebank.custrecord_2663_entity_bic}</BIC>
-			<#--If no BIC/Swift Code, a routing number will be used (Most US Banks)-->	
 					<Othr>
 						<Id>${ebank.custrecord_2663_entity_bank_no}</Id>
 					</Othr>
@@ -103,9 +126,11 @@
 		</Cdtr>
 		<CdtrAcct>
 		<#--Check if entity has IBAN number (European Banks)-->
+		<#if ebank.custrecord_2663_entity_iban?has_content>
 			<Id>
 				<IBAN>${ebank.custrecord_2663_entity_iban}</IBAN>
 			</Id>
+		</#if>
 		<#--Check if entity only has bank account number-->	
 				<Id>
 					<Othr>
@@ -114,7 +139,22 @@
 				</Id>
 		</CdtrAcct>
 		<RmtInf>
-			<Ustrd>${cbank.custrecord_2663_legal_name}_${convertToLatinCharSet(buildEntityName(entity))}_${formatAmount(getAmount(payment),"dec")}${getCurrencySymbol(payment.currency)}_${transaction.tranid}</Ustrd>
+			<Strd>
+        		<RfrdDocInf>
+					<Tp>
+						<CdOrPrtry>
+                    		<Cd>CINV</Cd>
+                        </CdOrPrtry>
+                    </Tp>
+                    <Nb>SOLT02001038</Nb>
+                    <RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
+                </RfrdDocInf>
+                <RfrdDocAmt>
+                	<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
+                  	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount)}</DscntApldAmt>
+                 	<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal)}</TaxAmt>
+              	</RfrdDocAmt>
+         	</Strd>
 		</RmtInf>
 	</CdtTrfTxInf>
 </PmtInf>
