@@ -18,19 +18,11 @@
 		<Id>
 			<OrgId>
 			<#-- Payment Types That Use Swift Codes -->
-				<#if transaction.custbody__bb_vb_prr_type == "SEPA" || "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
-				<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>
+				<#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
 			<#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
-				<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CCD" || "ACH-CTX">
 				<Othr>
 					<Id>${cbank.custrecord_2663_bank_code}</Id>
 				</Othr>
-			<#-- Other Payment Types Default To Bank Code -->
-				<#else>
-				<Othr>
-					<Id>${cbank.custrecord_2663_bank_code}</Id>
-				</Othr>
-				</#if>
 			</OrgId>
 		</Id>
 	</InitgPty>
