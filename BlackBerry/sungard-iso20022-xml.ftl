@@ -47,13 +47,13 @@
 			<Prtry>NORM</Prtry>
 		<#else>
 		<#-- Check Payment Type to assign code settings: Non SEPA = NURG, Urgent = URGP -->
-			<#if transaction.custbody__bb_vb_prr_type == "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
+			<#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
 			<Cd>URGP</Cd>
-			<#elseif transaction.custbody__bb_vb_prr_type == "SEPA">
+			<#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Cd>SEPA</Cd>
-			<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CCD">
+			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
 			<Cd>NURG</Cd>
-			<#elseif transaction.custbody__bb_vb_prr_type == "ACH-CTX">
+			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CTX">
 			<Cd>NURG</Cd>
 			<LclInstrm>
         		<Cd>CTX</Cd>
@@ -74,7 +74,7 @@
 	<DbtrAcct>
 		<Id>
 		<#-- SEPA Payment Type uses IBAN (International Bank Account Number) -->
-		<#if transaction.custbody__bb_vb_prr_type == "SEPA">
+		<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 			<IBAN>${cbank.custpage_eft_custrecord_2663_iban}</IBAN>
 		<#else>
 			<Othr>
@@ -90,7 +90,7 @@
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR -->
-	<#if transaction.custbody__bb_vb_prr_type == 'SEPA'>
+	<#if transaction.custbody_bb_vb_prr_type == 'SEPA'>
 	<ChrgBr>SLEV</ChrgBr>
 	</#if>
 	<ChrgBr>SHAR</ChrgBr>
