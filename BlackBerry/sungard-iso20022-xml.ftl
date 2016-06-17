@@ -47,9 +47,12 @@
 			<Prtry>NORM</Prtry>
 		<#else>
 		<#-- Check Payment Type to assign code settings: Non SEPA = NURG, Urgent = URGP -->
-			<#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" || "DOMESTIC_WIRE_CANADA" || "DOSMESTIC_WIRE_US" || "FOREIGN_WIRE">
+			<#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" ||
+			     transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE_CANADA" ||
+			     transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
+			     transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">-->
 			<Cd>URGP</Cd>
-			<#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
+			<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Cd>SEPA</Cd>
 			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
 			<Cd>NURG</Cd>
@@ -57,9 +60,9 @@
 			<Cd>NURG</Cd>
 			<LclInstrm>
         		<Cd>CTX</Cd>
-            </LclInstrm>
-            <#else>
-            <Cd>NURG</Cd>
+            		</LclInstrm>
+            		<#else>
+            		<Cd>NURG</Cd>
 			</#if>
 		</#if>
 		</SvcLvl>
@@ -89,11 +92,11 @@
 			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
 		</FinInstnId>
 	</DbtrAgt>
-	<#-- SEPA = SLEV, Non SEPA = SHAR -->
-	<#if transaction.custbody_bb_vb_prr_type == 'SEPA'>
+	<#-- SEPA = SLEV, Non SEPA = SHAR
+	<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 	<ChrgBr>SLEV</ChrgBr>
 	</#if>
-	<ChrgBr>SHAR</ChrgBr>
+	<ChrgBr>SHAR</ChrgBr>-->
 	<CdtTrfTxInf>
 		<PmtId>
 			<InstrId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
@@ -122,31 +125,31 @@
 			<Id>
 				<IBAN>${ebank.custrecord_2663_entity_iban}</IBAN>
 			</Id>
-		</#if>
-		<#--Check if entity only has bank account number-->	
+		<#else>
 				<Id>
 					<Othr>
 						<Id>${ebank.custrecord_2663_entity_acct_no}</Id>
 					</Othr>
 				</Id>
+		</#if>
 		</CdtrAcct>
 		<RmtInf>
 			<Strd>
-        		<RfrdDocInf>
+        			<RfrdDocInf>
 					<Tp>
 						<CdOrPrtry>
-                    		<Cd>CINV</Cd>
-                        </CdOrPrtry>
-                    </Tp>
-                    <Nb>SOLT02001038</Nb>
-                    <RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
-                </RfrdDocInf>
-                <RfrdDocAmt>
-                	<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                  	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount)}</DscntApldAmt>
-                 	<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal)}</TaxAmt>
-              	</RfrdDocAmt>
-         	</Strd>
+                    					<Cd>CINV</Cd>
+                        			</CdOrPrtry>
+                    			</Tp>
+                			<Nb>SOLT02001038</Nb>
+                			<RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
+                		</RfrdDocInf>
+                		<RfrdDocAmt>
+                			<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
+                  			<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${transaction.discountamount}</DscntApldAmt>
+                 			<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${transaction.taxtotal}</TaxAmt>
+              			</RfrdDocAmt>
+         		</Strd>
 		</RmtInf>
 	</CdtTrfTxInf>
 </PmtInf>
