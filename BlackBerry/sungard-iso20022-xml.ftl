@@ -52,7 +52,7 @@
 			     transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
 			     transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">-->
 			<Cd>URGP</Cd>
-			<#if transaction.custbody_bb_vb_prr_type == "SEPA">
+			<#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Cd>SEPA</Cd>
 			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
 			<Cd>NURG</Cd>
