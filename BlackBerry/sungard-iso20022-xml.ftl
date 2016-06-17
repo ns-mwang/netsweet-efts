@@ -146,8 +146,8 @@
                 		</RfrdDocInf>
                 		<RfrdDocAmt>
                 			<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                  			<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${transaction.discountamount}</DscntApldAmt>
-                 			<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${transaction.taxtotal}</TaxAmt>
+                  			<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
+                 			<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
               			</RfrdDocAmt>
          		</Strd>
 		</RmtInf>
