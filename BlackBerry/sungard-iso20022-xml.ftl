@@ -107,10 +107,13 @@
 		</Amt>
 		<CdtrAgt>
 			<FinInstnId>
-					<BIC>${ebank.custrecord_2663_entity_bic}</BIC>
+				<#if transaction.custbody_bb_vb_prr_type == "SEPA">
+					<BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
+				<#else>
 					<Othr>
-						<Id>${ebank.custrecord_2663_entity_bank_no}</Id>
+						<Id>${transaction.custbody_bb_vb_ebd_routing_num}</Id>
 					</Othr>
+				</#if>
 			</FinInstnId>
 		</CdtrAgt>
 		<Cdtr>
@@ -121,14 +124,14 @@
 		</Cdtr>
 		<CdtrAcct>
 		<#--Check if entity has IBAN number (European Banks)-->
-		<#if ebank.custrecord_2663_entity_iban?has_content>
+		<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Id>
-				<IBAN>${ebank.custrecord_2663_entity_iban}</IBAN>
+				<IBAN>${transaction.custbody_bb_vb_ebd_bank_acct}</IBAN>
 			</Id>
 		<#else>
 				<Id>
 					<Othr>
-						<Id>${ebank.custrecord_2663_entity_acct_no}</Id>
+						<Id>${transaction.custbody_bb_vb_ebd_bank_acct}</Id>
 					</Othr>
 				</Id>
 		</#if>
