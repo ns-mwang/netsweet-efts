@@ -111,7 +111,7 @@
 					<BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
 				<#else>
 					<Othr>
-						<Id>${transaction.custbody_bb_vb_ebd_routing_num}</Id>
+						<Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
 					</Othr>
 				</#if>
 			</FinInstnId>
@@ -119,14 +119,14 @@
 		<Cdtr>
 			<Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
 		<PstlAdr>
-			<Ctry>${getCountryCode(ebank.custrecord_2663_entity_country)}</Ctry>
+			<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
 		</PstlAdr>
 		</Cdtr>
 		<CdtrAcct>
 		<#--Check if entity has IBAN number (European Banks)-->
 		<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Id>
-				<IBAN>${transaction.custbody_bb_vb_ebd_bank_acct}</IBAN>
+				<IBAN>${transaction.custbody_bb_vb_ebd_iban}</IBAN>
 			</Id>
 		<#else>
 				<Id>
