@@ -13,11 +13,11 @@
 </macrolist>
 
     <style type="text/css">
-      	table {
+      	<!--table {
             font-family: helvetica, arial, sans-serif;
             font-size: 9pt;
             table-layout: fixed;
-        }
+        }-->
         th {
             font-weight: bold;
             font-size: 8pt;
@@ -30,7 +30,7 @@
             font-weight: bold;
             color: #333333;
         }
-        table.itemtable td{
+        table.itemtable {
           	white-space: nowrap
             padding-bottom: 10px;
           	border: 1px solid black;
@@ -47,29 +47,27 @@
 </head>
 
 <body footer="nlfooter" footer-height="20pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
-	<table>
+	<table width="100%" style="margin: 0px;">
     	<tr>
-			<td>
-            	<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" style="float: left;" />
+			<td colspan="2">
+            	<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&amp;c=340431_SB3&amp;h=c0b12d6e5035d6e1efa5" style="float: left; height: 25%; width: 25%;"/>
           	</td>
 			<td align="right">
             	<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">TAX INVOICE</p>
         	</td>
 		</tr>
+      	<tr>
+      		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
+      	</tr>
 	</table>
 <hr />
 	<table>
 		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate}</p></td>
-		</tr>
-		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${record.tranid}</p></td>
-		</tr>
-		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">INVOICE</p></td>
-		</tr>
-		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Customer Copy - Please keep this side for your reference and proof of receipt</p></td>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">SOLD TO:<br/><br/>${record.name}</p></td>
+         	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">SHIP TO:<br/><br/>${record.shipaddress}</p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">CUSTOMER CARE:<br/>If you have any questions or<br/>concerns regarding your order<br/>please contact us at:<br/>E. customerservice@sds.com.au<br/>T. 1300 650 905<br/>Thanks for choosing Surf Dive 'n' Ski</p></td>
 		</tr>
 	</table>
 
@@ -186,7 +184,7 @@ items are securely enclosed in a satchel as we are not able to accept them if da
             <b>SDS Returns 131 Millaroo Drive<br/>Helensvale QLD 4212</b>
 			<br/>
             <br/>
-            5. Attend your local Post Office and send to the labelled address. For security and peace of mind, we strongly suggest insured registered post as Surf Dive ‘n’ Ski is not liable for lost return parcels. Please allow up to 7 business days for us to receive your merchandise.
+            5. Attend your local Post Office and send to the labelled address. For security and peace of mind, we strongly suggest insured registered post as Surf Dive 『n』 Ski is not liable for lost return parcels. Please allow up to 7 business days for us to receive your merchandise.
             <br/>
             6. Once received in our warehouse, we will inspect and process the goods within 48 hours to ensure you receive your refund as quickly as possible. To keep you informed, we will email you confirmation of your refund, and how it is being processed to your original form of payment. In most cases, refunds should hit your account within 1-5 business days.
             <br/>
