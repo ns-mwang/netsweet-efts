@@ -1,0 +1,862 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<!-- Billabong-SDS-Netsuite Sales Order PDF Template -->
+<!-- @author Freemarker Logic Michael Wang <mwang@netsuite.com> | HTML Jon Ezell <jezell@billabong.com> -->
+<!-- Template #2 Orders (English) -->
+<!-- Email Type:
+				Order Confirmation
+				Order Update - Order Cancel
+				Return Update (Refunded and Received)
+				Replacement
+				Review Request -->
+<!-- ver 1.0 - Intial version created using Jon's HTML template - MW -->
+
+<!-- OUTPUT START -->
+<!-- Brand and Region Assignment -->
+<#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
+	<#assign Brand = "BBGEU">
+<#elseif record.subsidiary == "Billabong US">
+	<#assign Brand = "BBGUS">
+<#elseif record.subsidiary == "Billabong CAN">
+	<#assign Brand = "BBGCAN">
+<#elseif record.subsidiary == "Billabong AU">
+	<#assign Brand = "BBGAU">
+<#elseif record.subsidiary == "Surf Dive 'n' Ski">
+	<#assign Brand = "SDS">
+<#else>
+	<#assign Brand = "BBGUS">
+</#if>
+<!-- Brand and Region Assignment -->
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>${record.subsidiary}</title>
+		<style type="text/css">
+			html,
+			body{
+				width: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			@media only screen and (max-width: 500px) {
+				h1 {
+					font-size: 40px !important;
+					line-height: 45px !important;
+				}
+			}
+			@media only screen and (max-width: 600px) {
+				.container{
+					width: 100% !important;
+				}
+				.button
+				{
+					display: block !important;
+				}
+				.block-columns{
+					width: auto !important;
+					display: block !important;
+					padding-top: 0 !important;
+				}
+
+			}
+			a, a:hover, a:active, a:focus, a:visited{
+				color: #ffffff;
+			}
+			.button:hover
+			{
+				background: #1a1a1a !important;
+			}
+			.social:hover
+			{
+				opacity: .7 !important;
+			}
+			a[x-apple-data-detectors],
+			.appleLinks {
+			    color:#45ade8 !important;
+				text-decoration: none !important;
+			}
+		</style>
+	</head>
+
+	<body style="background-color:#fdfdfd; margin:0; padding:0; font-family: helvetica, arial, sans-serif; text-align:center; color: #1e1e1e; width:100%">
+		<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
+			<tr>
+				<td>
+                  	<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
+                    	<tr>
+                      		<td style="padding-left:30px; padding-right:30px;">
+								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse: collapse;">
+									<tr>
+										<td>
+											<tr>
+												<td colspan="4" style="height:80px"></td>
+											</tr>
+											<!-- Brand Logo -->
+											<!-- The freemarker logic checks the transaction/order subsidiary to generate the correct logo -->
+											<tr>
+												<td colspan="4"style="text-align:center;">
+												<#if Brand == "BBGUS">
+													<a href="http://www.billabong.com" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo.png" width="60" style="height:auto; display:block; margin:0 auto;">
+													</a>
+												<#elseif Brand == "BBGCAN">
+													<a href="http://ca.billabong.com/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo.png" width="60" style="height:auto; display:block; margin:0 auto;">
+													</a>
+												<#elseif Brand == "BBGAU">
+													<a href="http://au.billabong.com/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo.png" width="60" style="height:auto; display:block; margin:0 auto;">
+													</a>
+												<#elseif Brand == "SDS">
+													<a href="https://www.sds.com.au/" style="display:inline-block;">
+														<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" width="360" style="height:auto; display:block; margin:0 auto;">
+													</a>
+												</#if>
+												</td>
+											</tr>
+
+
+							<!-- Email Context Begins: Order Confirmation -->
+									<#if record.custbody_headercontent == "orderConfirm">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Confirmation</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Confirmation -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														Thank you for your order!  We'll send a Shipping Confirmation email with tracking details as soon as your order is on its way. You can check in on your order anytime online!
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Confirmation -->
+
+							<!-- Email Context Begins: Order Cancelled -->
+									<#if record.custbody_headercontent == "orderCancel">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Cancelled -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your order.  See the order summary below for details.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Cancelled -->
+
+
+							<!-- Email Context Begins: Order Shipped (Order Update) -->
+									<#if record.custbody_headercontent == "orderShipped">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Order Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Update -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														Your order is complete! See the order summary below for details regarding your order. You can access your order details at anytime through our website. Please allow up to 24 hours to view tracking details through the tracking link.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Shipped (Order Update) -->
+
+							<!-- Email Context Begins: Order Replacement -->
+									<#if record.custbody_headercontent == "orderReplace">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Replacement</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Update -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We have created a replacement order. See the summary below for details regarding the replacement.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Replacement -->
+
+							<!-- Email Context Begins: Return Update (Refunded) -->
+									<#if record.custbody_headercontent == "returnRefunded">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Return Refunded -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your return request. See the summary below for details regarding your return.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Return Update (Refunded) -->
+
+							<!-- Email Context Begins: Return Update (Received) -->
+									<#if record.custbody_headercontent == "returnReceived">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Return Received -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your return request. See the summary below for details regarding your return.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Return Update (Received) -->
+
+							<!-- Check if transaction record has items and display item lists, totals, shipping, and billing information -->
+									<#if record.item?has_content>
+											<!-- Action Button Begins: View Order in Account -->
+											<tr>
+												<td colspan="4" style="text-align:center;">
+													<div style="margin-top:40px; margin-bottom:40px;"><!--[if mso]>
+													  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:52px;v-text-anchor:middle;width:300px;" arcsize="0%" stroke="f" fillcolor="#000">
+													    <w:anchorlock/>
+													    <center>
+													  <![endif]-->
+
+												<!-- Action Button Link -->
+													 <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">View Order in Account</a>
+												<!-- Action Button Link -->
+
+													  <!--[if mso]>
+													    </center>
+													  </v:roundrect>
+													<![endif]-->
+													</div>
+												</td>
+											</tr>
+											<!-- Item Table Headers -->
+											<tr>
+												<td colspan="3" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:left; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">item</td>
+												<td colspan="1" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:right; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">Total</td>
+											</tr>
+											<!-- Action Button Ends: View Order in Account -->
+											<!-- Item Lists Start -->
+											<#list record.item as item>
+											<tr>
+												<td style="border-bottom:1px solid #eeeeee; width:80px; padding:20px 0; vertical-align:top; text-align:left; padding-right:15px;">
+													<img class="productImage" src="${item.custcol_gsm_defaultimagepath}" width="80" style="height:auto; display:block; margin:0 auto;">
+												</td>
+												<td colspan="2" style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:left;">
+													<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														<span style="color:#1e1e1e;">
+															<b>${item.item}</b>
+															<br />
+															${item.rate}
+														</span>
+														<br />
+												<#if record.custbody_headercontent == "orderShipped"> <!--(item.quantityfulfilled lt item.quantity) &&-->
+														<p style="margin:0; color:#FF0000; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantityfulfilled}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														<#if record.shipmethod != "BOPIS BBG US">
+														Status: Partially Shipped
+                                                        <br/>
+														Tracking: ${item.custcol_tracking_number}
+														<#elseif record.shipmethod == "BOPIS BBG US">
+														Available For Pick Up: ${item.quantityfulfilled}
+														<#else>
+														Status: Partially Shipped
+														Tracking: ${item.custcol_tracking_number}
+														</#if>
+														</p>
+														<br />
+												<#elseif record.custbody_headercontent == "orderShipped"> <!--(item.quantityfulfilled == item.quantity) &&-->
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														<#if record.shipmethod != "BOPIS BBG US">
+														Status: Shipped
+														Tracking: ${item.custcol_tracking_number}
+														<#elseif record.shipmethod == "BOPIS BBG US">
+														Status: Ready
+														Available For Pick Up: ${item.quantityfulfilled}
+														<#else>
+														Status: Shipped
+														</#if>
+														</p>
+														<br />
+												<#elseif item.quantityfulfilled == "0" && record.custbody_headercontent != "orderCancel">
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Pending
+														</p>
+														<br />
+												<#elseif item.isclosed == true && record.custbody_headercontent == "orderCancel" >
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Canceled
+														</p>
+														<br />
+												<#elseif item.isclosed != true && record.custbody_headercontent == "orderCancel" >
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Pending
+														</p>
+														<br />
+												<#elseif record.custbody_headercontent == "returnRefunded" >
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Refunded
+														</p>
+														<br />
+												<#elseif record.custbody_headercontent == "returnReceived" >
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Received
+														</p>
+														<br />
+												<#else>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Quantity: ${item.quantity}
+														</p>
+														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+														Status: Please contact us for your status
+														</p>
+														<br />
+												</#if>
+														<!--<a href="#" style="color:#45ade8; text-decoration:none;">Pick up: Irvine Spectrum</a>-->
+													</p>
+												</td>
+												<td style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:right;">
+													<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">${item.amount}</p>
+												</td>
+											</tr>
+											</#list>
+											<!-- Item Lists Ends -->
+											<!-- Subtotal and Total Information Block Starts -->
+											<tr >
+												<td colspan="2" style="text-align:left; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
+													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Subtotal</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Discount</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Tax</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Shipping</p>
+													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">Total</p>
+												</td>
+												<td colspan="2" style="text-align:right; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
+													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.subtotal}</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.discounttotal}</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.taxtotal}</p>
+													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.shippingcost}</p>
+													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">${record.total}</p>
+												</td>
+											</tr>
+											<!-- Subtotal and Total Information Block End -->
+
+											<tr>
+												<td colspan="4"style="height:20px"></td>
+											</tr>
+											<!-- Pick Up Information Block Starts -->
+											<!-- Checks if NOT BOPIS BBG US then Display Shipping Info -->
+											<#if record.shipmethod != "BOPIS BBG US">
+											<!-- Shipping Information Block Starts -->
+											<tr>
+												<td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Shipping Address</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+															${record.shipaddress}
+															<br/>
+															${record.customer.phone}
+															<br/>
+														</p>
+													</div>
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Delivery Method</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; margin-bottom:10px;">
+															<a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">${record.shipmethod}</a>
+														</p>
+													</div>
+												</td>
+											</tr>
+
+											<tr>
+												<td colspan="4"style="height:10px"></td>
+											</tr>
+											</#if>
+											<!-- Shipping Information Block Ends -->
+											<!-- Shipping and Billing Addresses Block Starts -->
+											<tr>
+												<td colspan="4" style="text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Billing Address</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+															${record.billaddress}
+															<br/>
+															${record.customer.phone}
+															<br/>
+														</p>
+													</div>
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Payment Information</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+															${record.paymentmethod} <#if record.ccnumber?has_content> ${"(" + record.ccnumber + ")"}</#if>
+														</p>
+														<#if record.giftcertapplied?has_content>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+															${record.giftcertapplied} on Gift Card
+														</#if>
+														</p>
+													</div>
+												</td>
+											</tr>
+											<!-- Shipping and Billing Addresses Block Ends -->
+									</#if>
+							<!-- transaction.item?has_content Check Ends -->
+
+							<!-- Company Contact, Marketing Image, Social Links, and Brand Logo -->
+											<tr>
+												<td colspan="4"style="height:10px"></td>
+											</tr>
+									<!-- Company Contact -->
+											<tr>
+												<td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Call Us</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
+															<a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">(888)509-5931</a>
+														</p>
+													</div>
+													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left;  background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Email Us</h3>
+														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
+															<a href="mailto:" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">store@billabong-usa.com</a>
+														</p>
+													</div>
+												</td>
+											</tr>
+									<!-- Company Contact -->
+											<tr>
+												<td colspan="4"style="height:10px"></td>
+											</tr>
+											<tr>
+												<td colspan="4" style="text-align:center;">
+										<!-- Marketing Link and Image -->
+													<a href="http://www.billabong.com" style="display:block;">
+														<img style="width:100%; height:auto; display:block; margin:0 auto;" src="http://www.jonezell.com/bbg-email-images/marketing.png">
+													</a>
+										<!-- Marketing Link and Image -->
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" style="height:80px"></td>
+											</tr>
+										</td>
+									</tr>
+								</table>
+
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
+						<tr>
+							<td style="padding-left:30px; padding-right:30px;">
+
+						<#if Brand == "BBGUS" || Brand == "BBGCAN">
+						<!-- BBG US, BBG CAN, BBG AU: Legal, Sociallinks and Marketing -->
+								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+									<tr>
+										<td>
+											<tr style="background-color: #f0f1f3;">
+												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center; padding-bottom:40px;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+													<a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
+													</a>
+												</td>
+											</tr>
+										</td>
+									</tr>
+								</table>
+						<#elseif Brand == "BBGAU">
+						<!-- BBG AU: Legal, Sociallinks and Marketing -->
+								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+									<tr>
+										<td>
+											<tr style="background-color: #f0f1f3;">
+												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabong_australia/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<a class="social" href="https://vimeo.com/billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center; padding-bottom:40px;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<a class="social" href="https://www.pinterest.com/billabongwomens/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+													<a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
+													</a>
+												</td>
+											</tr>
+										</td>
+									</tr>
+								</table>
+						<#elseif Brand == "SDS">
+						<!-- SDS: Legal, Sociallinks and Marketing -->
+								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+									<tr>
+										<td>
+											<tr style="background-color: #f0f1f3;">
+												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Mens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Womens</td>
+											</tr>
+											<tr>
+												<td style="text-align:center; padding-bottom:40px;">
+													<!-- Facebook -->
+													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+													</a>
+													<!-- Instagram -->
+													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Twitter -->
+													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Google -->
+													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Pinterest -->
+													<a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Youtube -->
+													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													<!-- Vimeo -->
+													<!--
+													<a class="social" href="#" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+													</a>
+													-->
+												</td>
+											</tr>
+											<tr>
+												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+													<a href="https://www.sds.com.au/" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+														<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" width="120" style="width:120px; display: block;">
+													</a>
+												</td>
+											</tr>
+										</td>
+									</tr>
+								</table>
+						</#if>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+</pdf>
+<!-- OUTPUT END -->
