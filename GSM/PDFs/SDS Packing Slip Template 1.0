@@ -1,0 +1,218 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+
+<head>
+<macrolist>
+    <macro id="nlfooter">
+    <table class="footer">
+    	<tr>
+			<td align="right"><pagenumber/> of <totalpages/></td>
+		</tr>
+    </table>
+    </macro>
+</macrolist>
+
+    <style type="text/css">
+      	table {
+            font-family: helvetica, arial, sans-serif;
+            font-size: 9pt;
+            table-layout: fixed;
+        }
+        th {
+            font-weight: bold;
+            font-size: 8pt;
+            vertical-align: middle;
+            padding: 3px 3px 6px;
+            background-color: #000000;
+            color: #ffffff;
+        }
+        b {
+            font-weight: bold;
+            color: #333333;
+        }
+        table.itemtable td{
+          	white-space: nowrap
+            padding-bottom: 10px;
+          	border: 1px solid black;
+          	border-collapse: collapse;
+        }
+        hr {
+            border-top: 1px dashed #d3d3d3;
+            width: 100%;
+            color: #ffffff;
+            background-color: #ffffff;
+            height: 1px;
+        }
+	</style>
+</head>
+
+<body footer="nlfooter" footer-height="20pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+	<table>
+    	<tr>
+			<td>
+            	<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" style="float: left;" />
+          	</td>
+			<td align="right">
+            	<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">TAX INVOICE</p>
+        	</td>
+		</tr>
+	</table>
+<hr />
+	<table>
+		<tr>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate}</p></td>
+		</tr>
+		<tr>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${record.tranid}</p></td>
+		</tr>
+		<tr>
+			<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">INVOICE</p></td>
+		</tr>
+		<tr>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Customer Copy - Please keep this side for your reference and proof of receipt</p></td>
+		</tr>
+	</table>
+
+<!-- Check if the transaction record item line has content -->
+<#if record.item?has_content>
+
+<table class="itemtable" style="width: 100%; margin-top: 10px;">
+	<tr>
+		<th>PRODUCT CODE</th>
+		<th>DESCRIPTION</th>
+		<th style="text-align:right">QTY</th>
+		<th style="text-align:right">SIZE</th>
+      	<th style="text-align:right">Price</th>
+      	<th style="text-align:right">Discount</th>
+      	<th style="text-align:right">Price Paid</th>
+	</tr>
+
+<#if record.showAddlItemsPackSlip == 'NONE'>
+
+	<!-- start items -->
+	<#list record.item as item>
+    	<#list salesorder.item as tranline>
+        	<#if tranline.line == item.orderline>
+        	<tr>
+            	<td>${item.item}</td>
+            	<td>${item.description}</td>
+            	<td align="right">${tranline.quantity}</td>
+           		<td align="middle">${tranline.custitem_gsm_size}</td>
+            	<td align="right">${tranline.rate}</td>
+            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td align="right">${tranline.amount}</td>
+			</tr>
+			</#if>
+		</#list>
+	</#list>
+	<!-- end items -->
+
+<#elseif record.showAddlItemsPackSlip == 'ALL'>
+
+	<!-- start items from sales order -->
+	<#list salesorder.item as tranline>
+		<#assign shipped = 0>
+		<#list record.item as item>
+			<#if tranline.line == item.orderline>
+				<#assign shipped = item.quantity>
+			</#if>
+		</#list>
+        	<tr>
+            	<td>${tranline.item}</td>
+            	<td>${tranline.description}</td>
+            	<td align="right">${shipped}</td>
+           		<td align="middle">${tranline.custitem_gsm_size}</td>
+            	<td align="right">${tranline.rate}</td>
+            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td align="right">${tranline.amount}</td>
+        	</tr>
+	</#list>
+	<!-- end sales order items -->
+
+<#elseif record.showAddlItemsPackSlip == 'UNFULFILLED'>
+
+	<!-- start items from sales order -->
+	<#list salesorder.item as tranline>
+		<#assign shipped = 0>
+		<#list record.item as item>
+        	<tr>
+            	<td>${tranline.item}</td>
+            	<td>${tranline.description}</td>
+            	<td align="right">${shipped}</td>
+           		<td align="middle">${tranline.custitem_gsm_size}</td>
+            	<td align="right">${tranline.rate}</td>
+            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td align="right">${tranline.amount}</td>
+        	</tr>
+		</#list>
+	</#list>
+	<!-- end sales order items -->
+</#if>
+</table>
+<table class="itemtable" style="width: 100%; margin-top: 10px;">
+	<tr>
+		<th>Delivery Cost:</th>
+		<th>${salesorder.shippingcost}</th>
+		<th>VAT:</th>
+		<th>${salesorder.taxtotal}</th>
+		<th></th>
+		<th>Total Cost:</th>
+		<th>${salesorder.total}</th>
+    </tr>
+	<tr>
+   		<td colspan="7"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:10px; line-height:18px; font-family:helvetica, arial, sans-serif;">Card : ${salesorder.ccnumber}</p></td>
+  	</tr>
+</table>
+<hr style="margin-left: auto; margin-right: auto; border-style: solid; border-width: 2px;" />
+<!-- Table for static text of return instructions -->
+<table style="width: 100%; margin-top: 10px;">
+	<tr>
+		<td>
+    		<p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">
+            <b>Returns Process</b>
+			<br/>
+            If you are not satisfied with your online purchase you may return items within 14 days of the shipping date. Please follow the simple steps below:
+            <br/>
+            <br/>
+            1. Sign into your account, click on the [Order History] button and select the order you would like to return.
+            <br/>
+            2. Select the items you would like to return and complete the online form. Print one copy to include in the box with your
+product.3. Pack all items with your invoice in a secure carton or reuse the original packaging. Please ensure that all boxed
+items are securely enclosed in a satchel as we are not able to accept them if damaged.
+            <br/>
+            4. Attention your return package to:
+            <br/>
+			<br/>
+            <b>SDS Returns 131 Millaroo Drive<br/>Helensvale QLD 4212</b>
+			<br/>
+            <br/>
+            5. Attend your local Post Office and send to the labelled address. For security and peace of mind, we strongly suggest insured registered post as Surf Dive ‘n’ Ski is not liable for lost return parcels. Please allow up to 7 business days for us to receive your merchandise.
+            <br/>
+            6. Once received in our warehouse, we will inspect and process the goods within 48 hours to ensure you receive your refund as quickly as possible. To keep you informed, we will email you confirmation of your refund, and how it is being processed to your original form of payment. In most cases, refunds should hit your account within 1-5 business days.
+            <br/>
+            <br/>
+            <b>Return to a Store Near You</b>
+            <br/>
+            We also accept returns at any one of our stores nationwide. If you would prefer to return your purchase to a store, please ensure to bring a copy of your order invoice (this page) and check that all items are in an original, un-worn condition with tags. Visit the Store Selector page at sds.com.au to find your local store.
+            <br/>
+            <br/>
+            <b>Exchanges</b>
+            <br/>
+            We're currently unable to process exchanges through our online store. To avoid disappointment, we recommend placing a new order for the item you would like to purchase, and returning your existing merchandise for a full refund to our online warehouse using the process above.
+            <br/>
+            <br/>
+            <b>Return Terms and Conditions</b>
+            <br/>
+            All items returned for refund must be returned in the original condition with tags attached (unless faulty). Any packaged goods must be returned with the packaging in its original condition or may not be accepted (unless faulty). When trying on footwear we advise using a clean surface as shoes with marked or dirty soles may not be accepted for return. Please ensure all returned clothing items are free from marks, stains and rips as they may not be accepted for return if received damaged (unless faulty).
+            <br/>
+			<br/>
+            If you have any questions, please contact the customer service team for assistance.
+    		</p>
+          	<br/>
+          	<p style="text-align:middle; color: #A8A8A8; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Board Sports Retail, 1 Billabong Place, Burleigh Heads, QLD, Australia, 4220<br/>ABN: 68 146 562 281</p>
+    	</td>
+	</tr>
+</table>
+</#if> <!-- If record has content -->
+</body>
+</pdf>
