@@ -23,8 +23,8 @@
             font-size: 8pt;
             vertical-align: middle;
             padding: 3px 3px 6px;
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
         }
         b {
             font-weight: bold;
@@ -34,14 +34,16 @@
           	white-space: nowrap
             padding-bottom: 10px;
           	border: 1px solid black;
+          	border-top: 5px solid black;
+          	border-bottom: 5px solid black;
           	border-collapse: collapse;
         }
         hr {
-            border-top: 1px dashed #d3d3d3;
+            border-top: 1px dashed #000000;
             width: 100%;
             color: #ffffff;
             background-color: #ffffff;
-            height: 1px;
+            height: 2px;
         }
 	</style>
 </head>
@@ -57,18 +59,35 @@
         	</td>
 		</tr>
       	<tr>
-      		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
-          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
-          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;"></p></td>
+      		<td>
+            	<table width="100%" border="1" style="margin: 5px;">
+                	<tr>
+                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/>${record.shipdate}<br/><br/></p></td>
+                	</tr>
+				</table>
+			</td>
+			<td>
+            	<table width="100%" border="1" style="margin: 5px;">
+                	<tr>
+                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/>${record.tranid}<br/><br/></p></td>
+                  	</tr>
+                </table>
+            </td>
+          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">ADDRESS:<br/>Surf Dive 'n' Ski Online<br/>131 Millaroo Drive,<br/>Helensvale,<br/>QLD, 4212</p></td>
       	</tr>
 	</table>
 <hr />
-	<table>
+	<table width="100%" style="margin: 0px;">
 		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">SOLD TO:<br/><br/>${record.name}</p></td>
-         	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">SHIP TO:<br/><br/>${record.shipaddress}</p></td>
-          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">CUSTOMER CARE:<br/>If you have any questions or<br/>concerns regarding your order<br/>please contact us at:<br/>E. customerservice@sds.com.au<br/>T. 1300 650 905<br/>Thanks for choosing Surf Dive 'n' Ski</p></td>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SOLD TO:<br/><br/>${record.billaddress}</p></td>
+         	<td colspan="2"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIP TO:<br/><br/>${record.shipaddress}</p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">CUSTOMER CARE:<br/>If you have any questions or<br/>concerns regarding your order<br/>please contact us at:<br/>E. customerservice@sds.com.au<br/>T. 1300 650 905<br/>Thanks for choosing Surf Dive 'n' Ski</p></td>
 		</tr>
+      	<tr>
+    		<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Customer ID: ${record.entity}</p></td>
+        	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Shipping Method: ${record.shipmethod}</p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.paymentmethod}</p></td>
+    	</tr>
 	</table>
 
 <!-- Check if the transaction record item line has content -->
@@ -76,13 +95,12 @@
 
 <table class="itemtable" style="width: 100%; margin-top: 10px;">
 	<tr>
-		<th>PRODUCT CODE</th>
-		<th>DESCRIPTION</th>
-		<th style="text-align:right">QTY</th>
-		<th style="text-align:right">SIZE</th>
-      	<th style="text-align:right">Price</th>
-      	<th style="text-align:right">Discount</th>
-      	<th style="text-align:right">Price Paid</th>
+		<th>QTY</th>
+		<th>PRODUCT ID</th>
+		<th>PRODUCT NAME</th>
+		<th>STYLE</th>
+      	<th>SIZE</th>
+      	<th>PRICE</th>
 	</tr>
 
 <#if record.showAddlItemsPackSlip == 'NONE'>
@@ -92,13 +110,12 @@
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
-            	<td>${item.item}</td>
+            	<td>${tranline.quantity}</td>
             	<td>${item.description}</td>
-            	<td align="right">${tranline.quantity}</td>
-           		<td align="middle">${tranline.custitem_gsm_size}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
+            	<td>${tranline.quantity}</td>
+           		<td>${tranline.item.custitem_gsm_color}</td>
+              	<td>${tranline.item.custitem_gsm_size}</td>
+            	<td>${tranline.rate}</td>
 			</tr>
 			</#if>
 		</#list>
@@ -147,20 +164,6 @@
 	<!-- end sales order items -->
 </#if>
 </table>
-<table class="itemtable" style="width: 100%; margin-top: 10px;">
-	<tr>
-		<th>Delivery Cost:</th>
-		<th>${salesorder.shippingcost}</th>
-		<th>VAT:</th>
-		<th>${salesorder.taxtotal}</th>
-		<th></th>
-		<th>Total Cost:</th>
-		<th>${salesorder.total}</th>
-    </tr>
-	<tr>
-   		<td colspan="7"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:10px; line-height:18px; font-family:helvetica, arial, sans-serif;">Card : ${salesorder.ccnumber}</p></td>
-  	</tr>
-</table>
 <hr style="margin-left: auto; margin-right: auto; border-style: solid; border-width: 2px;" />
 <!-- Table for static text of return instructions -->
 <table style="width: 100%; margin-top: 10px;">
@@ -181,7 +184,7 @@ items are securely enclosed in a satchel as we are not able to accept them if da
             4. Attention your return package to:
             <br/>
 			<br/>
-            <b>SDS Returns 131 Millaroo Drive<br/>Helensvale QLD 4212</b>
+            <b>SDS Returns<br/>131 Millaroo Drive<br/>Helensvale QLD 4212</b>
 			<br/>
             <br/>
             5. Attend your local Post Office and send to the labelled address. For security and peace of mind, we strongly suggest insured registered post as Surf Dive 『n』 Ski is not liable for lost return parcels. Please allow up to 7 business days for us to receive your merchandise.
@@ -209,11 +212,16 @@ items are securely enclosed in a satchel as we are not able to accept them if da
           	<br/>
     	</td>
 	</tr>
-	<tr align="center">
-		<td>
-          	<p style="color: #A8A8A8; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Board Sports Retail, 1 Billabong Place, Burleigh Heads, QLD, Australia, 4220<br/>ABN: 68 146 562 281</p>
+	<tr>
+		<td align="center">
+          	<p style="color: #A8A8A8; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Board Sports Retail, 1 Billabong Place, Burleigh Heads, QLD, Australia, 4220<br/></p>
     	</td>
 	</tr>
+  	<tr>
+		<td align="center">
+        	<p style="color: #A8A8A8; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">ABN: 68 146 562 281</p>
+        </td>
+  	</tr>
 </table>
 </#if> <!-- If record has content -->
 </body>
