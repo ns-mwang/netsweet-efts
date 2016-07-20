@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MsgId>BOA3120160603-4090</MsgId>
+            <CreDtTm>2016-06-02T12:44:00</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <CtrlSum>52485.00</CtrlSum>
+            <InitgPty>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>RIMXMLP</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PmtInfId>00201042533100</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>URGP</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-03</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY UK LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>SL1 3XE</PstCd>
+                    <TwnNm>SLOUGH</TwnNm>
+                    <CtrySubDvsn>BK</CtrySubDvsn>
+                    <Ctry>GB</Ctry>
+                    <AdrLine>200 BATH ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>23519020</Id>
+                    </Othr>
+                </Id>
+                <Ccy>EUR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>BOFAGB22XXX</BIC>
+                    <ClrSysMmbId>
+                        <ClrSysId>
+                            <Cd>GBDSC</Cd>
+                        </ClrSysId>
+                        <MmbId>165050</MmbId>
+                    </ClrSysMmbId>
+                    <Nm>BANK OF AMERICA MERRILL LYNCH INTERNATIONAL LIMITED</Nm>
+                    <PstlAdr>
+                        <TwnNm>LONDON E14 5AQ</TwnNm>
+                        <Ctry>GB</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>6008</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00201042533100</InstrId>
+                    <EndToEndId>00201042533100</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="EUR">52485.00</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>BBVAESMMXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ESNCC</Cd>
+                            </ClrSysId>
+                            <MmbId>01821797</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>BBVA</Nm>
+                        <PstlAdr>
+                            <TwnNm>BARCELONA</TwnNm>
+                            <Ctry>ES</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>B NETWORK B NETWORK BARCELONA MANAGEMENT</Nm>
+                    <PstlAdr>
+                        <PstCd>08009</PstCd>
+                        <TwnNm>BARCELONA</TwnNm>
+                        <Ctry>ES</Ctry>
+                        <AdrLine>314 ARAGO 1-1</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000130508</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <IBAN>ES1301821797310201530452</IBAN>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>BNE052516</Nb>
+                            <RltdDt>2016-05-25</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="EUR">52485</DuePyblAmt>
+                            <DscntApldAmt Ccy="EUR">0</DscntApldAmt>
+                            <TaxAmt Ccy="EUR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>

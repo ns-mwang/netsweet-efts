@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MsgId>EXP6020160606-8522</MsgId>
+            <CreDtTm>2016-06-02T11:37:00</CreDtTm>
+            <NbOfTxs>7</NbOfTxs>
+            <CtrlSum>42246.50</CtrlSum>
+            <InitgPty>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>ABC63694001</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PmtInfId>00200004776000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004776000</InstrId>
+                    <EndToEndId>00200004776000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">4595.80</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>SBZAZAJJXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>051001</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>STANDARD BANK OF S.A. LTD.</Nm>
+                        <PstlAdr>
+                            <TwnNm>GAUTENG</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MARTIN FICK</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE EAST</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000910651</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>021196516</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>FIC050316</Nb>
+                            <RltdDt>2016-05-03</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">4595.8</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004806000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004806000</InstrId>
+                    <EndToEndId>00200004806000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">6628.30</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>SBZAZAJJ</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>051001</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>STANDARD BANK</Nm>
+                        <PstlAdr>
+                            <TwnNm>KEMPTON PARK</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MARINUS OTTO</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE E</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000931990</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>020281471</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>OTT040116</Nb>
+                            <RltdDt>2016-04-01</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">3218.09</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>OTT050116</Nb>
+                            <RltdDt>2016-05-01</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">3410.21</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004826000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004826000</InstrId>
+                    <EndToEndId>00200004826000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">3592.75</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>NEDSZAJJXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>198765</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>NEDBANK LIMITED</Nm>
+                        <PstlAdr>
+                            <TwnNm>GAUTENG</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MM MOODLEY MALCOLM MOODLEY</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A2</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE. E</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000932398</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>1028306423</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>MOO041016</Nb>
+                            <RltdDt>2016-04-10</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">3592.75</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004816000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004816000</InstrId>
+                    <EndToEndId>00200004816000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">8238.67</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>NEDSZAJJXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>198765</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>NEDBANK LIMITED</Nm>
+                        <PstlAdr>
+                            <TwnNm>GAUTENG</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MELODY LAUBSCHER</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE E</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000931993</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>1988445914</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>LAU051616</Nb>
+                            <RltdDt>2016-05-16</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">8238.67</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004796000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004796000</InstrId>
+                    <EndToEndId>00200004796000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">4101.69</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>FIRNZAJJXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>250655</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>FIRSTRAND BANK</Nm>
+                        <PstlAdr>
+                            <TwnNm>GAUTENG</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MOHAMED BHANA</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE E</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000931989</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>62359141985</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>BHA042816</Nb>
+                            <RltdDt>2016-04-28</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">4101.69</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004836000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004836000</InstrId>
+                    <EndToEndId>00200004836000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">4554.00</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>FIRNZAJJXXX</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>254605</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>FIRSTRAND BANK</Nm>
+                        <PstlAdr>
+                            <TwnNm>GAUTENG</TwnNm>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>MICHAEL SOLOMON</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVENUE EAST</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000933289</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>62056990495</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>SOL043016</Nb>
+                            <RltdDt>2016-04-30</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">4554</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+        <PmtInf>
+            <PmtInfId>00200004786000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-06</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY MOBILE SOUTH AFRICA (PROPRIETARY) LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>2157</PstCd>
+                    <TwnNm>SUNNINGHILL, WWB001</TwnNm>
+                    <Ctry>ZA</Ctry>
+                    <AdrLine>2 EGLIN ROAD</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>121000681001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>ZAR</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>HSBCZAJJ</BIC>
+                    <Nm>HSBC EBS CONSOLIDATED DOWNLOAD</Nm>
+                    <PstlAdr>
+                        <TwnNm>SANDTON, 2196</TwnNm>
+                        <Ctry>ZA</Ctry>
+                    </PstlAdr>
+                    <Othr>
+                        <Id>587000</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00200004786000</InstrId>
+                    <EndToEndId>00200004786000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="ZAR">10535.29</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>ABSAZAJJ</BIC>
+                        <ClrSysMmbId>
+                            <ClrSysId>
+                                <Cd>ZANCC</Cd>
+                            </ClrSysId>
+                            <MmbId>632005</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>ABSA</Nm>
+                        <PstlAdr>
+                            <Ctry>ZA</Ctry>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>DUKE GOOSEN</Nm>
+                    <PstlAdr>
+                        <PstCd>N2K 0A7</PstCd>
+                        <TwnNm>WATERLOO</TwnNm>
+                        <CtrySubDvsn>ON</CtrySubDvsn>
+                        <Ctry>CA</Ctry>
+                        <AdrLine>2200 UNIVERSITY AVE E</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000931961</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>4076651015</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>GOO050416</Nb>
+                            <RltdDt>2016-05-04</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">5574.52</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>GOO060116</Nb>
+                            <RltdDt>2016-06-01</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="ZAR">4960.77</DuePyblAmt>
+                            <DscntApldAmt Ccy="ZAR">0</DscntApldAmt>
+                            <TaxAmt Ccy="ZAR">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>

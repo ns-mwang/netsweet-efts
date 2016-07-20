@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MsgId>ELE0120160601-9139</MsgId>
+            <CreDtTm>2016-05-30T13:57:25</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <CtrlSum>7870.00</CtrlSum>
+            <InitgPty>
+                <Nm>BLACKBERRY</Nm>
+                <Id>
+                    <OrgId>
+                        <BICOrBEI>RIMMCA2W</BICOrBEI>
+                    </OrgId>
+                </Id>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PmtInfId>00205618632000</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>NURG</Cd>
+                </SvcLvl>
+                <LclInstrm>
+                    <Cd>CTX</Cd>
+                </LclInstrm>
+            </PmtTpInf>
+            <ReqdExctnDt>2016-06-01</ReqdExctnDt>
+            <Dbtr>
+                <Nm>BLACKBERRY LIMITED</Nm>
+                <PstlAdr>
+                    <PstCd>N2K 0A7</PstCd>
+                    <TwnNm>WATERLOO</TwnNm>
+                    <CtrySubDvsn>ON</CtrySubDvsn>
+                    <Ctry>CA</Ctry>
+                    <AdrLine>2200 UNIVERSITY AVENUE EAST</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <Othr>
+                        <Id>4297302804</Id>
+                    </Othr>
+                </Id>
+                <Tp>
+                    <Cd>CACC</Cd>
+                </Tp>
+                <Ccy>USD</Ccy>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>WFBIUS6SXXX</BIC>
+                    <ClrSysMmbId>
+                        <MmbId>USABA121000248</MmbId>
+                    </ClrSysMmbId>
+                    <Nm>WELLS FARGO BANK, NATIONAL ASSOCIATION</Nm>
+                    <PstlAdr>
+                        <PstCd>94105</PstCd>
+                        <TwnNm>PHOENIX 85003</TwnNm>
+                        <Ctry>US</Ctry>
+                        <AdrLine>525 Market Street, 10th Floor</AdrLine>
+                    </PstlAdr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>00205618632000</InstrId>
+                    <EndToEndId>00205618632000</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="USD">7870.00</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>SVBKUS6SXXX</BIC>
+                        <ClrSysMmbId>
+                            <MmbId>USABA121140399</MmbId>
+                        </ClrSysMmbId>
+                        <Nm>SILICON VALLEY BANK</Nm>
+                        <PstlAdr>
+                            <PstCd>95054</PstCd>
+                            <TwnNm>PALO ALTO 94306</TwnNm>
+                            <Ctry>US</Ctry>
+                            <AdrLine>3003 Tasman Drive</AdrLine>
+                        </PstlAdr>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>IML (US) INC IML US INC DBA LUMI</Nm>
+                    <PstlAdr>
+                        <PstCd>55401</PstCd>
+                        <TwnNm>MINNEAPOLIS</TwnNm>
+                        <CtrySubDvsn>MN</CtrySubDvsn>
+                        <Ctry>US</Ctry>
+                        <AdrLine>401 SECOND AVE N, SUITE 206</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>0000130510</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <Othr>
+                            <Id>3300982023</Id>
+                        </Othr>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Strd>
+                        <RfrdDocInf>
+                            <Tp>
+                                <CdOrPrtry>
+                                    <Cd>CINV</Cd>
+                                </CdOrPrtry>
+                            </Tp>
+                            <Nb>SOLT02001038</Nb>
+                            <RltdDt>2016-05-25</RltdDt>
+                        </RfrdDocInf>
+                        <RfrdDocAmt>
+                            <DuePyblAmt Ccy="USD">7870</DuePyblAmt>
+                            <DscntApldAmt Ccy="USD">0</DscntApldAmt>
+                            <TaxAmt Ccy="USD">0</TaxAmt>
+                        </RfrdDocAmt>
+                    </Strd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>
