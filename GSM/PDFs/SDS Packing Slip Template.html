@@ -20,6 +20,14 @@
         }-->
         th {
             font-weight: bold;
+            font-size: 10pt;
+            vertical-align: middle;
+            padding: 3px 3px 6px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+      	td {
+            font-weight: normal;
             font-size: 8pt;
             vertical-align: middle;
             padding: 3px 3px 6px;
@@ -33,7 +41,7 @@
         table.itemtable {
           	white-space: nowrap
             padding-bottom: 10px;
-          	border: 1px solid black;
+          	border: 1px solid #A8A8A8;
           	border-top: 5px solid black;
           	border-bottom: 5px solid black;
           	border-collapse: collapse;
@@ -62,14 +70,14 @@
       		<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/>${record.shipdate}<br/><br/></p></td>
+                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/><br/>${record.shipdate}<br/><br/></p></td>
                 	</tr>
 				</table>
 			</td>
 			<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/>${record.tranid}<br/><br/></p></td>
+                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/><br/>${record.tranid}<br/><br/></p></td>
                   	</tr>
                 </table>
             </td>
@@ -111,10 +119,9 @@
         	<#if tranline.line == item.orderline>
         	<tr>
             	<td>${tranline.quantity}</td>
-            	<td>${item.description}</td>
-            	<td>${tranline.quantity}</td>
-           		<td>${tranline.item.custitem_gsm_color}</td>
-              	<td>${tranline.item.custitem_gsm_size}</td>
+            	<td colspan="2">${tranline.item}</td>
+           		<td>${tranline.custitem_gsm_color}</td>
+              	<td>${tranline.custitem_gsm_size}</td>
             	<td>${tranline.rate}</td>
 			</tr>
 			</#if>
@@ -133,14 +140,12 @@
 			</#if>
 		</#list>
         	<tr>
-            	<td>${tranline.item}</td>
-            	<td>${tranline.description}</td>
-            	<td align="right">${shipped}</td>
-           		<td align="middle">${tranline.custitem_gsm_size}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
-        	</tr>
+            	<td>${tranline.quantity}</td>
+            	<td colspan="2">${tranline.item}</td>
+           		<td>${tranline.custitem_gsm_color}</td>
+              	<td>${tranline.custitem_gsm_size}</td>
+            	<td>${tranline.rate}</td>
+			</tr>
 	</#list>
 	<!-- end sales order items -->
 
@@ -151,14 +156,12 @@
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td>${tranline.item}</td>
-            	<td>${tranline.description}</td>
-            	<td align="right">${shipped}</td>
-           		<td align="middle">${tranline.custitem_gsm_size}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
-        	</tr>
+            	<td>${tranline.quantity}</td>
+            	<td colspan="2">${tranline.item}</td>
+           		<td>${tranline.custitem_gsm_color}</td>
+              	<td>${tranline.custitem_gsm_size}</td>
+            	<td>${tranline.rate}</td>
+			</tr>
 		</#list>
 	</#list>
 	<!-- end sales order items -->
