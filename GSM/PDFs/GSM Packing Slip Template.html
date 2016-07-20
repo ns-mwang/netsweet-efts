@@ -13,22 +13,14 @@
 </macrolist>
 
     <style type="text/css">
-      	<!--table {
+      	table {
             font-family: helvetica, arial, sans-serif;
             font-size: 9pt;
             table-layout: fixed;
-        }-->
+        }
         th {
             font-weight: bold;
-            font-size: 10pt;
-            vertical-align: middle;
-            padding: 3px 3px 6px;
-            background-color: #ffffff;
-            color: #000000;
-        }
-      	td {
-            font-weight: normal;
-            font-size: 10pt;
+            font-size: 9pt;
             vertical-align: middle;
             padding: 3px 3px 6px;
             background-color: #ffffff;
@@ -71,7 +63,7 @@
       		<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/><br/>${record.shipdate}<br/><br/></p></td>
+                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/><br/>${record.trandate?date?string("dd/MM/yyyy")}<br/><br/></p></td>
                 	</tr>
 				</table>
 			</td>
@@ -88,14 +80,14 @@
 <hr />
 	<table width="100%" style="margin: 0px;">
 		<tr>
-			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SOLD TO:<br/><br/>${record.billaddress}</p></td>
+			<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SOLD TO:<br/><br/>${salesorder.billaddress}</p></td>
          	<td colspan="2"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIP TO:<br/><br/>${record.shipaddress}</p></td>
           	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">CUSTOMER CARE:<br/>If you have any questions or<br/>concerns regarding your order<br/>please contact us at:<br/>E. customerservice@sds.com.au<br/>T. 1300 650 905<br/>Thanks for choosing Surf Dive 'n' Ski</p></td>
 		</tr>
       	<tr>
     		<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Customer ID: ${record.entity}</p></td>
         	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Shipping Method: ${record.shipmethod}</p></td>
-          	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.paymentmethod}</p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.paymentmethod + ":"} ${salesorder.ccnumber}</p></td>
     	</tr>
 	</table>
 
@@ -107,8 +99,7 @@
 		<th>QTY</th>
 		<th>PRODUCT ID</th>
 		<th>PRODUCT NAME</th>
-		<th>STYLE</th>
-      	<th>SIZE</th>
+		<th>STYLE/SIZE</th>
       	<th>PRICE</th>
 	</tr>
 
@@ -119,11 +110,10 @@
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
-            	<td>${tranline.quantity}</td>
-            	<td>${tranline.item.parent}</td>
-              	<td>${tranline.item.displayname}</td>
-           		<td>${tranline.item.custitem_gsm_color}</td>
-              	<td>${tranline.item.custitem_gsm_size}</td>
+            	<td>${item.quantity}</td>
+            	<td>${item.item}</td>
+              	<td>${item.custcol_gsm_item_displayname}</td>
+           		<td>${item.options}</td>
             	<td>${tranline.rate}</td>
 			</tr>
 			</#if>
@@ -142,11 +132,10 @@
 			</#if>
 		</#list>
         	<tr>
-            	<td>${tranline.quantity}</td>
-            	<td>${tranline.item.parent}</td>
-              	<td>${tranline.item.displayname}</td>
-           		<td>${tranline.item.custitem_gsm_color}</td>
-              	<td>${tranline.item.custitem_gsm_size}</td>
+            	<td>${item.quantity}</td>
+            	<td>${item.item}</td>
+              	<td>${item.custcol_gsm_item_displayname}</td>
+           		<td>${item.options}</td>
             	<td>${tranline.rate}</td>
 			</tr>
 	</#list>
@@ -159,11 +148,10 @@
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td>${tranline.quantity}</td>
-            	<td>${tranline.item.parent}</td>
-              	<td>${tranline.item.displayname}</td>
-           		<td>${tranline.item.custitem_gsm_color}</td>
-              	<td>${tranline.item.custitem_gsm_size}</td>
+            	<td>${item.quantity}</td>
+            	<td>${item.item}</td>
+              	<td>${item.custcol_gsm_item_displayname}</td>
+           		<td>${item.options}</td>
             	<td>${tranline.rate}</td>
 			</tr>
 		</#list>
@@ -171,11 +159,15 @@
 	<!-- end sales order items -->
 </#if>
 	<tr>
-    	<td align="right">
+    	<td></td>
+    	<td></td>
+      	<td></td>
+    	<td></td>
+    	<td>
         	<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Total (incl GST):</p>
-    	</td>${record.total}
-      	<td align="right">
-      		<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.total}</p>
+    	</td>${salesorder.total}
+      	<td>
+      		<p style="text-align:right; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.total}</p>
       	</td>
   	</tr>
 </table>
@@ -304,7 +296,7 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 <body header="nlheader" header-height="10%" footer="nlfooter" footer-height="20pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
 <table style="width: 100%; margin-top: 10px;">
 	<tr>
-		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate}</p></td>
+		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate?date?string("dd/MM/yyyy")}</p></td>
 	</tr>
 	<tr>
 		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${record.tranid}</p></td>
@@ -334,14 +326,15 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 <#if record.showAddlItemsPackSlip == 'NONE'>
 
 	<!-- start items -->
+  	<!-- use tranline to pull sales order info, and item to pull item fulfillment info -->
 	<#list record.item as item>
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
             	<td>${item.item}</td>
-            	<td>${item.description}</td>
-            	<td align="right">${tranline.quantity}</td>
-           		<td align="middle">${tranline.custitem_gsm_size}</td>
+            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="right">${item.quantity}</td>
+           		<td align="middle">${item.options?replace('Color: \w* Size: ','','r')}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
@@ -362,10 +355,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 			</#if>
 		</#list>
         	<tr>
-            	<td>${tranline.item}</td>
-            	<td>${tranline.description}</td>
-            	<td align="right">${shipped}</td>
-           		<td align="middle">${tranline.item.custitem_gsm_size}</td>
+            	<td>${item.item}</td>
+            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="right">${item.quantity}</td>
+           		<td align="middle">${tranline.custcol_size}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
@@ -380,10 +373,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td>${tranline.item}</td>
-            	<td>${tranline.description}</td>
-            	<td align="right">${shipped}</td>
-           		<td align="middle">${tranline.item.custitem_gsm_size}</td>
+            	<td>${item.item}</td>
+            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="right">${item.quantity}</td>
+           		<td align="middle">${tranline.custcol_size}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
@@ -404,7 +397,7 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 		<th>${salesorder.total}</th>
     </tr>
 	<tr>
-   		<td colspan="7"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:10px; line-height:18px; font-family:helvetica, arial, sans-serif;">Card : ${salesorder.ccnumber}</p></td>
+   		<td colspan="7"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:10px; line-height:18px; font-family:helvetica, arial, sans-serif;">${salesorder.paymentmthod + ":"} ${salesorder.ccnumber}</p></td>
   	</tr>
 </table>
 <hr />
