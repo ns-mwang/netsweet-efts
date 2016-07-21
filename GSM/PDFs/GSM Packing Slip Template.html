@@ -19,25 +19,33 @@
             table-layout: fixed;
         }
         th {
+          	word-wrap: break-word
+          	border: 1px solid #A8A8A8;
             font-weight: bold;
             font-size: 9pt;
-            vertical-align: middle;
-            padding: 3px 3px 6px;
+            padding: 3px 3px 3px;
             background-color: #ffffff;
             color: #000000;
         }
-        b {
-            font-weight: bold;
-            color: #333333;
+      	td.itemcell {
+          	word-wrap: break-word
+          	border: 1px solid #A8A8A8;
+          	font-size: 9pt;
+            padding: 3px 3px 3px;
+            background-color: #ffffff;
+            color: #000000;
         }
         table.itemtable{
-          	border: 1px solid #A8A8A8;
-          	white-space: nowrap;
+          	white-space: nowrap
             padding-bottom: 10px;
           	border-top: 5px solid black;
           	border-bottom: 5px solid black;
           	border-collapse: collapse;
-          	font-family:helvetica, arial, sans-serif;
+			border-spacing: 0px;
+        }
+      	b {
+            font-weight: bold;
+            color: #333333;
         }
         hr {
             border-top: 1px dashed #000000;
@@ -94,12 +102,13 @@
 <!-- Check if the transaction record item line has content -->
 <#if record.item?has_content>
 
-<table class="itemtable" style="width: 100%; margin-top: 10px;">
+<table class="itemtable" style="width: 100%;">
 	<tr>
 		<th>QTY</th>
 		<th>PRODUCT ID</th>
 		<th>PRODUCT NAME</th>
-		<th>STYLE/SIZE</th>
+		<th>STYLE</th>
+      	<th>SIZE</th>
       	<th>PRICE</th>
 	</tr>
 
@@ -110,11 +119,12 @@
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
-            	<td>${item.quantity}</td>
-            	<td>${item.item}</td>
-              	<td>${item.custcol_gsm_item_displayname}</td>
-           		<td>${item.options}</td>
-            	<td>${tranline.rate}</td>
+            	<td class="itemcell">${item.quantity}</td>
+            	<td class="itemcell">${item.item?replace(r":\s\w+","","r")}</td>
+              	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:\s","","r")?replace(r"Size:[\s\S]+","","r")}</td>
+              	<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
 			</tr>
 			</#if>
 		</#list>
@@ -132,11 +142,12 @@
 			</#if>
 		</#list>
         	<tr>
-            	<td>${item.quantity}</td>
-            	<td>${item.item}</td>
-              	<td>${item.custcol_gsm_item_displayname}</td>
-           		<td>${item.options}</td>
-            	<td>${tranline.rate}</td>
+            	<td class="itemcell">${item.quantity}</td>
+            	<td class="itemcell">${item.item?replace(r":\s\w+","","r")}</td>
+              	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:\s","","r")?replace(r"Size:[\s\S]+","","r")}</td>
+              	<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
 			</tr>
 	</#list>
 	<!-- end sales order items -->
@@ -148,11 +159,12 @@
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td>${item.quantity}</td>
-            	<td>${item.item}</td>
-              	<td>${item.custcol_gsm_item_displayname}</td>
-           		<td>${item.options}</td>
-            	<td>${tranline.rate}</td>
+            	<td class="itemcell">${item.quantity}</td>
+            	<td class="itemcell">${item.item?replace(r":\s\w+","","r")}</td>
+              	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:\s","","r")?replace(r"Size:[\s\S]+","","r")}</td>
+              	<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
 			</tr>
 		</#list>
 	</#list>
@@ -165,9 +177,9 @@
     	<td></td>
     	<td>
         	<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Total (incl GST):</p>
-    	</td>${salesorder.total}
+    	</td>
       	<td>
-      		<p style="text-align:right; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.total}</p>
+      		<p style="text-align:right; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.total}</p>
       	</td>
   	</tr>
 </table>
@@ -314,13 +326,13 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 
 <table class="itemtable" style="width: 100%; margin-top: 10px;">
 	<tr>
-		<th>PRODUCT CODE</th>
-		<th>DESCRIPTION</th>
-		<th style="text-align:right">QTY</th>
-		<th style="text-align:right">SIZE</th>
-      	<th style="text-align:right">Price</th>
-      	<th style="text-align:right">Discount</th>
-      	<th style="text-align:right">Price Paid</th>
+		<th align="left">PRODUCT CODE</th>
+		<th align="left">DESCRIPTION</th>
+		<th align="right">QTY</th>
+		<th align="right">SIZE</th>
+      	<th align="right">Price</th>
+      	<th align="right">Discount</th>
+      	<th align="right">Price Paid</th>
 	</tr>
 
 <#if record.showAddlItemsPackSlip == 'NONE'>
@@ -331,10 +343,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
-            	<td>${item.item}</td>
-            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
+            	<td align="left">${item.custcol_gsm_item_displayname}</td>
             	<td align="right">${item.quantity}</td>
-           		<td align="middle">${item.options?replace('Color: \w* Size: ','','r')}</td>
+           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
@@ -355,10 +367,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 			</#if>
 		</#list>
         	<tr>
-            	<td>${item.item}</td>
-            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
+            	<td align="left">${item.custcol_gsm_item_displayname}</td>
             	<td align="right">${item.quantity}</td>
-           		<td align="middle">${tranline.custcol_size}</td>
+           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
@@ -373,10 +385,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td>${item.item}</td>
-            	<td>${item.custcol_gsm_item_displayname}</td>
+            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
+            	<td align="left">${item.custcol_gsm_item_displayname}</td>
             	<td align="right">${item.quantity}</td>
-           		<td align="middle">${tranline.custcol_size}</td>
+           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
             	<td align="right">${tranline.rate}</td>
             	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
             	<td align="right">${tranline.amount}</td>
