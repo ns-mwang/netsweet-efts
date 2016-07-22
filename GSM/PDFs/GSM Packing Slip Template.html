@@ -78,7 +78,7 @@
 			<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/><br/>${record.tranid}<br/><br/></p></td>
+                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/><br/>${salesorder.tranid}<br/><br/></p></td>
                   	</tr>
                 </table>
             </td>
@@ -94,8 +94,8 @@
 		</tr>
       	<tr>
     		<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Customer ID: ${record.entity}</p></td>
-        	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Shipping Method: ${record.shipmethod}</p></td>
-          	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.paymentmethod + ":"} ${salesorder.ccnumber}</p></td>
+        	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Shipping Method: ${record.shipmethod} ${record.shippingcost}</p></td>
+          	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.paymentmethod}<#if salesorder.ccnumber?has_content> : ${salesorder.ccnumber}</#if></p></td>
     	</tr>
 	</table>
 
@@ -311,7 +311,7 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate?date?string("dd/MM/yyyy")}</p></td>
 	</tr>
 	<tr>
-		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${record.tranid}</p></td>
+		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${salesorder.tranid}</p></td>
 	</tr>
 	<tr>
 	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">INVOICE</p></td>
