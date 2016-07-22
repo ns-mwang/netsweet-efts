@@ -252,16 +252,6 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 <pdf>
 <head>
 <macrolist>
-	<macro id="nlheader">
-    <table class="header" style="width: 100%; font-size: 10pt;">
-    	<tr>
-			<td rowspan="2"><img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=10043&amp;c=340431&amp;h=964e5f0721d7a9471f52" style="float: left; margin: 7px; height: 25%; width: 25%;" />
-          	</td>
-			<td align="right"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">${salesorder.name}</p></td>
-          	<td align="right"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">${salesorder.shipaddress}</p></td>
-		</tr>
-    </table>
-	</macro>
     <macro id="nlfooter">
     <table class="footer">
     	<tr>
@@ -270,7 +260,6 @@ items are securely enclosed in a satchel as we are not able to accept them if da
     </table>
     </macro>
 </macrolist>
-
     <style type="text/css">
       	table {
             font-family: helvetica, arial, sans-serif;
@@ -305,19 +294,30 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 	</style>
 </head>
 
-<body header="nlheader" header-height="10%" footer="nlfooter" footer-height="20pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+<body header-height="10%" footer="nlfooter" footer-height="20pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+<table class="header" style="width: 100%; font-size: 10pt;">
+    	<tr>
+			<td><img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=10043&amp;c=340431&amp;h=964e5f0721d7a9471f52" style="float: left; margin: 7px; height: 25%; width: 25%;" />
+          	</td>
+			<td align="right"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">${salesorder.name}</p></td>
+          	<td align="right"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; font-family:helvetica, arial, sans-serif;">${salesorder.shipaddress}</p></td>
+		</tr>
+      	<tr>
+        	<td colspan="3"><br/></td> <!-- Blank Row -->
+      	</tr>
+</table>
 <table style="width: 100%; margin-top: 10px;">
 	<tr>
-		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate?date?string("dd/MM/yyyy")}</p></td>
+		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; line-height:32px; font-family:helvetica, arial, sans-serif;">Order Date : ${record.trandate?date?string("dd/MM/yyyy")}</p></td>
 	</tr>
 	<tr>
-		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Order Number : ${salesorder.tranid}</p></td>
+		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; line-height:32px; font-family:helvetica, arial, sans-serif;">Order Number : ${salesorder.tranid}</p></td>
 	</tr>
 	<tr>
-	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">INVOICE</p></td>
+	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; line-height:32px; font-family:helvetica, arial, sans-serif;">INVOICE</p></td>
 	</tr>
 	<tr>
-	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family:helvetica, arial, sans-serif;">Customer Copy - Please keep this side for your reference and proof of receipt</p></td>
+	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; line-height:32px; font-family:helvetica, arial, sans-serif;">Customer Copy - Please keep this side for your reference and proof of receipt</p></td>
 	</tr>
 </table>
 
