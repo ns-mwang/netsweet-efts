@@ -1,4 +1,21 @@
-<#if record.subsidiary="Surf Dive 'n' Ski">
+<!-- Brand and Region Assignment -->
+<#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
+	<#assign Brand = "BBGEU">
+<#elseif record.subsidiary == "Billabong US">
+	<#assign Brand = "BBGUS">
+<#elseif record.subsidiary == "Billabong CAN">
+	<#assign Brand = "BBGCAN">
+<#elseif record.subsidiary == "Billabong AU">
+	<#assign Brand = "BBGAU">
+<#elseif record.subsidiary == "Surf Dive 'n' Ski">
+	<#assign Brand = "SDS">
+<#else>
+	<#assign Brand = "BBGUS">
+</#if>
+<!-- Brand and Region Assignment -->
+
+<!-- SDS Packing Slip Start -->
+<#if Brand=="SDS">
 <!DOCTYPE html>
 <pdf>
 <head>
@@ -18,30 +35,39 @@
             font-size: 9pt;
             table-layout: fixed;
         }
-        th {
-          	word-wrap: break-word
-          	border: 1px solid #A8A8A8;
-            font-weight: bold;
-            font-size: 9pt;
-            padding: 3px 3px 3px;
-            background-color: #ffffff;
-            color: #000000;
+      	td {
+        	padding: 6px 6px 6px;
         }
-      	td.itemcell {
-          	word-wrap: break-word
-          	border: 1px solid #A8A8A8;
-          	font-size: 9pt;
-            padding: 3px 3px 3px;
-            background-color: #ffffff;
-            color: #000000;
-        }
-        table.itemtable{
+      	table.itemtable{
           	white-space: nowrap
             padding-bottom: 10px;
+          	border-left: 1px solid #A8A8A8;
+          	border-right: 1px solid #A8A8A8;
           	border-top: 5px solid black;
           	border-bottom: 5px solid black;
           	border-collapse: collapse;
 			border-spacing: 0px;
+		}
+        th.itemsmall{
+          width: 8%;
+        }
+        td.itemcell {
+			border-left: 1px solid #A8A8A8;
+          	border-top: 1px solid #A8A8A8;
+			font-size: 9pt;
+			padding: 6px 6px 6px;
+			background-color: #ffffff;
+			color: #000000;
+        }
+        th {
+          	border-left: 1px solid #A8A8A8;
+          	border-top: 1px solid #A8A8A8;
+			font-weight: bold;
+			font-size: 9pt;
+			padding: 6px 6px 6px;
+			background-color: #ffffff;
+			color: #000000;
+			text-align: left;
         }
       	b {
             font-weight: bold;
@@ -71,14 +97,23 @@
       		<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE<br/><br/>${record.trandate?date?string("dd/MM/yyyy")}<br/><br/></p></td>
+                		<td colspan="2"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIPPING DATE</p></td>
                 	</tr>
+                  	<tr><td></td></tr>
+                  	<tr>
+                  		<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${record.trandate?date?string("dd/MM/yyyy")}</p></td>
+                  	</tr>
 				</table>
 			</td>
 			<td>
             	<table width="100%" border="1" style="margin: 5px;">
                 	<tr>
-                    	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.<br/><br/>${salesorder.tranid}<br/><br/></p></td>
+                    	<td colspan="2"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">YOUR ORDER NO.</p></td>
+                  	</tr>
+                  	<tr><td></td></tr>
+                  	<tr>
+                      	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.tranid}</p></td>
+                      	<td align="right"><barcode bar-width="1" codetype="code128" showtext="false" value="${salesorder.tranid}"></barcode></td>
                   	</tr>
                 </table>
             </td>
@@ -92,6 +127,8 @@
          	<td colspan="2"><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">SHIP TO:<br/><br/>${record.shipaddress}</p></td>
           	<td><p style="text-align:left; color: #000000; font-weight: normal; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">CUSTOMER CARE:<br/>If you have any questions or<br/>concerns regarding your order<br/>please contact us at:<br/>E. customerservice@sds.com.au<br/>T. 1300 650 905<br/>Thanks for choosing Surf Dive 'n' Ski</p></td>
 		</tr>
+    </table>
+  	<table width="100%" style="margin: 0px;">
       	<tr>
     		<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Customer ID: ${record.entity}</p></td>
         	<td><p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Shipping Method: ${record.shipmethod} ${record.shippingcost}</p></td>
@@ -104,12 +141,12 @@
 
 <table class="itemtable" style="width: 100%;">
 	<tr>
-		<th>QTY</th>
+		<th class="itemsmall">QTY</th>
 		<th>PRODUCT ID</th>
 		<th>PRODUCT NAME</th>
 		<th>STYLE</th>
-      	<th>SIZE</th>
-      	<th>PRICE</th>
+      	<th class="itemsmall">SIZE</th>
+      	<th class="itemsmall">PRICE</th>
 	</tr>
 
 <#if record.showAddlItemsPackSlip == 'NONE'>
@@ -171,16 +208,11 @@
 	<!-- end sales order items -->
 </#if>
 	<tr>
-    	<td></td>
-    	<td></td>
-      	<td></td>
-    	<td></td>
-    	<td>
-        	<p style="text-align:left; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">Total (incl GST):</p>
-    	</td>
-      	<td>
-      		<p style="text-align:right; color: #000000; font-weight: bold; margin:0; font-size:12px; font-family:helvetica, arial, sans-serif;">${salesorder.total}</p>
-      	</td>
+    	<td class="itemcell"></td>
+    	<td class="itemcell"></td>
+      	<td class="itemcell"></td>
+      	<td class="itemcell" align="right" colspan="2"><b>Total (incl GST):</b></td>
+      	<td class="itemcell"><b>${salesorder.total}</b></td>
   	</tr>
 </table>
 <hr style="margin-left: auto; margin-right: auto; border-style: solid; border-width: 2px;" />
@@ -245,8 +277,10 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 </#if> <!-- If record has content -->
 </body>
 </pdf>
+<!-- SDS Packing Slip End -->
 
-<#else>
+<!-- Billabong Packing Slip Template Start -->
+<#elseif Brand=="BBGEU" || Brand=="BBGUS" || Brand=="BBGCAN" || Brand=="BBGAU">
 
 <!DOCTYPE html>
 <pdf>
@@ -278,6 +312,9 @@ items are securely enclosed in a satchel as we are not able to accept them if da
             font-weight: bold;
             color: #333333;
         }
+      	th.itemsmall{
+          width: 8%;
+        }
         table.itemtable td{
           	white-space: nowrap
             padding-bottom: 10px;
@@ -290,10 +327,6 @@ items are securely enclosed in a satchel as we are not able to accept them if da
             color: #ffffff;
             background-color: #ffffff;
             height: 1px;
-        }
-      	td.top {
-        	height: 25px;
-    		vertical-align: middle;
         }
 	</style>
 </head>
@@ -327,13 +360,13 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 
 <table class="itemtable" style="width: 100%; margin-top: 5px;">
 	<tr>
-		<th align="left">PRODUCT CODE</th>
-		<th align="left">DESCRIPTION</th>
-		<th align="right">QTY</th>
-		<th align="right">SIZE</th>
-      	<th align="right">Price</th>
-      	<th align="right">Discount</th>
-      	<th align="right">Price Paid</th>
+		<th>PRODUCT CODE</th>
+		<th>DESCRIPTION</th>
+		<th class="itemsmall">QTY</th>
+		<th class="itemsmall">SIZE</th>
+      	<th class="itemsmall">Price</th>
+      	<th class="itemsmall">Discount</th>
+      	<th class="itemsmall">Price Paid</th>
 	</tr>
 
 <#if record.showAddlItemsPackSlip == 'NONE'>
@@ -344,13 +377,13 @@ items are securely enclosed in a satchel as we are not able to accept them if da
     	<#list salesorder.item as tranline>
         	<#if tranline.line == item.orderline>
         	<tr>
-            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
-            	<td align="left">${item.custcol_gsm_item_displayname}</td>
-            	<td align="right">${item.quantity}</td>
-           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
+            	<td class="itemcell">${item.item?replace(r":\w+","","r")}</td>
+            	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+            	<td class="itemcell">${item.quantity}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
+            	<td class="itemcell">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td class="itemcell">${tranline.amount}</td>
 			</tr>
 			</#if>
 		</#list>
@@ -368,13 +401,13 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 			</#if>
 		</#list>
         	<tr>
-            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
-            	<td align="left">${item.custcol_gsm_item_displayname}</td>
-            	<td align="right">${item.quantity}</td>
-           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
+            	<td class="itemcell">${item.item?replace(r":\w+","","r")}</td>
+            	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+            	<td class="itemcell">${item.quantity}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
+            	<td class="itemcell">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td class="itemcell">${tranline.amount}</td>
         	</tr>
 	</#list>
 	<!-- end sales order items -->
@@ -386,13 +419,13 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 		<#assign shipped = 0>
 		<#list record.item as item>
         	<tr>
-            	<td align="left">${item.item?replace(r":\w+","","r")}</td>
-            	<td align="left">${item.custcol_gsm_item_displayname}</td>
-            	<td align="right">${item.quantity}</td>
-           		<td align="right">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
-            	<td align="right">${tranline.rate}</td>
-            	<td align="right">${tranline.custcol_gsm_line_disc_amount}</td>
-            	<td align="right">${tranline.amount}</td>
+            	<td class="itemcell">${item.item?replace(r":\w+","","r")}</td>
+            	<td class="itemcell">${item.custcol_gsm_item_displayname}</td>
+            	<td class="itemcell">${item.quantity}</td>
+           		<td class="itemcell">${item.options?replace(r"Color:[\s\S]+Size:\s","","r")}</td>
+            	<td class="itemcell">${tranline.rate}</td>
+            	<td class="itemcell">${tranline.custcol_gsm_line_disc_amount}</td>
+            	<td class="itemcell">${tranline.amount}</td>
         	</tr>
 		</#list>
 	</#list>
@@ -455,3 +488,4 @@ items are securely enclosed in a satchel as we are not able to accept them if da
 </body>
 </pdf>
 </#if>
+<!-- Billabong Packing Slip Template End -->
