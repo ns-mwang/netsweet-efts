@@ -1,6 +1,7 @@
 <#-- Author: Michael Wang | mwang@netsuite.com -->
 <#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
+<#-- This Template Version: RBC -->
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 <#-- template building -->
@@ -17,12 +18,15 @@
     <InitgPty>
         <Id>
             <OrgId>
-            <#-- Payment Types That Use Swift Codes -->
-                <#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
-            <#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+            <#if cbank.custpage_eft_custrecord_bb_2663_bank_comp_bic?has_content>
+            <#-- Bank Comp ID (BICOrBEI) -->
+                <BIOCrBEI>${cbank.custpage_eft_custrecord_bb_2663_bank_comp_bic}</BIOCrBEI>
+            <#else>
+            <#-- Bank Comp ID (Other) -->
                 <Othr>
-                    <Id>${cbank.custrecord_2663_bank_code}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_bb_2663_bank_comp_id}</Id>
                 </Othr>
+            </#if>
             </OrgId>
         </Id>
     </InitgPty>
@@ -62,12 +66,13 @@
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
-        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
-        <#-- DM: Added country field -->
+        <Nm>${setMaxLength(convertToLatinCharSet(
         <PstlAdr>
-            <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+            <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+           <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
+           <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
         </PstlAdr>
-        <#-- DM: OrgID, Other, id listed as R, but not listed in sample file -->
     </Dbtr>
     <DbtrAcct>
         <Id>
@@ -82,29 +87,42 @@
         </Id>
         <Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
     </DbtrAcct>
-    <#-- DM: Looks like this requires Mmbid, PstlAdr (country), BrnchId?, id,   -->
     <DbtrAgt>
         <FinInstnId>
-            <BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
-            <#-- DM: ClrSysMmbId, listed as C, is in example file -->
-            <#-- DM: Added Country, listed as required field -->
+            <#if cbank.custpage_eft_custrecord_2663_bic?has_content>
+                <BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
+            <#else>
+                <Othr>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                </Othr>
+            </#if>
+            <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 where:
+                • CC is the two-letter country code.
+                • TTT is the bank type. Currently, Wells Fargo accepts only
+                the following bank types:
+                ABA American Banking Association routing number CPA Canadian Payments Association routing number PID CHIPS universal participant identification
+                • 999 is the bank ID for the originating account. This will almost always be a Wells Fargo routing/transit number, such as 121000248 or 091000019.
+                If BIC is sent, it takes precedence over MmbId as the originating bank ID and MmbId will be mapped as the branch identification code.
+                Common name: Originating Bank ID
+                Common name: Originating Bank ID Type Common name: Originating Bank Country Code -->
+                <#--<ClrSysMmbId>
+                    <MmbId>USABA121140399</MmbId>
+                </ClrSysMmbId>-->
             <PstlAdr>
+                <Ctry></Ctry>
+                <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
+                <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+                <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+                <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine>
             </PstlAdr>
-            <#-- DM: ID? -->
         </FinInstnId>
     </DbtrAgt>
-    <#-- SEPA = SLEV, Non SEPA = SHAR
-    <#if transaction.custbody_bb_vb_prr_type == "SEPA">
-    <ChrgBr>SLEV</ChrgBr>
-    </#if>
-    <ChrgBr>SHAR</ChrgBr>-->
     <CdtTrfTxInf>
         <PmtId>
             <InstrId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
             <EndToEndId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
         </PmtId>
-        <#-- DM: PmTpInf listed as R, but is present at PaymentInformation, so not needed  -->
         <Amt>
             <InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</InstdAmt>
         </Amt>
@@ -117,11 +135,29 @@
                         <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
                     </Othr>
                 </#if>
+                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 where:
+                • CC is the two-letter country code.
+                • TTT is the bank type. Currently, Wells Fargo accepts only
+                the following bank types:
+                ABA American Banking Association routing number CPA Canadian Payments Association routing number PID CHIPS universal participant identification
+                • 999 is the bank ID for the originating account. This will almost always be a Wells Fargo routing/transit number, such as 121000248 or 091000019.
+                If BIC is sent, it takes precedence over MmbId as the originating bank ID and MmbId will be mapped as the branch identification code.
+                Common name: Originating Bank ID
+                Common name: Originating Bank ID Type Common name: Originating Bank Country Code -->
+                <#--<ClrSysMmbId>
+                    <MmbId>USABA121140399</MmbId>
+                </ClrSysMmbId>-->
+                <#--<Nm>Bank Name TBD</Nm>-->
+                <PstlAdr>
+                    <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
+                    <TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
+                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                    <AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
+                </PstlAdr>
             </FinInstnId>
         </CdtrAgt>
         <Cdtr>
             <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
-            <#-- DM: Postal Address Ctry listed as R, added -->
             <PstlAdr>
                 <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
             </PstlAdr>
@@ -140,7 +176,6 @@
                 </Id>
         </#if>
         </CdtrAcct>
-        <#-- DM: For reference: Please refer to the Regional Appendices, COS MIG,or the Advising MIG. -->
         <RmtInf>
             <Strd>
                 <RfrdDocInf>
@@ -157,6 +192,13 @@
                     <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
+                <#--
+                <RfrdDocAmt>
+                    <DuePyblAmt Ccy="USD">7870</DuePyblAmt>
+                    <DscntApldAmt Ccy="USD">0</DscntApldAmt>
+                    <TaxAmt Ccy="USD">0</TaxAmt>
+                </RfrdDocAmt>
+                -->
             </Strd>
         </RmtInf>
     </CdtTrfTxInf>
