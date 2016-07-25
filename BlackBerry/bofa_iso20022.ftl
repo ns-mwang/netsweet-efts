@@ -17,14 +17,15 @@
     <InitgPty>
         <Id>
             <OrgId>
-            <#-- Payment Types That Use Swift Codes -->
-                <#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
-            <#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+            <#if cbank.custpage_eft_custrecord_2663_bank_num?has_content>
+            <#-- Bank Comp ID (BICOrBEI) -->
+                <BIOCrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BIOCrBEI>
+            <#else>
+            <#-- Bank Comp ID (Other) -->
                 <Othr>
-                    <Id>${cbank.custrecord_2663_bank_code}</Id>
-                    <#-- DM: Looks like Cd is R, but since it's a child of SchmeNm which is O, it's not included per BofA example file -->
-
+                    <Id>${cbank.custpage_eft_custrecord_bb_2663_bank_comp_id}</Id>
                 </Othr>
+            </#if>
             </OrgId>
         </Id>
     </InitgPty>
