@@ -18,9 +18,9 @@
     <InitgPty>
         <Id>
             <OrgId>
-            <#if cbank.custpage_eft_custrecord_bb_2663_bank_comp_bic?has_content>
+            <#if cbank.custpage_eft_custrecord_2663_bank_num?has_content>
             <#-- Bank Comp ID (BICOrBEI) -->
-                <BIOCrBEI>${cbank.custpage_eft_custrecord_bb_2663_bank_comp_bic}</BIOCrBEI>
+                <BIOCrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BIOCrBEI>
             <#else>
             <#-- Bank Comp ID (Other) -->
                 <Othr>
