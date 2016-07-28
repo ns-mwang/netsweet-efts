@@ -18,15 +18,8 @@
     <InitgPty>
         <Id>
             <OrgId>
-            <#if cbank.custpage_eft_custrecord_2663_bank_num?has_content>
             <#-- Bank Comp ID (BICOrBEI) -->
                 <BIOCrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BIOCrBEI>
-            <#else>
-            <#-- Bank Comp ID (Other) -->
-                <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_bb_2663_bank_comp_id}</Id>
-                </Othr>
-            </#if>
             </OrgId>
         </Id>
     </InitgPty>
@@ -66,7 +59,7 @@
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
-        <Nm>${setMaxLength(convertToLatinCharSet(
+        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
         <PstlAdr>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
             <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
@@ -96,18 +89,10 @@
                     <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
                 </Othr>
             </#if>
-            <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 where:
-                • CC is the two-letter country code.
-                • TTT is the bank type. Currently, Wells Fargo accepts only
-                the following bank types:
-                ABA American Banking Association routing number CPA Canadian Payments Association routing number PID CHIPS universal participant identification
-                • 999 is the bank ID for the originating account. This will almost always be a Wells Fargo routing/transit number, such as 121000248 or 091000019.
-                If BIC is sent, it takes precedence over MmbId as the originating bank ID and MmbId will be mapped as the branch identification code.
-                Common name: Originating Bank ID
-                Common name: Originating Bank ID Type Common name: Originating Bank Country Code -->
-                <#--<ClrSysMmbId>
-                    <MmbId>USABA121140399</MmbId>
-                </ClrSysMmbId>-->
+            <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+                <ClrSysMmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                </ClrSysMmbId>
             <PstlAdr>
                 <Ctry></Ctry>
                 <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
@@ -135,18 +120,10 @@
                         <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
                     </Othr>
                 </#if>
-                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 where:
-                • CC is the two-letter country code.
-                • TTT is the bank type. Currently, Wells Fargo accepts only
-                the following bank types:
-                ABA American Banking Association routing number CPA Canadian Payments Association routing number PID CHIPS universal participant identification
-                • 999 is the bank ID for the originating account. This will almost always be a Wells Fargo routing/transit number, such as 121000248 or 091000019.
-                If BIC is sent, it takes precedence over MmbId as the originating bank ID and MmbId will be mapped as the branch identification code.
-                Common name: Originating Bank ID
-                Common name: Originating Bank ID Type Common name: Originating Bank Country Code -->
-                <#--<ClrSysMmbId>
-                    <MmbId>USABA121140399</MmbId>
-                </ClrSysMmbId>-->
+                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+                <ClrSysMmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                </ClrSysMmbId>
                 <#--<Nm>Bank Name TBD</Nm>-->
                 <PstlAdr>
                     <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
@@ -192,13 +169,6 @@
                     <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
-                <#--
-                <RfrdDocAmt>
-                    <DuePyblAmt Ccy="USD">7870</DuePyblAmt>
-                    <DscntApldAmt Ccy="USD">0</DscntApldAmt>
-                    <TaxAmt Ccy="USD">0</TaxAmt>
-                </RfrdDocAmt>
-                -->
             </Strd>
         </RmtInf>
     </CdtTrfTxInf>
