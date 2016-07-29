@@ -20,6 +20,7 @@
 			<#-- Payment Types That Use Swift Codes -->
 				<#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
 			<#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+			<#-- DM: Will need to add BICorBcd here -->
 				<Othr>
 					<Id>${cbank.custrecord_2663_bank_code}</Id>
 				</Othr>
@@ -66,14 +67,24 @@
 			</#if>
 		</#if>
 		</SvcLvl>
+		<#-- DM: Forgot where I got this... -->
+	<#-- 	<CtgyPurp>
+            <Cd></Cd>
+        </CtgyPurp> -->
 	</PmtTpInf>
 	<ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
-	<Dbtr>
-		<Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
-		<PstlAdr>
-			<Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
-		</PstlAdr>
-	</Dbtr>
+	 <Dbtr>
+        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+        <#-- DM: Added country field -->
+        <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
+        <PstlAdr>
+            <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+           <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
+           <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
+        </PstlAdr>
+        <#-- DM: <Id> and sub components are O? -->
+    </Dbtr>
 	<DbtrAcct>
 		<Id>
 		<#-- SEPA Payment Type uses IBAN (International Bank Account Number) -->
@@ -90,6 +101,10 @@
 	<DbtrAgt>
 		<FinInstnId>
 			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
+			<#-- DM: Added Country, listed as required field -->
+            <PstlAdr>
+                <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+            </PstlAdr>
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR
@@ -114,6 +129,18 @@
 						<Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
 					</Othr>
 				</#if>
+				<PstlAdr>
+                 <#if transaction.custbody_bb_vb_ebd_stateprov?has_content>
+                    <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                </#if>
+                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                </PstlAdr>
+				 <#-- DM: HSBC payments require clearing code if sent from ID, SA, UAE -->
+                <#if transaction.custbody_bb_vb_ebd_clearing_code?has_content>
+                    <ClrSysMmbId>
+                        <MmbId>${transaction.custbody_bb_vb_ebd_clearing_code}</MmbId>
+                    </ClrSysMmbId>
+                </#if>
 			</FinInstnId>
 		</CdtrAgt>
 		<Cdtr>
@@ -121,8 +148,32 @@
 		<PstlAdr>
 			<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
 		</PstlAdr>
+		<#-- Tax ID for Chile/Argentina -->
+		<#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
+            <Id>
+                <OrgId>
+                    <Othr>
+                        <Id>${transaction.custbody_bb_vb_ebd_tax_id}</Id>
+                        <SchmeNm>
+                            <Cd>TXID</Cd>
+                        </SchmeNm>
+                    </Othr>
+                </OrgId>
+            </Id>
+            </#if>
+		 <#-- DM: HSBC Indonesia code -->
+            <CtryOfRes></CtryOfRes>
+            <Id>
+                <OrgId>
+                    <Othr>
+                        <Id></Id>
+                        <Issr></Issr>
+                    </Othr>
+                </OrgId>
+            </Id>
 		</Cdtr>
 		<CdtrAcct>
+		
 		<#--Check if entity has IBAN number (European Banks)-->
 		<#if transaction.custbody_bb_vb_prr_type == "SEPA">
 			<Id>
@@ -136,6 +187,14 @@
 				</Id>
 		</#if>
 		</CdtrAcct>
+
+		<#-- DM: HSBC IDR Beneficiary code, status code, and purpose of transfer code here -->
+		<RgltryRptg>
+            <Dtls>
+                <Tp></Tp>
+                <Cd></Cd>
+            </Dtls>
+        </RgltryRptg>
 		<RmtInf>
 			<Strd>
         			<RfrdDocInf>
@@ -144,6 +203,7 @@
                     					<Cd>CINV</Cd>
                         			</CdOrPrtry>
                     			</Tp>
+                    			<#-- This NB will be populated with NNKIN tag for payments in JP YEN -->
                 			<Nb>SOLT02001038</Nb>
                 			<RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
                 		</RfrdDocInf>
@@ -161,4 +221,3 @@
 
 </CstmrCdtTrfInitn>
 </Document><#rt>
-#OUTPUT END#
