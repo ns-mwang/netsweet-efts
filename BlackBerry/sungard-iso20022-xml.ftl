@@ -2,6 +2,12 @@
 <#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
+
+<#function isHSBCandID bankName>
+	<#return bankName?starts_with("HSBC")>
+</#function>
+
+
 <#assign totalAmount = computeTotalAmount(payments)>
 <#-- template building -->
 #OUTPUT START#
@@ -20,6 +26,7 @@
 			<#-- Payment Types That Use Swift Codes -->
 				<#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
 			<#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+			<#-- DM: Will need to add BICorBcd here -->
 				<Othr>
 					<Id>${cbank.custrecord_2663_bank_code}</Id>
 				</Othr>
@@ -48,32 +55,55 @@
 		<#else>
 		<#-- Check Payment Type to assign code settings: Non SEPA = NURG, Urgent = URGP -->
 			<#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" ||
-			     transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE_CANADA" ||
-			     transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
-			     transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">-->
+				     transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE_CANADA" ||
+				     transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
+				     transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">-->
 			<Cd>URGP</Cd>
 			<#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
-			<Cd>SEPA</Cd>
+				<Cd>SEPA</Cd>
 			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
-			<Cd>NURG</Cd>
+				<Cd>NURG</Cd>
 			<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CTX">
-			<Cd>NURG</Cd>
-			<LclInstrm>
-        		<Cd>CTX</Cd>
-            		</LclInstrm>
-            		<#else>
-            		<Cd>NURG</Cd>
+				<Cd>NURG</Cd>
+				<LclInstrm>
+		    		<Cd>CTX</Cd>
+		        </LclInstrm>
+		    <#else>
+		        <Cd>NURG</Cd>
 			</#if>
 		</#if>
 		</SvcLvl>
+		<#-- DM: Forgot where I got this... -->
+	<#-- 	<CtgyPurp>
+            <Cd></Cd>
+        </CtgyPurp> -->
 	</PmtTpInf>
 	<ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
-	<Dbtr>
-		<Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
-		<PstlAdr>
-			<Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
-		</PstlAdr>
-	</Dbtr>
+	 <Dbtr>
+        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+        <#-- DM: Added country field -->
+        <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
+        <PstlAdr>
+            <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+           <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
+           <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
+        </PstlAdr>
+        <#-- Tax ID for Argentina -->
+        <#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
+            <Id>
+                <OrgId>
+                    <Othr>
+                        <Id>${transaction.custbody_bb_vb_ebd_tax_id}</Id>
+                        <SchmeNm>
+                            <Cd>TXID</Cd>
+                        </SchmeNm>
+                    </Othr>
+                </OrgId>
+            </Id>
+	    </#if>
+        <#-- DM: <Id> and sub components are O? -->
+    </Dbtr>
 	<DbtrAcct>
 		<Id>
 		<#-- SEPA Payment Type uses IBAN (International Bank Account Number) -->
@@ -90,6 +120,16 @@
 	<DbtrAgt>
 		<FinInstnId>
 			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
+			<#-- DM: Added Country, listed as required field -->
+            <PstlAdr>
+                <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+            </PstlAdr>
+            <#-- DM: HSBC payments require clearing code if sent from ID, SA, UAE -->
+            <#if transaction.custbody_bb_vb_ebd_clearing_code?has_content>
+                <ClrSysMmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_clearing_code}</MmbId>
+                </ClrSysMmbId>
+            </#if>
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR
@@ -114,45 +154,96 @@
 						<Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
 					</Othr>
 				</#if>
+				<PstlAdr>
+                 <#if transaction.custbody_bb_vb_ebd_stateprov?has_content>
+                    <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                </#if>
+                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                </PstlAdr>
+				
 			</FinInstnId>
 		</CdtrAgt>
 		<Cdtr>
 			<Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
-		<PstlAdr>
-			<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
-		</PstlAdr>
+			<PstlAdr>
+				<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+			</PstlAdr>
+		<#-- Tax ID for Chile -->
+			<#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
+	            <Id>
+	                <OrgId>
+	                    <Othr>
+	                        <Id>${transaction.custbody_bb_vb_ebd_tax_id}</Id>
+	                        <SchmeNm>
+	                            <Cd>TXID</Cd>
+	                        </SchmeNm>
+	                    </Othr>
+	                </OrgId>
+	            </Id>
+	          </#if>
+		 <#-- DM: HSBC Indonesia code -->
+		 	<#if transaction.custrecord_2663_entity_bic?starts_with("HSSEIDJ1")>
+	            <CtryOfRes>ID</CtryOfRes>
+	            <#-- For local payment currency -->
+	            <#if getCurrencySymbol(payment.currency) == "IDR">
+		            <Id>
+		                <OrgId>
+		                <#-- DON'T THINK THESE SHOULD BE HARDCODED IS ID EMPTY?? -->
+		                    <Othr>
+		                        <Id></Id>
+		                        <Issr>/SKN/21</Issr>
+		                    </Othr>
+		                </OrgId>
+		            </Id>
+		        </#if>
+	        </#if>
 		</Cdtr>
 		<CdtrAcct>
-		<#--Check if entity has IBAN number (European Banks)-->
-		<#if transaction.custbody_bb_vb_prr_type == "SEPA">
-			<Id>
-				<IBAN>${transaction.custbody_bb_vb_ebd_iban}</IBAN>
-			</Id>
-		<#else>
+			<#--Check if entity has IBAN number (European Banks)-->
+			<#if transaction.custbody_bb_vb_prr_type == "SEPA">
+				<Id>
+					<IBAN>${transaction.custbody_bb_vb_ebd_iban}</IBAN>
+				</Id>
+			<#else>
 				<Id>
 					<Othr>
 						<Id>${transaction.custbody_bb_vb_ebd_bank_acct}</Id>
 					</Othr>
 				</Id>
-		</#if>
+			</#if>
 		</CdtrAcct>
+
+		<#-- DM: HSBC IDR Beneficiary code, status code, and purpose of transfer code here -->
+		<#if transaction.custrecord_2663_entity_bic?starts_with("HSSEIDJ1")>
+			<RgltryRptg>
+			<#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
+	            <Dtls>
+	                <Tp>E0N</Tp>
+	                <Cd>012</Cd>
+	            </Dtls>
+	        </RgltryRptg>
+        </#if>
 		<RmtInf>
 			<Strd>
-        			<RfrdDocInf>
+        		<RfrdDocInf>
 					<Tp>
 						<CdOrPrtry>
-                    					<Cd>CINV</Cd>
-                        			</CdOrPrtry>
-                    			</Tp>
-                			<Nb>SOLT02001038</Nb>
-                			<RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
-                		</RfrdDocInf>
-                		<RfrdDocAmt>
-                			<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                  			<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
-                 			<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
-              			</RfrdDocAmt>
-         		</Strd>
+                    		<Cd>CINV</Cd>
+                        </CdOrPrtry>
+                    </Tp>
+                    <#if getCurrencySymbol(payment.currency) == "JPY">
+                    	<Nb>NNKNI</Nb>
+                    <#else>
+                		<Nb>SOLT02001038</Nb>
+                	</#if>
+                	<RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
+                </RfrdDocInf>
+                <RfrdDocAmt>
+            		<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
+              		<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
+             		<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
+              	</RfrdDocAmt>
+         	</Strd>
 		</RmtInf>
 	</CdtTrfTxInf>
 </PmtInf>
@@ -161,4 +252,3 @@
 
 </CstmrCdtTrfInitn>
 </Document><#rt>
-#OUTPUT END#
