@@ -3,11 +3,6 @@
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
 
-<#function isHSBCandID bankName>
-	<#return bankName?starts_with("HSBC")>
-</#function>
-
-
 <#assign totalAmount = computeTotalAmount(payments)>
 <#-- template building -->
 #OUTPUT START#
