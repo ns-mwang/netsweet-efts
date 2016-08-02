@@ -3,76 +3,76 @@
 <!-- Template Header Start -->
 <!-- Brand and Region Assignment: Transaction Record -->
 <#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
-	<#assign Brand = "BBGEU">
+    <#assign Brand = "BBGEU">
 <#elseif record.subsidiary == "Billabong US">
-	<#assign Brand = "BBGUS">
+    <#assign Brand = "BBGUS">
 <#elseif record.subsidiary == "Billabong CAN">
-	<#assign Brand = "BBGCAN">
+    <#assign Brand = "BBGCAN">
 <#elseif record.subsidiary == "Billabong AU">
-	<#assign Brand = "BBGAU">
+    <#assign Brand = "BBGAU">
 <#elseif record.subsidiary == "Surf Dive 'n' Ski">
-	<#assign Brand = "SDS">
+    <#assign Brand = "SDS">
 <#else>
-	<#assign Brand = "BBGUS">
+    <#assign Brand = "BBGUS">
 </#if>
 <pdf>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>GSM Operations</title>
-		<style type="text/css">
-			html,
-			body{
-				width: 100%;
-				margin: 0;
-				padding: 0;
-			}
-			@media only screen and (max-width: 500px) {
-				h1 {
-					font-size: 40px !important;
-					line-height: 45px !important;
-				}
-			}
-			@media only screen and (max-width: 600px) {
-				.container{
-					width: 100% !important;
-				}
-				.button
-				{
-					display: block !important;
-				}
-				.block-columns{
-					width: auto !important;
-					display: block !important;
-					padding-top: 0 !important;
-				}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>GSM Operations</title>
+        <style type="text/css">
+            html,
+            body{
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            @media only screen and (max-width: 500px) {
+                h1 {
+                    font-size: 40px !important;
+                    line-height: 45px !important;
+                }
+            }
+            @media only screen and (max-width: 600px) {
+                .container{
+                    width: 100% !important;
+                }
+                .button
+                {
+                    display: block !important;
+                }
+                .block-columns{
+                    width: auto !important;
+                    display: block !important;
+                    padding-top: 0 !important;
+                }
 
-			}
-			a, a:hover, a:active, a:focus, a:visited{
-				color: #ffffff;
-			}
-			.button:hover
-			{
-				background: #1a1a1a !important;
-			}
-			.social:hover
-			{
-				opacity: .7 !important;
-			}
-			a[x-apple-data-detectors],
-			.appleLinks {
-			    color:#45ade8 !important;
-				text-decoration: none !important;
-			}
-		</style>
-	</head>
+            }
+            a, a:hover, a:active, a:focus, a:visited{
+                color: #ffffff;
+            }
+            .button:hover
+            {
+                background: #1a1a1a !important;
+            }
+            .social:hover
+            {
+                opacity: .7 !important;
+            }
+            a[x-apple-data-detectors],
+            .appleLinks {
+                color:#45ade8 !important;
+                text-decoration: none !important;
+            }
+        </style>
+    </head>
 
-	<body style="background-color:#fdfdfd; margin:0; padding:0; font-family: helvetica, arial, sans-serif; text-align:center; color: #1e1e1e; width:100%">
-		<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
-			<tr>
+    <body style="background-color:#fdfdfd; margin:0; padding:0; font-family: helvetica, arial, sans-serif; text-align:center; color: #1e1e1e; width:100%">
+        <table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
+            <tr>
               <td>
                 <table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
                     <tr>
-                    	<td style="padding-left: 30px; padding-right: 30px;">
+                        <td style="padding-left: 30px; padding-right: 30px;">
                             <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse: collapse;">
                                 <tr>
                                   <td>
@@ -111,7 +111,7 @@
 
 <!-- Email Dynamic Body (EN) Start-->
 
-							<!-- Email Context Begins: Order Confirmation -->
+                            <!-- Email Context Begins: Order Confirmation -->
                             <#if record.custbody_headercontent == "orderConfirm">
                                     <!-- Header Content -->
                                     <tr>
@@ -139,9 +139,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Confirmation -->
+                            <!-- Email Context Ends: Order Confirmation -->
 
-							<!-- Email Context Begins: Order Cancelled -->
+                            <!-- Email Context Begins: Order Cancelled -->
                             <#if record.custbody_headercontent == "orderCancel">
                                     <!-- Header Content -->
                                     <tr>
@@ -169,9 +169,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Cancelled -->
+                            <!-- Email Context Ends: Order Cancelled -->
 
-							<!-- Email Context Begins: Order Shipped (Order Update) -->
+                            <!-- Email Context Begins: Order Shipped (Order Update) -->
                             <#if record.custbody_headercontent == "orderShipped">
                                     <!-- Header Content -->
                                     <tr>
@@ -199,9 +199,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Shipped (Order Update) -->
+                            <!-- Email Context Ends: Order Shipped (Order Update) -->
 
-							<!-- Email Context Begins: Order Replacement -->
+                            <!-- Email Context Begins: Order Replacement -->
                             <#if record.custbody_headercontent == "orderReplace">
                                     <!-- Header Content -->
                                     <tr>
@@ -229,9 +229,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Replacement -->
+                            <!-- Email Context Ends: Order Replacement -->
 
-							<!-- Email Context Begins: Return Update (Refunded) -->
+                            <!-- Email Context Begins: Return Update (Refunded) -->
                             <#if record.custbody_headercontent == "returnRefunded">
                                     <!-- Header Content -->
                                     <tr>
@@ -259,9 +259,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Return Update (Refunded) -->
+                            <!-- Email Context Ends: Return Update (Refunded) -->
 
-							<!-- Email Context Begins: Return Update (Received) -->
+                            <!-- Email Context Begins: Return Update (Received) -->
                             <#if record.custbody_headercontent == "returnReceived">
                                     <!-- Header Content -->
                                     <tr>
@@ -289,26 +289,26 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Return Update (Received) -->
-							
-							<!-- Action Button Begins: View Order in Account -->
-							<!-- Action Button text changes in different language templates -->
-							<tr>
-								<td colspan="4" style="text-align:center;">
-									<div style="margin-top:40px; margin-bottom:40px;">
-									<!-- Action Button Link -->
-									<a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">View Order in Account</a>
-									<!-- Action Button Link -->
-									</div>
-								</td>
-							</tr>
-							<!-- Action Button Ends: View Order in Account -->
+                            <!-- Email Context Ends: Return Update (Received) -->
+                            
+                            <!-- Action Button Begins: View Order in Account -->
+                            <!-- Action Button text changes in different language templates -->
+                            <tr>
+                                <td colspan="4" style="text-align:center;">
+                                    <div style="margin-top:40px; margin-bottom:40px;">
+                                    <!-- Action Button Link -->
+                                    <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">View Order in Account</a>
+                                    <!-- Action Button Link -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Action Button Ends: View Order in Account -->
 
 <!-- Email Dynamic Body (EN) End-->
 
 <!-- Email Dynamic Body (FR) Start-->
 
-							<!-- Email Context Begins: Order Confirmation -->
+                            <!-- Email Context Begins: Order Confirmation -->
                             <#if record.custbody_headercontent == "orderConfirm">
                                     <!-- Header Content -->
                                     <tr>
@@ -336,9 +336,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Confirmation -->
+                            <!-- Email Context Ends: Order Confirmation -->
 
-							<!-- Email Context Begins: Order Cancelled -->
+                            <!-- Email Context Begins: Order Cancelled -->
                             <#if record.custbody_headercontent == "orderCancel">
                                     <!-- Header Content -->
                                     <tr>
@@ -366,10 +366,10 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Cancelled -->
+                            <!-- Email Context Ends: Order Cancelled -->
 
 
-							<!-- Email Context Begins: Order Shipped (Order Update) -->
+                            <!-- Email Context Begins: Order Shipped (Order Update) -->
                             <#if record.custbody_headercontent == "orderShipped">
                                     <!-- Header Content -->
                                     <tr>
@@ -397,9 +397,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Shipped (Order Update) -->
+                            <!-- Email Context Ends: Order Shipped (Order Update) -->
 
-							<!-- Email Context Begins: Order Replacement -->
+                            <!-- Email Context Begins: Order Replacement -->
                             <#if record.custbody_headercontent == "orderReplace">
                                     <!-- Header Content -->
                                     <tr>
@@ -427,9 +427,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Order Replacement -->
+                            <!-- Email Context Ends: Order Replacement -->
 
-							<!-- Email Context Begins: Return Update (Refunded) -->
+                            <!-- Email Context Begins: Return Update (Refunded) -->
                             <#if record.custbody_headercontent == "returnRefunded">
                                     <!-- Header Content -->
                                     <tr>
@@ -457,9 +457,9 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Return Update (Refunded) -->
+                            <!-- Email Context Ends: Return Update (Refunded) -->
 
-							<!-- Email Context Begins: Return Update (Received) -->
+                            <!-- Email Context Begins: Return Update (Received) -->
                             <#if record.custbody_headercontent == "returnReceived">
                                     <!-- Header Content -->
                                     <tr>
@@ -487,269 +487,269 @@
                                         </td>
                                     </tr>
                             </#if>
-							<!-- Email Context Ends: Return Update (Received) -->
+                            <!-- Email Context Ends: Return Update (Received) -->
 
-							<!-- Action Button Begins: View Order in Account -->
-							<!-- Action Button text changes in different language templates -->
-							<tr>
-								<td colspan="4" style="text-align:center;">
-									<div style="margin-top:40px; margin-bottom:40px;">
-									<!-- Action Button Link -->
-									 <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">Voir Ma Commande</a>
-									<!-- Action Button Link -->
-									</div>
-								</td>
-							</tr>
-							<!-- Action Button Ends: View Order in Account -->
+                            <!-- Action Button Begins: View Order in Account -->
+                            <!-- Action Button text changes in different language templates -->
+                            <tr>
+                                <td colspan="4" style="text-align:center;">
+                                    <div style="margin-top:40px; margin-bottom:40px;">
+                                    <!-- Action Button Link -->
+                                     <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">Voir Ma Commande</a>
+                                    <!-- Action Button Link -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Action Button Ends: View Order in Account -->
 
 <!-- Email Dynamic Body (FR) End-->
                                                   
 <!-- Email Footer Template Start -->
 
-									<!-- Check if record record has items and display item lists, totals, shipping, and billing information -->
-									<#if record.item?has_content>
-											<!-- Item Table Headers -->
-											<tr>
-												<td colspan="3" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:left; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">item</td>
-												<td colspan="1" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:right; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">Total</td>
-											</tr>
-											<!-- Item Lists Start -->
-											<#list record.item as item>
-											<tr>
-												<td style="border-bottom:1px solid #eeeeee; width:80px; padding:20px 0; vertical-align:top; text-align:left; padding-right:15px;">
-													<img class="productImage" src="${item.custcol_gsm_defaultimagepath}" width="80" style="height:auto; display:block; margin:0 auto;" />
-												</td>
-												<td colspan="2" style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:left;">
-													<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														<span style="color:#1e1e1e;">
-															<b>${item.custcol_gsm_item_displayname}</b>
-															<br />
-															${item.rate}
-														</span>
-														<br />
-												<#if item.quantityfulfilled?string != item.quantity?string && record.custbody_headercontent == "orderShipped">
-														<p style="margin:0; color:#FF0000; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantityfulfilled}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														<#if record.shipmethod != "BOPIS BBG US">
-														Status: Partially Shipped
-														Tracking: ${item.custcol_tracking_number}
-														<#elseif record.shipmethod == "BOPIS BBG US">
-														Available For Pick Up: ${item.quantityfulfilled}
-														<#else>
-														Status: Partially Shipped
-														Tracking: ${item.custcol_tracking_number}
-														</#if>
-														</p>
-														<br />
-												<#elseif item.quantityfulfilled?string == item.quantity?string && record.custbody_headercontent == "orderShipped">
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														<#if record.shipmethod != "BOPIS BBG US">
-														Status: Shipped
-														Tracking: ${item.custcol_tracking_number}
-														<#elseif record.shipmethod == "BOPIS BBG US">
-														Status: Ready
-														Available For Pick Up: ${item.quantityfulfilled}
-														<#else>
-														Status: Shipped
-														</#if>
-														</p>
-														<br />
-												<#elseif item.quantityfulfilled?string == "0" && record.custbody_headercontent != "orderCancel">
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Pending
-														</p>
-														<br />
-												<#elseif item.isclosed == true && record.custbody_headercontent == "orderCancel" >
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Canceled
-														</p>
-														<br />
-												<#elseif item.isclosed != true && record.custbody_headercontent == "orderCancel" >
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Pending
-														</p>
-														<br />
-												<#elseif record.custbody_headercontent == "returnRefunded" >
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Refunded
-														</p>
-														<br />
-												<#elseif record.custbody_headercontent == "returnReceived" >
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Received
-														</p>
-														<br />
-												<#else>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Quantity: ${item.quantity}
-														</p>
-														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-														Status: Please contact us for your status
-														</p>
-														<br />
-												</#if>
-														<!--<a href="#" style="color:#45ade8; text-decoration:none;">Pick up: Irvine Spectrum</a>-->
-													</p>
-												</td>
-												<td style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:right;">
-													<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">${item.amount}</p>
-												</td>
-											</tr>
-											</#list>
-											<!-- Item Lists Ends -->
-											<!-- Subtotal and Total Information Block Starts -->
-											<tr >
-												<td colspan="2" style="text-align:left; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
-													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Subtotal</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Discount</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Tax</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Shipping</p>
-													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">Total</p>
-												</td>
-												<td colspan="2" style="text-align:right; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
-													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.subtotal}</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.discounttotal}</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.taxtotal}</p>
-													<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.shippingcost}</p>
-													<p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">${record.total}</p>
-												</td>
-											</tr>
-											<!-- Subtotal and Total Information Block End -->
+                                    <!-- Check if record record has items and display item lists, totals, shipping, and billing information -->
+                                    <#if record.item?has_content>
+                                            <!-- Item Table Headers -->
+                                            <tr>
+                                                <td colspan="3" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:left; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">item</td>
+                                                <td colspan="1" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:right; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">Total</td>
+                                            </tr>
+                                            <!-- Item Lists Start -->
+                                            <#list record.item as item>
+                                            <tr>
+                                                <td style="border-bottom:1px solid #eeeeee; width:80px; padding:20px 0; vertical-align:top; text-align:left; padding-right:15px;">
+                                                    <img class="productImage" src="${item.custcol_gsm_defaultimagepath}" alt="Product Image" width="80" style="height:auto; display:block; margin:0 auto;" />
+                                                </td>
+                                                <td colspan="2" style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:left;">
+                                                    <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        <span style="color:#1e1e1e;">
+                                                            <b>${item.custcol_gsm_item_displayname}</b>
+                                                            <br />
+                                                            ${item.rate}
+                                                        </span>
+                                                        <br />
+                                                <#if item.quantityfulfilled?string != item.quantity?string && record.custbody_headercontent == "orderShipped">
+                                                        <p style="margin:0; color:#FF0000; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantityfulfilled}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        <#if record.shipmethod != "BOPIS BBG US">
+                                                        Status: Partially Shipped
+                                                        Tracking: ${item.custcol_tracking_number}
+                                                        <#elseif record.shipmethod == "BOPIS BBG US">
+                                                        Available For Pick Up: ${item.quantityfulfilled}
+                                                        <#else>
+                                                        Status: Partially Shipped
+                                                        Tracking: ${item.custcol_tracking_number}
+                                                        </#if>
+                                                        </p>
+                                                        <br />
+                                                <#elseif item.quantityfulfilled?string == item.quantity?string && record.custbody_headercontent == "orderShipped">
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        <#if record.shipmethod != "BOPIS BBG US">
+                                                        Status: Shipped
+                                                        Tracking: ${item.custcol_tracking_number}
+                                                        <#elseif record.shipmethod == "BOPIS BBG US">
+                                                        Status: Ready
+                                                        Available For Pick Up: ${item.quantityfulfilled}
+                                                        <#else>
+                                                        Status: Shipped
+                                                        </#if>
+                                                        </p>
+                                                        <br />
+                                                <#elseif item.quantityfulfilled?string == "0" && record.custbody_headercontent != "orderCancel">
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Pending
+                                                        </p>
+                                                        <br />
+                                                <#elseif item.isclosed == true && record.custbody_headercontent == "orderCancel" >
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Canceled
+                                                        </p>
+                                                        <br />
+                                                <#elseif item.isclosed != true && record.custbody_headercontent == "orderCancel" >
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Pending
+                                                        </p>
+                                                        <br />
+                                                <#elseif record.custbody_headercontent == "returnRefunded" >
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Refunded
+                                                        </p>
+                                                        <br />
+                                                <#elseif record.custbody_headercontent == "returnReceived" >
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Received
+                                                        </p>
+                                                        <br />
+                                                <#else>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Quantity: ${item.quantity}
+                                                        </p>
+                                                        <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                        Status: Please contact us for your status
+                                                        </p>
+                                                        <br />
+                                                </#if>
+                                                        <!--<a href="#" style="color:#45ade8; text-decoration:none;">Pick up: Irvine Spectrum</a>-->
+                                                    </p>
+                                                </td>
+                                                <td style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:right;">
+                                                    <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">${item.amount}</p>
+                                                </td>
+                                            </tr>
+                                            </#list>
+                                            <!-- Item Lists Ends -->
+                                            <!-- Subtotal and Total Information Block Starts -->
+                                            <tr >
+                                                <td colspan="2" style="text-align:left; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
+                                                    <p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Subtotal</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Discount</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Tax</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Shipping</p>
+                                                    <p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">Total</p>
+                                                </td>
+                                                <td colspan="2" style="text-align:right; padding: 20px 0; border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee;">
+                                                    <p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.subtotal}</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.discounttotal}</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.taxtotal}</p>
+                                                    <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">${record.shippingcost}</p>
+                                                    <p style="margin:0; color:#1e1e1e; font-weight:normal; font-size:13px; line-height:26px; font-weight:bold; font-family: helvetica, arial, sans-serif;">${record.total}</p>
+                                                </td>
+                                            </tr>
+                                            <!-- Subtotal and Total Information Block End -->
 
-											<tr>
-												<td colspan="4"style="height:20px"></td>
-											</tr>
-											<!-- Pick Up Information Block Starts -->
-											<!-- Checks if NOT BOPIS BBG US then Display Shipping Info -->
-											<#if record.shipmethod != "BOPIS BBG US">
-											<!-- Shipping Information Block Starts -->
-											<tr>
-												<td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Shipping Address</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-															${record.shipaddress}
-															<br/>
-															${record.customer.phone}
-															<br/>
-														</p>
-													</div>
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Delivery Method</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; margin-bottom:10px;">
-															<a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">${record.shipmethod}</a>
-														</p>
-													</div>
-												</td>
-											</tr>
+                                            <tr>
+                                                <td colspan="4"style="height:20px"></td>
+                                            </tr>
+                                            <!-- Pick Up Information Block Starts -->
+                                            <!-- Checks if NOT BOPIS BBG US then Display Shipping Info -->
+                                            <#if record.shipmethod != "BOPIS BBG US">
+                                            <!-- Shipping Information Block Starts -->
+                                            <tr>
+                                                <td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Shipping Address</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                            ${record.shipaddress}
+                                                            <br/>
+                                                            ${record.customer.phone}
+                                                            <br/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Delivery Method</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; margin-bottom:10px;">
+                                                            <a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">${record.shipmethod}</a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-											<tr>
-												<td colspan="4"style="height:10px"></td>
-											</tr>
-											</#if>
-											<!-- Shipping Information Block Ends -->
-											<!-- Shipping and Billing Addresses Block Starts -->
-											<tr>
-												<td colspan="4" style="text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Billing Address</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-															${record.billaddress}
-															<br/>
-															${record.customer.phone}
-															<br/>
-														</p>
-													</div>
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Payment Information</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-															${record.paymentmethod} <#if record.ccnumber?has_content> ${"(" + record.ccnumber + ")"}</#if>
-														</p>
-														<#if record.giftcertapplied?has_content>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
-															${record.giftcertapplied} on Gift Card
-														</#if>
-														</p>
-													</div>
-												</td>
-											</tr>
-											<!-- Shipping and Billing Addresses Block Ends -->
-							</#if>
-							<!-- record.item?has_content Check Ends -->
+                                            <tr>
+                                                <td colspan="4"style="height:10px"></td>
+                                            </tr>
+                                            </#if>
+                                            <!-- Shipping Information Block Ends -->
+                                            <!-- Shipping and Billing Addresses Block Starts -->
+                                            <tr>
+                                                <td colspan="4" style="text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Billing Address</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                            ${record.billaddress}
+                                                            <br/>
+                                                            ${record.customer.phone}
+                                                            <br/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">Payment Information</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                            ${record.paymentmethod} <#if record.ccnumber?has_content> ${"(" + record.ccnumber + ")"}</#if>
+                                                        </p>
+                                                        <#if record.giftcertapplied?has_content>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
+                                                            ${record.giftcertapplied} on Gift Card
+                                                        </#if>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Shipping and Billing Addresses Block Ends -->
+                            </#if>
+                            <!-- record.item?has_content Check Ends -->
 
-							<!-- Company Contact, Marketing Image, Social Links, and Brand Logo -->
-											<tr>
-												<td colspan="4"style="height:10px"></td>
-											</tr>
-									<!-- Company Contact -->
-											<tr>
-												<td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
+                            <!-- Company Contact, Marketing Image, Social Links, and Brand Logo -->
+                                            <tr>
+                                                <td colspan="4"style="height:10px"></td>
+                                            </tr>
+                                    <!-- Company Contact -->
+                                            <tr>
+                                                <td colspan="4" style="vertical-align:top; text-align:left; padding: 20px 20px 0 20px; background:#f0f1f3; padding-left:25px">
 
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Call Us</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
-															<a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">(888)509-5931</a>
-														</p>
-													</div>
-													<div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left;  background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
-														<h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Email Us</h3>
-														<p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
-															<a href="mailto:" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">store@billabong-usa.com</a>
-														</p>
-													</div>
-												</td>
-											</tr>
-									<!-- Company Contact -->
-											<tr>
-												<td colspan="4"style="height:10px"></td>
-											</tr>
-										<!-- Marketing Link and Image -->
-											<tr>
-												<td colspan="4" style="text-align:center;">
-													<a href="http://www.billabong.com" style="display:block;">
-														<img style="width:100%; height:auto; display:block; margin:0 auto;" src="http://www.jonezell.com/bbg-email-images/marketing.png" alt="BBGUS" />
-													</a>
-												</td>
-											</tr>
-										<!-- Marketing Link and Image -->
-											<tr>
-												<td colspan="4" style="height:80px"></td>
-											</tr>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
-						<tr>
-							<td style="padding-left:30px; padding-right:30px;">
-						<#if Brand == "BBGUS" || Brand == "BBGCAN">
-						<!-- BBG US, BBG CAN, BBG AU: Legal, Sociallinks and Marketing -->
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left; background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Call Us</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
+                                                            <a href="#" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">(888)509-5931</a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="block-columns" style="padding-bottom:20px; vertical-align:top; text-align:left;  background:#f0f1f3; display:inline-block; width:49%; min-width:200px;">
+                                                        <h3 style="margin:0; color:#1e1e1e; font-weight:bold; font-size:13px; line-height:26px; font-family: helvetica, arial, sans-serif;">Email Us</h3>
+                                                        <p style="margin:0; color:#7e8183; font-weight:normal; font-size:13px; line-height:22px;">
+                                                            <a href="mailto:" style="color:#45ade8; text-decoration:none; font-family: helvetica, arial, sans-serif;">store@billabong-usa.com</a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    <!-- Company Contact -->
+                                            <tr>
+                                                <td colspan="4"style="height:10px"></td>
+                                            </tr>
+                                        <!-- Marketing Link and Image -->
+                                            <tr>
+                                                <td colspan="4" style="text-align:center;">
+                                                    <a href="http://www.billabong.com" style="display:block;">
+                                                        <img style="width:100%; height:auto; display:block; margin:0 auto;" src="http://www.jonezell.com/bbg-email-images/marketing.png" alt="BBGUS" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <!-- Marketing Link and Image -->
+                                            <tr>
+                                                <td colspan="4" style="height:80px"></td>
+                                            </tr>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
+                        <tr>
+                            <td style="padding-left:30px; padding-right:30px;">
+                        <#if Brand == "BBGUS" || Brand == "BBGCAN">
+                        <!-- BBG US, BBG CAN, BBG AU: Legal, Sociallinks and Marketing -->
                         <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
                             <tr>
                                 <td>
@@ -844,8 +844,8 @@
                                 </td>
                             </tr>
                         </table>
-						<#elseif Brand == "BBGAU">
-						<!-- BBG AU: Legal, Sociallinks and Marketing -->
+                        <#elseif Brand == "BBGAU">
+                        <!-- BBG AU: Legal, Sociallinks and Marketing -->
                         <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
                             <tr>
                                 <td>
@@ -938,8 +938,8 @@
                                 </td>
                             </tr>
                         </table>
-						<#elseif Brand == "SDS">
-						<!-- SDS: Legal, Sociallinks and Marketing -->
+                        <#elseif Brand == "SDS">
+                        <!-- SDS: Legal, Sociallinks and Marketing -->
                         <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
                             <tr>
                                 <td>
@@ -1034,13 +1034,13 @@
                                 </td>
                             </tr>
                         </table>
-						</#if>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-	</body>
+                        </#if>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
 </pdf>
 <!-- Email Footer Template End -->
