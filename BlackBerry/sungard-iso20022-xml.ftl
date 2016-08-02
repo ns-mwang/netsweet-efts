@@ -89,7 +89,7 @@
             <Id>
                 <OrgId>
                     <Othr>
-                        <Id>${transaction.custbody_bb_vb_ebd_tax_id}</Id>
+                        <Id>${cbank.custrecord_2663_subsidiary.federalidnumber}</Id>
                         <SchmeNm>
                             <Cd>TXID</Cd>
                         </SchmeNm>
@@ -120,11 +120,11 @@
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
             </PstlAdr>
             <#-- DM: HSBC payments require clearing code if sent from ID, SA, UAE -->
-            <#if transaction.custbody_bb_vb_ebd_clearing_code?has_content>
+           <#--  <#if (transaction.custbody_bb_vb_ebd_loc_clr_cd)?has_content> -->
                 <ClrSysMmbId>
-                    <MmbId>${transaction.custbody_bb_vb_ebd_clearing_code}</MmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
                 </ClrSysMmbId>
-            </#if>
+         <#--    </#if> -->
 		</FinInstnId>
 	</DbtrAgt>
 	<#-- SEPA = SLEV, Non SEPA = SHAR
@@ -177,7 +177,7 @@
 	            </Id>
 	          </#if>
 		 <#-- DM: HSBC Indonesia code -->
-		 	<#if transaction.custrecord_2663_entity_bic?starts_with("HSSEIDJ1")>
+		 	<#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1")>
 	            <CtryOfRes>ID</CtryOfRes>
 	            <#-- For local payment currency -->
 	            <#if getCurrencySymbol(payment.currency) == "IDR">
@@ -185,8 +185,21 @@
 		                <OrgId>
 		                <#-- DON'T THINK THESE SHOULD BE HARDCODED IS ID EMPTY?? -->
 		                    <Othr>
-		                        <Id></Id>
-		                        <Issr>/SKN/21</Issr>
+		                        <Id>${transaction.entity.billcountry}</Id>
+		                        <Id>${transaction.entity.isperson}</Id>
+		                        <#if transaction.entity.billcountry == "Indonesia">
+		                        	<#if transaction.entity.isperson == "Company">
+		                        		<Issr>/SKN/21</Issr>
+		                        	<#else>
+		                        		<Issr>/SKN/11</Issr>
+		                        	</#if>
+		                        <#else>
+		                        	<#if transaction.entity.isperson == "Company">
+		                        		<Issr>/SKN/22</Issr>
+		                        	<#else>
+		                        		<Issr>/SKN/12</Issr>
+		                        	</#if>
+		                        </#if>
 		                    </Othr>
 		                </OrgId>
 		            </Id>
@@ -209,12 +222,18 @@
 		</CdtrAcct>
 
 		<#-- DM: HSBC IDR Beneficiary code, status code, and purpose of transfer code here -->
-		<#if transaction.custrecord_2663_entity_bic?starts_with("HSSEIDJ1")>
+		<#-- transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && 
+		getCurrencySymbol(payment.currency) != "IDR" -->
+		<#if true>
 			<RgltryRptg>
 			<#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
 	            <Dtls>
-	                <Tp>E0N</Tp>
-	                <Cd>012</Cd>
+	            <#if transaction.entity.isperson == "Company">
+            		<Tp>E0N</Tp>
+		        <#else>
+	                <Tp>E1N</Tp>
+	            </#if>
+	                <Cd></Cd>
 	            </Dtls>
 	        </RgltryRptg>
         </#if>
