@@ -110,13 +110,16 @@
 			<#-- DM: Added Country, listed as required field -->
             <PstlAdr>
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+                 <#if cbank.custrecord_2663_bank_state?has_content>
+                    <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_bank_state?has_content)}</CtrySubDvsn>
+                </#if>
             </PstlAdr>
             <#-- DM: HSBC payments require clearing code if sent from ID, SA, UAE -->
-           <#--  <#if (transaction.custbody_bb_vb_ebd_loc_clr_cd)?has_content> -->
+            <#if (cbank.custrecord_2663_bank_code)?has_content>
                 <ClrSysMmbId>
-                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                    <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
                 </ClrSysMmbId>
-         <#--    </#if> -->
+            </#if>
 		</FinInstnId>
     </DbtrAgt>
     <#-- SEPA = SLEV, Non SEPA = SHAR
@@ -156,7 +159,10 @@
             <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
             <#-- DM: Postal Address Ctry listed as R, added -->
             <PstlAdr>
-                <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
+                <#if entity.billstate?has_content >
+                	<CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
+                </#if>
             </PstlAdr>
             <#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
             <Id>
