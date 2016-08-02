@@ -1,19 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
-<pdf>
-<!-- Billabong-SDS-Netsuite Sales Order PDF Template -->
-<!-- @author Freemarker Logic Michael Wang <mwang@netsuite.com> | HTML Jon Ezell <jezell@billabong.com> -->
-<!-- Template #2 Orders (English) -->
-<!-- Email Type:
-				Order Confirmation
-				Order Update - Order Cancel
-				Return Update (Refunded and Received)
-				Replacement
-				Review Request -->
-<!-- ver 1.0 - Intial version created using Jon's HTML template - MW -->
-
-<!-- OUTPUT START -->
-<!-- Brand and Region Assignment -->
+<!-- Template Header Start -->
+<!-- Brand and Region Assignment: Transaction Record -->
 <#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
 	<#assign Brand = "BBGEU">
 <#elseif record.subsidiary == "Billabong US">
@@ -27,10 +15,10 @@
 <#else>
 	<#assign Brand = "BBGUS">
 </#if>
-<!-- Brand and Region Assignment -->
+<pdf>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>${record.subsidiary}</title>
+		<title>GSM Operations</title>
 		<style type="text/css">
 			html,
 			body{
@@ -82,9 +70,16 @@
 		<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
 			<tr>
 				<td>
-                  	<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
-                    	<tr>
-                      		<td style="padding-left:30px; padding-right:30px;">
+					<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
+						<tr>
+							<td style="padding-left:30px; padding-right:30px;">
+
+								<!--[if mso]>
+								 <center>
+								 <table><tr><td width="600">
+								<![endif]-->
+
+
 								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse: collapse;">
 									<tr>
 										<td>
@@ -107,6 +102,10 @@
 													<a href="http://au.billabong.com/" style="display:inline-block;">
 														<img src="http://www.jonezell.com/bbg-email-images/logo.png" width="60" style="height:auto; display:block; margin:0 auto;">
 													</a>
+												<#elseif Brand == "BBGEU">
+													<a href="http://eu.billabong.com/" style="display:inline-block;">
+														<img src="http://www.jonezell.com/bbg-email-images/logo.png" width="60" style="height:auto; display:block; margin:0 auto;">
+													</a>
 												<#elseif Brand == "SDS">
 													<a href="https://www.sds.com.au/" style="display:inline-block;">
 														<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" width="360" style="height:auto; display:block; margin:0 auto;">
@@ -115,216 +114,26 @@
 												</td>
 											</tr>
 
+<!-- Template Header End -->
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+<!-- Email Footer Template Start -->
 
-							<!-- Email Context Begins: Order Confirmation -->
-									<#if record.custbody_headercontent == "orderConfirm">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Confirmation</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Order Confirmation -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														Thank you for your order!  We'll send a Shipping Confirmation email with tracking details as soon as your order is on its way. You can check in on your order anytime online!
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Order Confirmation -->
-
-							<!-- Email Context Begins: Order Cancelled -->
-									<#if record.custbody_headercontent == "orderCancel">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Update</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Order Cancelled -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														We've updated your order.  See the order summary below for details.
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Order Cancelled -->
-
-
-							<!-- Email Context Begins: Order Shipped (Order Update) -->
-									<#if record.custbody_headercontent == "orderShipped">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Order Update</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Order Update -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														Your order is complete! See the order summary below for details regarding your order. You can access your order details at anytime through our website. Please allow up to 24 hours to view tracking details through the tracking link.
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Order Shipped (Order Update) -->
-
-							<!-- Email Context Begins: Order Replacement -->
-									<#if record.custbody_headercontent == "orderReplace">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Replacement</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Order Update -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														We have created a replacement order. See the summary below for details regarding the replacement.
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Order Replacement -->
-
-							<!-- Email Context Begins: Return Update (Refunded) -->
-									<#if record.custbody_headercontent == "returnRefunded">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Return Refunded -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														We've updated your return request. See the summary below for details regarding your return.
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Return Update (Refunded) -->
-
-							<!-- Email Context Begins: Return Update (Received) -->
-									<#if record.custbody_headercontent == "returnReceived">
-											<!-- Header Content -->
-											<tr>
-												<td colspan="4">
-													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
-												</td>
-											</tr>
-											<!-- Sub-Header Content -->
-											<tr>
-												<td colspan="4">
-													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="4" width="40px" align="center">
-													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
-												</td>
-											</tr>
-											<!-- Email Context: Return Received -->
-											<tr>
-												<td colspan="4">
-													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
-														We've updated your return request. See the summary below for details regarding your return.
-													</p>
-												</td>
-											</tr>
-									</#if>
-							<!-- Email Context Ends: Return Update (Received) -->
-
-							<!-- Check if transaction record has items and display item lists, totals, shipping, and billing information -->
+									<!-- Check if transaction record has items and display item lists, totals, shipping, and billing information -->
 									<#if record.item?has_content>
-											<!-- Action Button Begins: View Order in Account -->
-											<tr>
-												<td colspan="4" style="text-align:center;">
-													<div style="margin-top:40px; margin-bottom:40px;"><!--[if mso]>
-													  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:52px;v-text-anchor:middle;width:300px;" arcsize="0%" stroke="f" fillcolor="#000">
-													    <w:anchorlock/>
-													    <center>
-													  <![endif]-->
-
-												<!-- Action Button Link -->
-													 <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">View Order in Account</a>
-												<!-- Action Button Link -->
-
-													  <!--[if mso]>
-													    </center>
-													  </v:roundrect>
-													<![endif]-->
-													</div>
-												</td>
-											</tr>
 											<!-- Item Table Headers -->
 											<tr>
 												<td colspan="3" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:left; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">item</td>
 												<td colspan="1" style="border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; color:#1e1e1e; text-align:right; line-height:35px; font-size:10px; text-transform:uppercase; font-weight:bold; letter-spacing:2px; font-family: helvetica, arial, sans-serif;">Total</td>
 											</tr>
-											<!-- Action Button Ends: View Order in Account -->
 											<!-- Item Lists Start -->
 											<#list record.item as item>
 											<tr>
@@ -334,19 +143,18 @@
 												<td colspan="2" style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:left;">
 													<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														<span style="color:#1e1e1e;">
-															<b>${item.item}</b>
+															<b>${item.custcol_gsm_item_displayname}</b>
 															<br />
 															${item.rate}
 														</span>
 														<br />
-												<#if record.custbody_headercontent == "orderShipped"> <!--(item.quantityfulfilled lt item.quantity) &&-->
+												<#if item.quantityfulfilled lt item.quantity && record.custbody_headercontent == "orderShipped">
 														<p style="margin:0; color:#FF0000; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantityfulfilled}
 														</p>
 														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														<#if record.shipmethod != "BOPIS BBG US">
 														Status: Partially Shipped
-                                                        <br/>
 														Tracking: ${item.custcol_tracking_number}
 														<#elseif record.shipmethod == "BOPIS BBG US">
 														Available For Pick Up: ${item.quantityfulfilled}
@@ -356,7 +164,7 @@
 														</#if>
 														</p>
 														<br />
-												<#elseif record.custbody_headercontent == "orderShipped"> <!--(item.quantityfulfilled == item.quantity) &&-->
+												<#elseif item.quantityfulfilled == item.quantity && record.custbody_headercontent == "orderShipped">
 														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantity}
 														</p>
@@ -372,7 +180,7 @@
 														</#if>
 														</p>
 														<br />
-												<#elseif item.quantityfulfilled == "0" && record.custbody_headercontent != "orderCancel">
+												<#elseif item.quantityfulfilled == 0 && record.custbody_headercontent != "orderCancel">
 														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantity}
 														</p>
@@ -507,7 +315,7 @@
 												</td>
 											</tr>
 											<!-- Shipping and Billing Addresses Block Ends -->
-									</#if>
+							</#if>
 							<!-- transaction.item?has_content Check Ends -->
 
 							<!-- Company Contact, Marketing Image, Social Links, and Brand Logo -->
@@ -536,21 +344,26 @@
 											<tr>
 												<td colspan="4"style="height:10px"></td>
 											</tr>
+										<!-- Marketing Link and Image -->
 											<tr>
 												<td colspan="4" style="text-align:center;">
-										<!-- Marketing Link and Image -->
 													<a href="http://www.billabong.com" style="display:block;">
 														<img style="width:100%; height:auto; display:block; margin:0 auto;" src="http://www.jonezell.com/bbg-email-images/marketing.png">
 													</a>
-										<!-- Marketing Link and Image -->
 												</td>
 											</tr>
+										<!-- Marketing Link and Image -->
 											<tr>
 												<td colspan="4" style="height:80px"></td>
 											</tr>
 										</td>
 									</tr>
 								</table>
+
+								<!--[if mso]>
+								 </td></tr></table>
+								 </center>
+								<![endif]-->
 
 							</td>
 						</tr>
@@ -562,6 +375,11 @@
 					<table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
 						<tr>
 							<td style="padding-left:30px; padding-right:30px;">
+
+								<!--[if mso]>
+								 <center>
+								 <table><tr><td width="600">
+								<![endif]-->
 
 						<#if Brand == "BBGUS" || Brand == "BBGCAN">
 						<!-- BBG US, BBG CAN, BBG AU: Legal, Sociallinks and Marketing -->
@@ -850,6 +668,12 @@
 									</tr>
 								</table>
 						</#if>
+
+								<!--[if mso]>
+								 </td></tr></table>
+								 </center>
+								<![endif]-->
+
 							</td>
 						</tr>
 					</table>
@@ -859,4 +683,4 @@
 
 	</body>
 </pdf>
-<!-- OUTPUT END -->
+<!-- Email Footer Template End -->
