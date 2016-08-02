@@ -69,17 +69,10 @@
 	<body style="background-color:#fdfdfd; margin:0; padding:0; font-family: helvetica, arial, sans-serif; text-align:center; color: #1e1e1e; width:100%">
 		<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
 			<tr>
-				<td>
+              <td></td>
 					<table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
 						<tr>
 							<td style="padding-left:30px; padding-right:30px;">
-
-								<!--[if mso]>
-								 <center>
-								 <table><tr><td width="600">
-								<![endif]-->
-
-
 								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse: collapse;">
 									<tr>
 										<td>
@@ -115,14 +108,213 @@
 											</tr>
 
 <!-- Template Header End -->
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
+
+<!-- Email Dynamic Body (EN) Start-->
+
+							<!-- Email Context Begins: Order Confirmation -->
+									<#if record.custbody_headercontent == "orderConfirm">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Confirmation</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Confirmation -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														Thank you for your order!  We'll send a Shipping Confirmation email with tracking details as soon as your order is on its way. You can check in on your order anytime online!
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Confirmation -->
+
+							<!-- Email Context Begins: Order Cancelled -->
+									<#if record.custbody_headercontent == "orderCancel">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif; ">Order Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif; ">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Cancelled -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your order.  See the order summary below for details.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Cancelled -->
+
+							<!-- Email Context Begins: Order Shipped (Order Update) -->
+									<#if record.custbody_headercontent == "orderShipped">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Order Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Update -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														Your order is complete! See the order summary below for details regarding your order. You can access your order details at anytime through our website. Please allow up to 24 hours to view tracking details through the tracking link.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Shipped (Order Update) -->
+
+							<!-- Email Context Begins: Order Replacement -->
+									<#if record.custbody_headercontent == "orderReplace">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Replacement</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Order # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Order Update -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We have created a replacement order. See the summary below for details regarding the replacement.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Order Replacement -->
+
+							<!-- Email Context Begins: Return Update (Refunded) -->
+									<#if record.custbody_headercontent == "returnRefunded">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Return Refunded -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your return request. See the summary below for details regarding your return.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Return Update (Refunded) -->
+
+							<!-- Email Context Begins: Return Update (Received) -->
+									<#if record.custbody_headercontent == "returnReceived">
+											<!-- Header Content -->
+											<tr>
+												<td colspan="4">
+													<h1 style="text-align:center; color: #1e1e1e; font-weight: bold; font-size:50px; line-height:64px; margin:0; margin-top:30px; font-family: helvetica, arial, sans-serif;">Your Return Update</h1>
+												</td>
+											</tr>
+											<!-- Sub-Header Content -->
+											<tr>
+												<td colspan="4">
+													<h2 style="text-align:center; color: #1e1e1e; font-weight: bold; margin:0; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin-top:20px; font-family: helvetica, arial, sans-serif;">Return Authorization # ${transaction.tranid}</h2>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4" width="40px" align="center">
+													<div style="width:40px; height: 2px; background: #000; margin:40px auto;"></div>
+												</td>
+											</tr>
+											<!-- Email Context: Return Received -->
+											<tr>
+												<td colspan="4">
+													<p style="text-align:left; color: #7e8183; font-weight: normal; margin:0; font-size:14px; line-height:26px; font-family: helvetica, arial, sans-serif;">
+														We've updated your return request. See the summary below for details regarding your return.
+													</p>
+												</td>
+											</tr>
+									</#if>
+							<!-- Email Context Ends: Return Update (Received) -->
+							
+							<!-- Action Button Begins: View Order in Account -->
+							<!-- Action Button text changes in different language templates -->
+							<tr>
+								<td colspan="4" style="text-align:center;">
+									<div style="margin-top:40px; margin-bottom:40px;"><!--[if mso]>
+									  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:52px;v-text-anchor:middle;width:300px;" arcsize="0%" stroke="f" fillcolor="#000">
+									    <w:anchorlock/>
+									    <center>
+									  <![endif]-->
+
+								<!-- Action Button Link -->
+									 <a class="button" href="#" style="background-color:#000000; border-radius:0px; color:#ffffff; display:inline-block; font-family:sans-serif; font-size:12px; font-weight:normal; letter-spacing:4px; line-height:52px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none; text-transform:uppercase; margin-left: auto; margin-right:auto;" color="white">View Order in Account</a>
+								<!-- Action Button Link -->
+
+									  <!--[if mso]>
+									    </center>
+									  </v:roundrect>
+									<![endif]-->
+									</div>
+								</td>
+							</tr>
+							<!-- Action Button Ends: View Order in Account -->
+
+<!-- Email Dynamic Body End-->
                                                   
                                                   
 <!-- Email Footer Template Start -->
@@ -148,7 +340,7 @@
 															${item.rate}
 														</span>
 														<br />
-												<#if item.quantityfulfilled lt item.quantity && record.custbody_headercontent == "orderShipped">
+												<#if item.quantityfulfilled?string != item.quantity?string && record.custbody_headercontent == "orderShipped">
 														<p style="margin:0; color:#FF0000; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantityfulfilled}
 														</p>
@@ -164,7 +356,7 @@
 														</#if>
 														</p>
 														<br />
-												<#elseif item.quantityfulfilled == item.quantity && record.custbody_headercontent == "orderShipped">
+												<#elseif item.quantityfulfilled?string == item.quantity?string && record.custbody_headercontent == "orderShipped">
 														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantity}
 														</p>
@@ -180,7 +372,7 @@
 														</#if>
 														</p>
 														<br />
-												<#elseif item.quantityfulfilled == 0 && record.custbody_headercontent != "orderCancel">
+												<#elseif item.quantityfulfilled?string == "0" && record.custbody_headercontent != "orderCancel">
 														<p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
 														Quantity: ${item.quantity}
 														</p>
@@ -359,12 +551,6 @@
 										</td>
 									</tr>
 								</table>
-
-								<!--[if mso]>
-								 </td></tr></table>
-								 </center>
-								<![endif]-->
-
 							</td>
 						</tr>
 					</table>
@@ -375,312 +561,299 @@
 					<table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
 						<tr>
 							<td style="padding-left:30px; padding-right:30px;">
-
-								<!--[if mso]>
-								 <center>
-								 <table><tr><td width="600">
-								<![endif]-->
-
 						<#if Brand == "BBGUS" || Brand == "BBGCAN">
 						<!-- BBG US, BBG CAN, BBG AU: Legal, Sociallinks and Marketing -->
-								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
-									<tr>
-										<td>
-											<tr style="background-color: #f0f1f3;">
-												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
-													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-												</td>
-											</tr>
-											<tr>
-												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center; padding-bottom:40px;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
-													<a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
-														<img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
-													</a>
-												</td>
-											</tr>
-										</td>
-									</tr>
-								</table>
+                        <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+                            <tr>
+                                <td>
+                                    <tr style="background-color: #f0f1f3;">
+                                        <td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+                                            Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center; padding-bottom:40px;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+                                            <a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </td>
+                            </tr>
+                        </table>
 						<#elseif Brand == "BBGAU">
 						<!-- BBG AU: Legal, Sociallinks and Marketing -->
-								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
-									<tr>
-										<td>
-											<tr style="background-color: #f0f1f3;">
-												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
-													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabong_australia/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<a class="social" href="https://vimeo.com/billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-												</td>
-											</tr>
-											<tr>
-												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center; padding-bottom:40px;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<a class="social" href="https://www.pinterest.com/billabongwomens/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
-													<a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
-														<img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
-													</a>
-												</td>
-											</tr>
-										</td>
-									</tr>
-								</table>
+                        <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+                            <tr>
+                                <td>
+                                    <tr style="background-color: #f0f1f3;">
+                                        <td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+                                            Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Mens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabong_australia/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <a class="social" href="https://vimeo.com/billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Billabong Womens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center; padding-bottom:40px;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <a class="social" href="https://www.pinterest.com/billabongwomens/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+                                            <a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" width="40" style="width:40px; display: block;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </td>
+                            </tr>
+                        </table>
 						<#elseif Brand == "SDS">
 						<!-- SDS: Legal, Sociallinks and Marketing -->
-								<table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
-									<tr>
-										<td>
-											<tr style="background-color: #f0f1f3;">
-												<td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
-													Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Mens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-												</td>
-											</tr>
-											<tr>
-												<td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Womens</td>
-											</tr>
-											<tr>
-												<td style="text-align:center; padding-bottom:40px;">
-													<!-- Facebook -->
-													<a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
-													</a>
-													<!-- Instagram -->
-													<a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Twitter -->
-													<a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Google -->
-													<a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Pinterest -->
-													<a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Youtube -->
-													<a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													<!-- Vimeo -->
-													<!--
-													<a class="social" href="#" style="display:inline-block;">
-														<img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
-													</a>
-													-->
-												</td>
-											</tr>
-											<tr>
-												<td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
-													<a href="https://www.sds.com.au/" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
-														<img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" width="120" style="width:120px; display: block;">
-													</a>
-												</td>
-											</tr>
-										</td>
-									</tr>
-								</table>
+                        <table class="container" align="center" style="width:100%; max-width:600px; height:40px; border-collapse:collapse;">
+                            <tr>
+                                <td>
+                                    <tr style="background-color: #f0f1f3;">
+                                        <td style="padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; font-family: helvetica, arial, sans-serif;">
+                                            Legal stuff? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui. <a href="" style="color:#aaaaaa;">Update Email Preferences</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Mens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/Billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabong/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabong1973" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/user/billabong" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top:20px; font-size:11px; line-height:20px; color:#aaa; font-family: helvetica, arial, sans-serif; text-align:center;">Surf Dive 'n' Ski Womens</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center; padding-bottom:40px;">
+                                            <!-- Facebook -->
+                                            <a class="social" href="https://www.facebook.com/BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-facebook.png" width="35" style="display:block; width:35px; height:35px;">
+                                            </a>
+                                            <!-- Instagram -->
+                                            <a class="social" href="https://www.instagram.com/billabongwomens/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-instagram.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Twitter -->
+                                            <a class="social" href="https://twitter.com/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-twitter.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Google -->
+                                            <a class="social" href="https://plus.google.com/+BillabongWomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-google.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Pinterest -->
+                                            <a class="social" href="https://www.pinterest.com/billabong/" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-pinterest.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Youtube -->
+                                            <a class="social" href="https://www.youtube.com/c/billabongwomens" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-youtube.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            <!-- Vimeo -->
+                                            <!--
+                                            <a class="social" href="#" style="display:inline-block;">
+                                                <img src="http://www.jonezell.com/bbg-email-images/social-vimeo.png" width="35" style="display:block;width:35px; height:35px;">
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
+                                            <a href="https://www.sds.com.au/" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
+                                                <img src="https://system.sandbox.netsuite.com/core/media/media.nl?id=26015&c=340431_SB3&h=c0b12d6e5035d6e1efa5" width="120" style="width:120px; display: block;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </td>
+                            </tr>
+                        </table>
 						</#if>
-
-								<!--[if mso]>
-								 </td></tr></table>
-								 </center>
-								<![endif]-->
-
 							</td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 		</table>
-
 	</body>
 </pdf>
 <!-- Email Footer Template End -->
