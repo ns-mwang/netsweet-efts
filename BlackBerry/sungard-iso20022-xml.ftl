@@ -171,6 +171,7 @@
         <Amt>
             <InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</InstdAmt>
         </Amt>
+
         <CdtrAgt>
             <FinInstnId>
                 <#if transaction.custbody_bb_vb_prr_type == "SEPA">
@@ -275,17 +276,6 @@
 	                <Cd></Cd>
 	            </Dtls>
 	        </RgltryRptg>
-        </#if>
-        <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
-            <Tax>
-                <TaxTp></TaxTp>
-                <Dt></Dt>
-                <Rcrd>
-                    <Ctgy></Ctgy>
-                    <CertId></CertId>
-                    <TaxAmt></TaxAmt>
-                </Rcrd>
-            </Tax>
         </#if>
         <RmtInf>
             <Strd>
