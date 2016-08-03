@@ -13,16 +13,23 @@
     <MsgId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
     <CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
     <NbOfTxs>${payments?size?c}</NbOfTxs>
-     <CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
+    <CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
     <InitgPty>
         <Id>
             <OrgId>
-            <#-- Payment Types That Use Swift Codes -->
-                <#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
-            <#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
+            	<#-- Payment Types That Use BICOrBEI -->
+        	<#if cbank.custrecord_2663_file_name_prefix == "RBC" && cbank.custrecord_2663_file_name_prefix == "WF">
+                <BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>
+                <#-- Payment Types That Use BANK COMP ID -->
+        	<#elseif cbank.custrecord_2663_file_name_prefix == "BOFA" && cbank.custrecord_2663_file_name_prefix == "HSBC">
                 <Othr>
                     <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
                 </Othr>
+                <#else>
+                <Othr>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                </Othr>
+                </#if>
             </OrgId>
         </Id>
     </InitgPty>
@@ -60,7 +67,6 @@
                 <Cd>NURG</Cd>
             </#if>
         </SvcLvl>
-        <#-- LclInstrm? (LocalInstrument) -->
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
@@ -106,27 +112,27 @@
     <#-- DM: Looks like this requires Mmbid, PstlAdr (country), BrnchId?, id,   -->
     <DbtrAgt>
         <FinInstnId>
-			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
-			<#-- DM: Added Country, listed as required field -->
-            <PstlAdr>
-                <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
-                 <#if cbank.custrecord_2663_bank_state?has_content>
-                    <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_bank_state?has_content)}</CtrySubDvsn>
-                </#if>
-            </PstlAdr>
-            <#-- DM: HSBC payments require clearing code if sent from ID, SA, UAE -->
-            <#if (cbank.custrecord_2663_bank_code)?has_content>
-                <ClrSysMmbId>
-                    <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
-                </ClrSysMmbId>
+        	<#if cbank.custpage_eft_custrecord_2663_bic?has_content>
+                <BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
+            <#else>
+                <Othr>
+                	<Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                </Othr>
             </#if>
+            <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+                <ClrSysMmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                </ClrSysMmbId>
+            <PstlAdr>
+                <Ctry></Ctry>
+                <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
+                <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+                <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
+                <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+                <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine>
+            </PstlAdr>
 		</FinInstnId>
     </DbtrAgt>
-    <#-- SEPA = SLEV, Non SEPA = SHAR
-    <#if transaction.custbody_bb_vb_prr_type == "SEPA">
-    <ChrgBr>SLEV</ChrgBr>
-    </#if>
-    <ChrgBr>SHAR</ChrgBr>-->
     <CdtTrfTxInf>
         <PmtId>
             <#-- InstrId is O -->
@@ -146,11 +152,20 @@
                         <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
                     </Othr>
                 </#if>
-                 <PstlAdr>
-                 <#if transaction.custbody_bb_vb_ebd_stateprov?has_content>
-                    <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
-                </#if>
-                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                
+                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+                <ClrSysMmbId>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                </ClrSysMmbId>
+                <#--<Nm>Bank Name TBD</Nm>-->
+                <PstlAdr>
+                	<PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
+                	<TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
+                	<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                	<AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
+                	<#if transaction.custbody_bb_vb_ebd_stateprov?has_content>
+                	<CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                	</#if>
                 </PstlAdr>
             </FinInstnId>
         </CdtrAgt>
@@ -238,13 +253,13 @@
             <Strd>
                 <RfrdDocInf>
                     <Tp>
-                        <CdOrPrtry>
-                            <Cd>CINV</Cd> <#-- DM: Should this be hard coded? -->
-                        </CdOrPrtry>
+                    	<CdOrPrtry>
+                    		<Cd>CINV</Cd> <#-- DM: Should this be hard coded? MW: I believe this is a static setting for the bank -->
+                    	</CdOrPrtry>
                     </Tp>
-                    <#if getCurrencySymbol(payment.currency) == "JPY">
-                    	<Nb>NNKNI</Nb>
-                    <#else>
+                	<#if getCurrencySymbol(payment.currency) == "JPY">
+                   		<Nb>NNKNI</Nb>
+                	<#else>
                 		<Nb>SOLT02001038</Nb>
                 	</#if>
                     <RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
