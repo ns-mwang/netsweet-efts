@@ -184,6 +184,17 @@
                 
                 <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
                 <ClrSysMmbId>
+                    <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                        <#if getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "US">
+                            <ClrSysId>
+                                <Cd>USABA</Cd>
+                            </ClrSysId>
+                        <#elseif getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "CA">
+                            <ClrSysId>
+                                <Cd>CACPA</Cd>
+                            </ClrSysId>
+                        </#if>
+                    </#if>
                     <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
                 </ClrSysMmbId>
                 <#--<Nm>Bank Name TBD</Nm>-->
