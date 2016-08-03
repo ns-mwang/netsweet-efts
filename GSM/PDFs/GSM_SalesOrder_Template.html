@@ -1,23 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
 <!-- Template Header Start -->
-<!-- Brand and Region Assignment: Transaction Record -->
-<#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
-    <#assign Brand = "BBGEU">
-<#elseif record.subsidiary == "Billabong US">
-    <#assign Brand = "BBGUS">
-<#elseif record.subsidiary == "Billabong CAN">
-    <#assign Brand = "BBGCAN">
-<#elseif record.subsidiary == "Billabong AU">
-    <#assign Brand = "BBGAU">
-<#elseif record.subsidiary == "Surf Dive 'n' Ski">
-    <#assign Brand = "SDS">
-<#else>
-    <#assign Brand = "BBGUS">
-</#if>
 <pdf>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>GSM Operations</title>
         <style type="text/css">
             html,
@@ -66,6 +51,21 @@
         </style>
     </head>
 
+<!-- Brand and Region Assignment: Transaction Record -->
+<#if record.subsidiary == "Billabong UK" || record.subsidiary == "Billabong FR" || record.subsidiary == "Billabong GER" || record.subsidiary == "Billabong SP">
+    <#assign Brand = "BBGEU">
+<#elseif record.subsidiary == "Billabong US">
+    <#assign Brand = "BBGUS">
+<#elseif record.subsidiary == "Billabong CAN">
+    <#assign Brand = "BBGCAN">
+<#elseif record.subsidiary == "Billabong AU">
+    <#assign Brand = "BBGAU">
+<#elseif record.subsidiary == "Surf Dive 'n' Ski">
+    <#assign Brand = "SDS">
+<#else>
+    <#assign Brand = "BBGUS">
+</#if>
+
     <body style="background-color:#fdfdfd; margin:0; padding:0; font-family: helvetica, arial, sans-serif; text-align:center; color: #1e1e1e; width:100%">
         <table class="container" width="100%" style="height:40px; border-collapse:collapse; width: 100%;">
             <tr>
@@ -105,8 +105,7 @@
                                               </a>
                                           </#if>
                                           </td>
-                                      </tr>
-
+                                     </tr>
 <!-- Template Header End -->
 
 <!-- Email Dynamic Body (EN) Start-->
@@ -290,7 +289,7 @@
                                     </tr>
                             </#if>
                             <!-- Email Context Ends: Return Update (Received) -->
-                            
+
                             <!-- Action Button Begins: View Order in Account -->
                             <!-- Action Button text changes in different language templates -->
                             <tr>
@@ -503,7 +502,7 @@
                             <!-- Action Button Ends: View Order in Account -->
 
 <!-- Email Dynamic Body (FR) End-->
-                                                  
+
 <!-- Email Footer Template Start -->
 
                                     <!-- Check if record record has items and display item lists, totals, shipping, and billing information -->
@@ -517,8 +516,7 @@
                                             <#list record.item as item>
                                             <tr>
                                                 <td style="border-bottom:1px solid #eeeeee; width:80px; padding:20px 0; vertical-align:top; text-align:left; padding-right:15px;">
-                                                    <img class="productImage" src="${item.custcol_gsm_defaultimagepath}" alt="Product Image" width="80" style="height:auto; display:block; margin:0 auto;" />
-                                                </td>
+                                                    <img class="productImage" src="${item.custcol_gsm_defaultimagepath@url}" alt="Product Image" width="80" style="height:auto; display:block; margin:0 auto;" /></td>
                                                 <td colspan="2" style="border-bottom:1px solid #eeeeee; padding: 20px 0; vertical-align:top; text-align:left;">
                                                     <p style="margin:0; color:#7e8183; font-weight: normal; font-size:13px; line-height:22px; font-family: helvetica, arial, sans-serif;">
                                                         <span style="color:#1e1e1e;">
@@ -743,6 +741,7 @@
                     </table>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <table class="container" width="100%" style="height:40px; border-collapse:collapse; background-color: #f0f1f3; width: 100%;">
@@ -837,7 +836,7 @@
                                     <tr>
                                         <td style="border-top:1px solid #e5e5e5; padding-top:40px; padding-bottom:40px; font-size:11px; line-height:20px; color:#aaaaaa; text-align:center;">
                                             <a href="http://www.billabong.com" style="display:block; width:40px; margin-left:auto; margin-right:auto; text-align:center;">
-                                                <img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" walt="BBGUS BBGCAN" idth="40" style="width:40px; display: block;" />
+                                                <img src="http://www.jonezell.com/bbg-email-images/logo-footer.png" alt="BBGUS BBGCAN" idth="40" style="width:40px; display: block;" />
                                             </a>
                                         </td>
                                     </tr>
