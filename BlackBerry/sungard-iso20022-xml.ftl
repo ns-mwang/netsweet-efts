@@ -66,13 +66,13 @@
             <#else>
                 <Cd>NURG</Cd>
             </#if>
-        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+        	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
                 <Prtry>NORM</Prtry>
             </#if>
         </SvcLvl>
         <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
             <CtgyPurp>
-                <Cd></Cd>
+                <Cd>SUPP</Cd>
             </CtgyPurp>
         </#if>
     </PmtTpInf>
@@ -82,7 +82,7 @@
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
-            <StrNm>${cbank.custrecord_2663_subsidiary.addr1}</StrNm>
+            <StrNm>${cbank.custrecord_2663_subsidiary.address1}</StrNm>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
             <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
             <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
