@@ -66,7 +66,15 @@
             <#else>
                 <Cd>NURG</Cd>
             </#if>
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>NORM</Prtry>
+            </#if>
         </SvcLvl>
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+            <CtgyPurp>
+                <Cd></Cd>
+            </CtgyPurp>
+        </#if>
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
@@ -74,8 +82,11 @@
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
+            <StrNm>${cbank.custrecord_2663_subsidiary.addr1}</StrNm>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
             <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+            
            <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
            <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
         </PstlAdr>
@@ -95,6 +106,18 @@
             </Id>
 	    </#if> -->
         <#-- DM: <Id> and sub components are O? -->
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+            <Id>
+                <OrgId>
+                    <Othr>
+                        <Id>7350020000</Id>
+                        <SchmeNm>
+                            <Cd>BANK></Cd>
+                        </SchmeNm>
+                    </Othr>
+                </OrgId>
+            </Id>
+        </#if>
     </Dbtr>
     <DbtrAcct>
         <Id>
@@ -108,6 +131,11 @@
             </#if>
         </Id>
         <Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+            <Tp>
+                <Cd>CACC</Cd>
+            </Tp>
+        </#if>
     </DbtrAcct>
     <#-- DM: Looks like this requires Mmbid, PstlAdr (country), BrnchId?, id,   -->
     <DbtrAgt>
@@ -120,9 +148,9 @@
                 </Othr>
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
-                <ClrSysMmbId>
-                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
-                </ClrSysMmbId>
+            <ClrSysMmbId>
+                <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
+            </ClrSysMmbId>
             <PstlAdr>
                 <Ctry></Ctry>
                 <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
@@ -248,7 +276,17 @@
 	            </Dtls>
 	        </RgltryRptg>
         </#if>
-
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+            <Tax>
+                <TaxTp></TaxTp>
+                <Dt></Dt>
+                <Rcrd>
+                    <Ctgy></Ctgy>
+                    <CertId></CertId>
+                    <TaxAmt></TaxAmt>
+                </Rcrd>
+            </Tax>
+        </#if>
         <RmtInf>
             <Strd>
                 <RfrdDocInf>
