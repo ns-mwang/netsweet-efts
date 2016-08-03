@@ -18,10 +18,10 @@
         <Id>
             <OrgId>
             	<#-- Payment Types That Use BICOrBEI -->
-        	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") && cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+        	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
                 <BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>
                 <#-- Payment Types That Use BANK COMP ID -->
-        	<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") && cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
+        	<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
                 <Othr>
                     <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
                 </Othr>
