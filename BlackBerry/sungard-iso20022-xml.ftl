@@ -19,15 +19,15 @@
             <OrgId>
             	<#-- Payment Types That Use BICOrBEI -->
         	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
-                <BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>
+                <BIOCrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BIOCrBEI>
                 <#-- Payment Types That Use BANK COMP ID -->
         	<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
                 <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
                 </Othr>
                 <#else>
                 <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
                 </Othr>
                 </#if>
             </OrgId>
