@@ -306,12 +306,7 @@
                 </RfrdDocInf>
                 <RfrdDocAmt>
                     <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                    <#if transaction.discountamount?has_content>
-                    	<Test>transaction.discountamount</Test>
-                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
-                    <#else>
-                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(0,"dec")}</DscntApldAmt>
-                    </#if>
+                    <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
             </Strd>
