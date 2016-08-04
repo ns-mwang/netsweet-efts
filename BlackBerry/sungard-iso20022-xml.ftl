@@ -63,17 +63,20 @@
             <#else> <#-- Catch all Other Payment Types -->
             <Cd>NURG</Cd>
             </#if>
-        </SvcLvl>
-        <#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
-            <LclInstrm>
-                <Cd>CTX</Cd>
-            </LclInstrm>
-        <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
         	<Prtry>NORM</Prtry>
-        </#if>
-            <CtgyPurp>
-                <Cd>SUPP</Cd>
-            </CtgyPurp>
+       		</#if>
+        </SvcLvl>
+        <LclInstrm>
+        	<#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
+        	<Cd>CTX</Cd>
+        	<#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
+        	<Cd>CCD</Cd>
+        	</#if>
+        </LclInstrm>
+        <CtgyPurp>
+        	<Cd>SUPP</Cd>
+        </CtgyPurp>
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
