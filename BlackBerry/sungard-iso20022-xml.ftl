@@ -19,7 +19,7 @@
             <OrgId>
             	<#-- Payment Types That Use BICOrBEI -->
         	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
-                <BIOCrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BIOCrBEI>
+                <BICOrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BICOrBEI>
                 <#-- Payment Types That Use BANK COMP ID -->
         	<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
                 <Othr>
@@ -52,7 +52,7 @@
             <#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" ||
                  transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE_CANADA" ||
                  transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
-                 transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">-->
+                 transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">
             <Cd>URGP</Cd>
             <#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
             <Cd>SEPA</Cd>
@@ -60,21 +60,20 @@
             <Cd>NURG</Cd>
             <#elseif transaction.custbody_bb_vb_prr_type == "ACH-CTX">
             <Cd>NURG</Cd>
+            <#else> <#-- Catch all Other Payment Types -->
+            <Cd>NURG</Cd>
+            </#if>
+        </SvcLvl>
+        <#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
             <LclInstrm>
                 <Cd>CTX</Cd>
             </LclInstrm>
-            <#else>
-                <Cd>NURG</Cd>
-            </#if>
-        	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-                <Prtry>NORM</Prtry>
-            </#if>
-        </SvcLvl>
-        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+        <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+        	<Prtry>NORM</Prtry>
+        </#if>
             <CtgyPurp>
                 <Cd>SUPP</Cd>
             </CtgyPurp>
-        </#if>
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
@@ -82,11 +81,10 @@
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
-            <StrNm>${cbank.custrecord_2663_subsidiary.address1}</StrNm>
+            <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
             <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
             <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
-            
            <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
            <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
         </PstlAdr>
@@ -152,7 +150,6 @@
                 <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
             <PstlAdr>
-                <Ctry></Ctry>
                 <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
                 <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
                 <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
