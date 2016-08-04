@@ -113,7 +113,7 @@
                     <Othr>
                         <Id>7350020000</Id>
                         <SchmeNm>
-                            <Cd>BANK></Cd>
+                            <Cd>BANK</Cd>
                         </SchmeNm>
                     </Othr>
                 </OrgId>
