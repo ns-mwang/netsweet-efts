@@ -152,14 +152,15 @@
             <ClrSysMmbId>
                 <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
+            <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
             <PstlAdr>
-                <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
                 <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
                 <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
-                <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine>
+                <#-- DM: Commenting this out because throws error when blank -->
+                <#-- <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine> -->
             </PstlAdr>
-		</FinInstnId>
+	</FinInstnId>
     </DbtrAgt>
     <CdtTrfTxInf>
         <PmtId>
