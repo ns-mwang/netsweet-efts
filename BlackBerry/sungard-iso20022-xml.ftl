@@ -87,7 +87,9 @@
             <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
             <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
-            <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+            <#if getStateCode(cbank.custrecord_2663_subsidiary.state)?has_content>
+                <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+            </#if>
            <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
            <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
         </PstlAdr>
@@ -204,8 +206,8 @@
                 	<TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
                 	<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
                 	<AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
-                	<#if transaction.custbody_bb_vb_ebd_stateprov?has_content>
-                	<CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                	<#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
+                		<CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
                 	</#if>
                 </PstlAdr>
             </FinInstnId>
@@ -216,7 +218,7 @@
             <#-- DM: Postal Address Ctry listed as R, added -->
             <PstlAdr>
                 <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
-                <#if entity.billstate?has_content >
+                <#if getStateCode(entity.billstate)?has_content >
                 	<CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
                 </#if>
             </PstlAdr>
@@ -306,7 +308,11 @@
                 </RfrdDocInf>
                 <RfrdDocAmt>
                     <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                    <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
+                    <#if formatAmount(transaction.discountamount)?has_content>
+                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
+                    <#else>
+                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">0</DscntApldAmt>
+                    </#if>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
             </Strd>
