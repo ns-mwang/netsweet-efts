@@ -135,12 +135,12 @@
                 </Othr>
             </#if>
         </Id>
-        <Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
-        <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+         <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
         <Tp>
             <Cd>CACC</Cd>
         </Tp>
         </#if>
+        <Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
     </DbtrAcct>
     <#-- DM: Looks like this requires Mmbid, PstlAdr (country), BrnchId?, id,   -->
     <DbtrAgt>
