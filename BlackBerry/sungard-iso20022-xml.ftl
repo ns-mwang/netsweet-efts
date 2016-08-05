@@ -20,14 +20,14 @@
                 <#-- Payment Types That Use BICOrBEI -->
             <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
                 <BICOrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BICOrBEI>
-                <#-- Payment Types That Use BANK COMP ID -->
+                <#-- Payment Types That Use BANK Othr/Id -->
             <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
                 <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_num}</Id>
                 </Othr>
                 <#else>
                 <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_num}</Id>
                 </Othr>
                 </#if>
             </OrgId>
