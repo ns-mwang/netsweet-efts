@@ -17,11 +17,11 @@
     <InitgPty>
         <Id>
             <OrgId>
-            	<#-- Payment Types That Use BICOrBEI -->
-        	<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+                <#-- Payment Types That Use BICOrBEI -->
+            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC") || cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
                 <BICOrBEI>${cbank.custpage_eft_custrecord_2663_bank_num}</BICOrBEI>
                 <#-- Payment Types That Use BANK COMP ID -->
-        	<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
+            <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") || cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
                 <Othr>
                     <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
                 </Othr>
@@ -64,20 +64,20 @@
             <Cd>NURG</Cd>
             </#if>
             <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-        	<Prtry>NORM</Prtry>
-       		</#if>
+            <Prtry>NORM</Prtry>
+            </#if>
         </SvcLvl>
         <#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
         <LclInstrm>
-        	<Cd>CTX</Cd>
-       	</LclInstrm>
+            <Cd>CTX</Cd>
+        </LclInstrm>
         <#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
-       	<LclInstrm>
-        	<Cd>CCD</Cd>
-       	</LclInstrm>
+        <LclInstrm>
+            <Cd>CCD</Cd>
+        </LclInstrm>
         </#if>
         <CtgyPurp>
-        	<Cd>SUPP</Cd>
+            <Cd>SUPP</Cd>
         </CtgyPurp>
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
@@ -109,7 +109,7 @@
                     </Othr>
                 </OrgId>
             </Id>
-	    </#if> -->
+        </#if> -->
         <#-- DM: <Id> and sub components are O? -->
         <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
             <Id>
@@ -137,24 +137,24 @@
         </Id>
         <Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
         <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
-            <Tp>
-                <Cd>CACC</Cd>
-            </Tp>
+        <Tp>
+            <Cd>CACC</Cd>
+        </Tp>
         </#if>
     </DbtrAcct>
     <#-- DM: Looks like this requires Mmbid, PstlAdr (country), BrnchId?, id,   -->
     <DbtrAgt>
         <FinInstnId>
-        	<#if cbank.custpage_eft_custrecord_2663_bic?has_content>
+            <#if cbank.custpage_eft_custrecord_2663_bic?has_content>
                 <BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
             <#else>
                 <Othr>
-                	<Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
                 </Othr>
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
             <ClrSysMmbId>
-                <MmbId>${cbank.custrecord_2663_bank_code}</MmbId>
+                <MmbId>${cbank.custpage_eft_custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
             <PstlAdr>
@@ -164,7 +164,7 @@
                 <#-- DM: Commenting this out because throws error when blank -->
                 <#-- <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine> -->
             </PstlAdr>
-	</FinInstnId>
+    </FinInstnId>
     </DbtrAgt>
     <CdtTrfTxInf>
         <PmtId>
@@ -204,13 +204,13 @@
                 </ClrSysMmbId>
                 <#--<Nm>Bank Name TBD</Nm>-->
                 <PstlAdr>
-                	<PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
-                	<TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
-                	<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
-                	<AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
-                	<#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
-                		<CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
-                	</#if>
+                    <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
+                    <TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
+                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                    <AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
+                    <#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
+                        <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                    </#if>
                 </PstlAdr>
             </FinInstnId>
         </CdtrAgt>
@@ -221,7 +221,7 @@
             <PstlAdr>
                 <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
                 <#if getStateCode(entity.billstate)?has_content >
-                	<CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
+                    <CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
                 </#if>
             </PstlAdr>
             <#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
@@ -237,83 +237,83 @@
             </Id>
             </#if>
             <#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1")>
-	            <CtryOfRes>ID</CtryOfRes>
-	            <#-- For local payment currency -->
-	            <#if getCurrencySymbol(payment.currency) == "IDR">
-		            <Id>
-		                <OrgId>
-		                <#-- DON'T THINK THESE SHOULD BE HARDCODED IS ID EMPTY?? -->
-		                    <Othr>
-		                        
-		                        <#if entity.billcountry == "Indonesia">
-		                        	<#if entity.isperson == "No">
-		                        		<Issr>/SKN/21</Issr>
-		                        	<#else>
-		                        		<Issr>/SKN/11</Issr>
-		                        	</#if>
-		                        <#else>
-		                        	<#if entity.isperson == "No">
-		                        		<Issr>/SKN/22</Issr>
-		                        	<#else>
-		                        		<Issr>/SKN/12</Issr>
-		                        	</#if>
-		                        </#if>
-		                    </Othr>
-		                </OrgId>
-		            </Id>
-		        </#if>
-	        </#if>
+                <CtryOfRes>ID</CtryOfRes>
+                <#-- For local payment currency -->
+                <#if getCurrencySymbol(payment.currency) == "IDR">
+                    <Id>
+                        <OrgId>
+                        <#-- DON'T THINK THESE SHOULD BE HARDCODED IS ID EMPTY?? -->
+                            <Othr>
+                                
+                                <#if entity.billcountry == "Indonesia">
+                                    <#if entity.isperson == "No">
+                                        <Issr>/SKN/21</Issr>
+                                    <#else>
+                                        <Issr>/SKN/11</Issr>
+                                    </#if>
+                                <#else>
+                                    <#if entity.isperson == "No">
+                                        <Issr>/SKN/22</Issr>
+                                    <#else>
+                                        <Issr>/SKN/12</Issr>
+                                    </#if>
+                                </#if>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </#if>
+            </#if>
         </Cdtr>
         <CdtrAcct>
-	        <#--Check if entity has IBAN number (European Banks)-->
-	        <#if transaction.custbody_bb_vb_prr_type == "SEPA">
-	            <Id>
-	                <IBAN>${transaction.custbody_bb_vb_ebd_iban}</IBAN>
-	            </Id>
-	        <#else>
-	                <Id>
-	                    <Othr>
-	                        <Id>${transaction.custbody_bb_vb_ebd_bank_acct}</Id>
-	                    </Othr>
-	                </Id>
-	        </#if>
+            <#--Check if entity has IBAN number (European Banks)-->
+            <#if transaction.custbody_bb_vb_prr_type == "SEPA">
+                <Id>
+                    <IBAN>${transaction.custbody_bb_vb_ebd_iban}</IBAN>
+                </Id>
+            <#else>
+                    <Id>
+                        <Othr>
+                            <Id>${transaction.custbody_bb_vb_ebd_bank_acct}</Id>
+                        </Othr>
+                    </Id>
+            </#if>
         </CdtrAcct>
 
-		<#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && 
-		getCurrencySymbol(payment.currency) != "IDR">
-			<RgltryRptg>
-			<#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
-	            <Dtls>
-	            <#if entity.isperson == "No">
-            		<Tp>E0N</Tp>
-		        <#else>
-	                <Tp>E1N</Tp>
-	            </#if>
-	                <Cd></Cd>
-	            </Dtls>
-	        </RgltryRptg>
+        <#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && 
+        getCurrencySymbol(payment.currency) != "IDR">
+            <RgltryRptg>
+            <#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
+                <Dtls>
+                <#if entity.isperson == "No">
+                    <Tp>E0N</Tp>
+                <#else>
+                    <Tp>E1N</Tp>
+                </#if>
+                    <Cd></Cd>
+                </Dtls>
+            </RgltryRptg>
         </#if>
         <RmtInf>
             <Strd>
                 <RfrdDocInf>
                     <Tp>
-                    	<CdOrPrtry>
-                    		<Cd>CINV</Cd> <#-- DM: Should this be hard coded? MW: I believe this is a static setting for the bank -->
-                    	</CdOrPrtry>
+                        <CdOrPrtry>
+                            <Cd>CINV</Cd> <#-- DM: Should this be hard coded? MW: I believe this is a static setting for the bank -->
+                        </CdOrPrtry>
                     </Tp>
-                	<#if getCurrencySymbol(payment.currency) == "JPY">
-                   		<Nb>NNKNI</Nb>
-                	<#else>
-                		<Nb>SOLT02001038</Nb>
-                	</#if>
+                    <#if getCurrencySymbol(payment.currency) == "JPY">
+                        <Nb>NNKNI</Nb>
+                    <#else>
+                        <Nb>SOLT02001038</Nb>
+                    </#if>
                     <RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
                 </RfrdDocInf>
                 <RfrdDocAmt>
                     <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
                     <#if formatAmount(transaction.discountamount)?has_content>
-                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
+                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
                     <#else>
-                    	<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">0</DscntApldAmt>
+                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">0</DscntApldAmt>
                     </#if>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
