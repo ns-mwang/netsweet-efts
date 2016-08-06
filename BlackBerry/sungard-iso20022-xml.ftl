@@ -279,8 +279,7 @@
             </#if>
         </CdtrAcct>
 
-        <#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && 
-        getCurrencySymbol(payment.currency) != "IDR">
+        <#if ransaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && getCurrencySymbol(payment.currency) != "IDR">
             <RgltryRptg>
             <#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
                 <Dtls>
@@ -310,10 +309,10 @@
                 </RfrdDocInf>
                 <RfrdDocAmt>
                     <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                    <#if formatAmount(transaction.discountamount)?has_content>
+                    <#if formatAmount(transaction.discountamount, "dec") gt 0>
                         <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
                     <#else>
-                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">0</DscntApldAmt>
+                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(0, "dec")}</DscntApldAmt>
                     </#if>
                     <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
                 </RfrdDocAmt>
