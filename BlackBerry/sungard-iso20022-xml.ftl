@@ -3,6 +3,7 @@
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
+
 <#-- template building -->
 #OUTPUT START#
 <?xml version="1.0" encoding="UTF-8"?>
@@ -10,7 +11,7 @@
 <CstmrCdtTrfInitn>
 
 <GrpHdr>
-    <MsgId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
+    <MsgId>${cbank.custrecord_2663_file_name_prefix?replace("_", "-")}${pfa.id}-${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
     <CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
     <NbOfTxs>${payments?size?c}</NbOfTxs>
     <CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
@@ -88,7 +89,9 @@
         <PstlAdr>
             <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            <#if cbank.custrecord_2663_subsidiary.city?has_content>
             <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
+            </#if>
             <#if getStateCode(cbank.custrecord_2663_subsidiary.state)?has_content>
                 <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
             </#if>
@@ -159,7 +162,9 @@
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
             <PstlAdr>
                 <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+                <#if cbank.custpage_eft_custrecord_2663_bank_city?has_content>
                 <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
+                </#if>
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
                 <#-- DM: Commenting this out because throws error when blank -->
                 <#-- <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine> -->
@@ -179,16 +184,9 @@
 
         <CdtrAgt>
             <FinInstnId>
-                <#if transaction.custbody_bb_vb_prr_type == "SEPA">
+                <#if transaction.custbody_bb_vb_ebd_swift_code?has_content>
                     <BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
-                <#else>
-                    <Othr>
-                        <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
-                    </Othr>
-                </#if>
-                
-                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
-                <ClrSysMmbId>
+                    <ClrSysMmbId>
                     <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
                         <#if getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "US">
                             <ClrSysId>
@@ -202,10 +200,22 @@
                     </#if>
                     <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
                 </ClrSysMmbId>
-                <#--<Nm>Bank Name TBD</Nm>-->
+                <#else>
+                    <Othr>
+                        <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
+                    </Othr>
+                </#if>
+                
+                <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+                
+                <Nm>${transaction.custbody_bb_vb_ebd_en_bk_det_ref}</Nm>
                 <PstlAdr>
+                    <#if transaction.custbody_bb_vb_ebd_zip_pc?has_content>
                     <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
+                    </#if>
+                    <#if transaction.custbody_bb_vb_ebd_city?has_content>
                     <TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
+                    </#if>
                     <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
                     <AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
                     <#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
