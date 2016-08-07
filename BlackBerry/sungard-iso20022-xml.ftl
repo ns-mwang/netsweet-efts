@@ -44,7 +44,7 @@
     <#assign entity = entities[payment_index]>
     <#list paidTransactions as transaction><#-- Looping through each vendor bill in the bill payment record -->
 <PmtInf>
-    <PmtInfId>${cbank.custrecord_2663_file_name_prefix}${pfa.id}_${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
+    <PmtInfId>${cbank.custrecord_2663_file_name_prefix?replace("_","-")}${pfa.id}-${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</PmtInfId> <#-- Format = RBS_PFA.ID_TotalPaymentCount (In this EFT File) -->
     <PmtMtd>TRF</PmtMtd>
     <NbOfTxs>1</NbOfTxs>
     <#-- Number of transactions will always be 1. One Bill per Payment<PmtInf> -->
@@ -174,8 +174,8 @@
     <CdtTrfTxInf>
         <PmtId>
             <#-- InstrId is O -->
-            <InstrId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
-            <EndToEndId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
+            <InstrId>${cbank.custrecord_2663_file_name_prefix?replace("_","-")}${payment.tranid}-${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
+            <EndToEndId>${cbank.custrecord_2663_file_name_prefix?replace("_","-")}${payment.tranid}-${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
         </PmtId>
         <#-- DM: PmTpInf listed as R, but is present at PaymentInformation, so not needed  -->
         <Amt>
@@ -324,7 +324,7 @@
                     <#else>
                         <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(0, "dec")}</DscntApldAmt>
                     </#if>
-                    <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
+                    <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal?string?number, "dec")}</TaxAmt>
                 </RfrdDocAmt>
             </Strd>
         </RmtInf>
