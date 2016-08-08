@@ -50,10 +50,12 @@
     <#-- Number of transactions will always be 1. One Bill per Payment<PmtInf> -->
     <PmtTpInf>
         <SvcLvl>
-            <#if transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE" ||
-                 transaction.custbody_bb_vb_prr_type == "DOMESTIC_WIRE_CANADA" ||
-                 transaction.custbody_bb_vb_prr_type == "DOSMESTIC_WIRE_US" ||
-                 transaction.custbody_bb_vb_prr_type == "FOREIGN_WIRE">
+            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+            <Prtry>NORM</Prtry>
+            <#elseif transaction.custbody_bb_vb_prr_type == "DOMESTIC WIRE" ||
+                 transaction.custbody_bb_vb_prr_type == "DOMESTIC WIRE CANADA" ||
+                 transaction.custbody_bb_vb_prr_type == "DOSMESTIC WIRE US" ||
+                 transaction.custbody_bb_vb_prr_type == "FOREIGN WIRE">
             <Cd>URGP</Cd>
             <#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
             <Cd>SEPA</Cd>
@@ -63,9 +65,6 @@
             <Cd>NURG</Cd>
             <#else> <#-- Catch all Other Payment Types -->
             <Cd>NURG</Cd>
-            </#if>
-            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-            <Prtry>NORM</Prtry>
             </#if>
         </SvcLvl>
         <#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
@@ -88,7 +87,9 @@
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
             <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
+            <#if cbank.custrecord_2663_subsidiary.zip?has_content>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
+            </#if>
             <#if cbank.custrecord_2663_subsidiary.city?has_content>
             <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
             </#if>
@@ -157,6 +158,9 @@
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
             <ClrSysMmbId>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <ClrSysId>CACPA</ClrSysId>
+                </#if>
                 <MmbId>${cbank.custpage_eft_custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
