@@ -159,7 +159,9 @@
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
             <ClrSysMmbId>
                 <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-                <ClrSysId>CACPA</ClrSysId>
+                <ClrSysId>
+                	<Cd>CACPA</Cd>
+                </ClrSysId>
                 </#if>
                 <MmbId>${cbank.custpage_eft_custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
