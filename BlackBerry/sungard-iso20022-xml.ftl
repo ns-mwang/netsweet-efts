@@ -4,6 +4,17 @@
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 
+<#-- functions -->
+<#function convertCharSet text>
+<#assign value = text>
+<#assign value = value?replace('&','+')>
+<#assign value = value?replace('*','.')>
+<#assign value = value?replace('$','.')>
+<#assign value = value?replace('%','.')>
+<#assign value = convertToLatinCharSet(value)>
+<#return value>
+</#function>
+
 <#-- template building -->
 #OUTPUT START#
 <?xml version="1.0" encoding="UTF-8"?>
@@ -82,7 +93,7 @@
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
-        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+        <Nm>${setMaxLength(convertCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
@@ -232,7 +243,7 @@
         </CdtrAgt>
         <Cdtr>
             <#-- DM: MISSING: Need either PrvtId OR orgID -->
-            <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
+            <Nm>${setMaxLength(convertCharSet(buildEntityName(entity)),70)}</Nm>
             <#-- DM: Postal Address Ctry listed as R, added -->
             <PstlAdr>
                 <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
