@@ -2,9 +2,7 @@
 <#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
-<#assign totalAmount = computeTotalAmount(payments)>
 
-<#-- functions -->
 <#function convertCharSet text>
 <#assign value = text>
 <#assign value = value?replace('&','+')>
@@ -15,12 +13,14 @@
 <#return value>
 </#function>
 
+<#assign totalAmount = computeTotalAmount(payments)>
+
 <#-- template building -->
 #OUTPUT START#
 <?xml version="1.0" encoding="UTF-8"?>
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
 <CstmrCdtTrfInitn>
-
+<#escape x as x?xml>
 <GrpHdr>
     <MsgId>${cbank.custrecord_2663_file_name_prefix?replace("_", "-")}${pfa.id}-${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
     <CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
@@ -93,7 +93,7 @@
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
-        <Nm>${setMaxLength(convertCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <PstlAdr>
@@ -178,7 +178,10 @@
             </ClrSysMmbId>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
             <PstlAdr>
+            	<#if cbank.custpage_eft_custrecord_2663_bank_zip?has_content>
                 <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+            	</#if>
+                
                 <#if cbank.custpage_eft_custrecord_2663_bank_city?has_content>
                 <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
                 </#if>
@@ -243,7 +246,7 @@
         </CdtrAgt>
         <Cdtr>
             <#-- DM: MISSING: Need either PrvtId OR orgID -->
-            <Nm>${setMaxLength(convertCharSet(buildEntityName(entity)),70)}</Nm>
+            <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
             <#-- DM: Postal Address Ctry listed as R, added -->
             <PstlAdr>
                 <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
@@ -351,4 +354,5 @@
 </#list>
 </CstmrCdtTrfInitn>
 </Document><#rt>
+</#escape>
 #OUTPUT END#
