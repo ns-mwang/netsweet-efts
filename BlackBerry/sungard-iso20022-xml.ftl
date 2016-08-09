@@ -96,6 +96,7 @@
         <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
+        <#if cbank.custrecord_2663_subsidiary.country?has_content>
         <PstlAdr>
             <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
             <#if cbank.custrecord_2663_subsidiary.zip?has_content>
@@ -110,6 +111,7 @@
            <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
            <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
         </PstlAdr>
+        </#if>
 
         <#-- VAT NUMBER NOT ON ROOT SUB RECORD -->
 
@@ -168,6 +170,7 @@
                 </Othr>
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
+            <#if cbank.custpage_eft_custrecord_2663_bank_code?has_content>
             <ClrSysMmbId>
                 <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
                 <ClrSysId>
@@ -176,12 +179,13 @@
                 </#if>
                 <MmbId>${cbank.custpage_eft_custrecord_2663_bank_code}</MmbId>
             </ClrSysMmbId>
+            </#if>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
+            <#if cbank.custpage_eft_custrecord_2663_bank_country?has_content>
             <PstlAdr>
             	<#if cbank.custpage_eft_custrecord_2663_bank_zip?has_content>
-                <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+            	<PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
             	</#if>
-                
                 <#if cbank.custpage_eft_custrecord_2663_bank_city?has_content>
                 <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
                 </#if>
@@ -189,13 +193,14 @@
                 <#-- DM: Commenting this out because throws error when blank -->
                 <#-- <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine> -->
             </PstlAdr>
+            </#if>
     </FinInstnId>
     </DbtrAgt>
     <CdtTrfTxInf>
         <PmtId>
             <#-- InstrId is O -->
-            <InstrId>${cbank.custrecord_2663_file_name_prefix?replace("_","-")}${payment.tranid}-${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
-            <EndToEndId>${cbank.custrecord_2663_file_name_prefix?replace("_","-")}${payment.tranid}-${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
+            <InstrId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
+            <EndToEndId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
         </PmtId>
         <#-- DM: PmTpInf listed as R, but is present at PaymentInformation, so not needed  -->
         <Amt>
@@ -206,6 +211,7 @@
             <FinInstnId>
                 <#if transaction.custbody_bb_vb_ebd_swift_code?has_content>
                     <BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
+                    <#if transaction.custbody_bb_vb_ebd_loc_clr_cd?has_content>
                     <ClrSysMmbId>
                     <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
                         <#if getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "US">
@@ -220,6 +226,7 @@
                     </#if>
                     <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
                 </ClrSysMmbId>
+                	</#if>
                 <#else>
                     <Othr>
                         <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
@@ -229,6 +236,7 @@
                 <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
                 
                 <Nm>${transaction.custbody_bb_vb_ebd_en_bk_det_ref}</Nm>
+                <#if transaction.custbody_bb_vb_ebd_acct_cnt?has_content>
                 <PstlAdr>
                     <#if transaction.custbody_bb_vb_ebd_zip_pc?has_content>
                     <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
@@ -237,23 +245,28 @@
                     <TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
                     </#if>
                     <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                    <#if transaction.custbody_bb_vb_ebd_address?has_content>
                     <AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
+                    </#if>
                     <#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
-                        <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                    <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
                     </#if>
                 </PstlAdr>
+                </#if>
             </FinInstnId>
         </CdtrAgt>
         <Cdtr>
             <#-- DM: MISSING: Need either PrvtId OR orgID -->
             <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
             <#-- DM: Postal Address Ctry listed as R, added -->
+            <#if entity.billcountry?has_content>
             <PstlAdr>
                 <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
                 <#if getStateCode(entity.billstate)?has_content >
                     <CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
                 </#if>
             </PstlAdr>
+            </#if>
             <#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
             <Id>
                 <OrgId>
