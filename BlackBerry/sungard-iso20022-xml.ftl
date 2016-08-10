@@ -13,6 +13,52 @@
 <#return value>
 </#function>
 
+<#function getDbtrMmbId>
+	<#assign bank = cbank.custrecord_2663_file_name_prefix>
+	<#assign country = getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)>
+	<#assign rtnum = cbank.custpage_eft_custrecord_2663_bank_code>
+	<#assign abanum = cbank.custpage_eft_custrecord_bb_2663_us_aba>
+
+
+	<#if bank?starts_with("RBC")>
+		<#return rtnum>
+
+	<#elseif bank?starts_with("WF")>
+		<#if country == "US">
+			<#if abanum?has_content>
+				<#return "USABA" + abanum>
+			<#else>
+				<#return "">
+			</#if>
+		<#elseif country == "CA">
+			<#if rtnum?has_content>
+				<#return "CACPA" + rtnum>
+			<#else>
+				<#return "">
+			</#if>
+		<#else>
+			<#if rtnum?has_content>
+				<#return country + "PID" + rtnum>
+			<#else>
+				<#return "">
+			</#if>
+		</#if>
+
+	<#elseif bank?starts_with("BOFA")>
+		<#if country == "US">
+			<#return abanum>
+		<#else>
+			<#return rtnum>
+		</#if>
+
+	<#elseif bank?starts_with("HSBC")>
+		<#return rtnum>
+
+	<#else>
+		<#return rtnum>
+	</#if>
+</#function>
+
 <#assign totalAmount = computeTotalAmount(payments)>
 
 <#-- template building -->
@@ -113,6 +159,27 @@
         </PstlAdr>
         </#if>
 
+        <#if cbank.custpage_eft_custrecord_2663_bank_comp_id?has_content>
+        	<Id>
+        		<OrgId>
+        			<Othr>
+        				<Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
+        				<#if cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
+        				<SchmeNm>
+        					<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+        						<Prtry>BANK</Prtry>
+        					<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA")>
+        						<Prtry>CHID</Prtry>
+        					<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+        						<Prtry>ACH</Prtry>
+        					</#if>
+        				</SchmeNm>
+        				</#if>
+        			</Othr>
+        		</OrgId>
+        	</Id>
+        </#if>
+
         <#-- VAT NUMBER NOT ON ROOT SUB RECORD -->
 
         <#-- <#if cbank.custrecord_2663_subsidiary.federalidnumber)?has_content>
@@ -128,18 +195,6 @@
             </Id>
         </#if> -->
         <#-- DM: <Id> and sub components are O? -->
-        <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-            <Id>
-                <OrgId>
-                    <Othr>
-                        <Id>7350020000</Id>
-                        <SchmeNm>
-                            <Cd>BANK</Cd>
-                        </SchmeNm>
-                    </Othr>
-                </OrgId>
-            </Id>
-        </#if>
     </Dbtr>
     <DbtrAcct>
         <Id>
@@ -170,14 +225,14 @@
                 </Othr>
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
-            <#if cbank.custpage_eft_custrecord_2663_bank_code?has_content>
+            <#if getDbtrMmbId()?has_content>
             <ClrSysMmbId>
                 <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
                 <ClrSysId>
                 	<Cd>CACPA</Cd>
                 </ClrSysId>
                 </#if>
-                <MmbId>${cbank.custpage_eft_custrecord_2663_bank_code}</MmbId>
+                <MmbId>${getDbtrMmbId()}</MmbId>
             </ClrSysMmbId>
             </#if>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
