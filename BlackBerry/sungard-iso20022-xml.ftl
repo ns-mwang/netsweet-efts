@@ -2,75 +2,91 @@
 <#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
 <#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
 <#-- cached values -->
+<#-- <#ftl output_format="XML" auto_esc=true /> -->
+<#assign clrcodeMap = {
+                        "AT": "ATBLZ",
+                        "AU": "AUBSB",
+                        "CA": "CACPA",
+                        "CH": "CHBCC",
+                        "CN": "CNAPS",
+                        "DE": "DEBLZ",
+                        "ES": "ESNCC",
+                        "GB": "GBDSC",
+                        "GR": "GRBIC",
+                        "HK": "HKNCC",
+                        "IE": "IENCC",
+                        "IN": "INFSC",
+                        "IT": "ITNCC",
+                        "JP": "JPZGN",
+                        "NZ": "NZNCC",
+                        "PL": "PLKNR",
+                        "PT": "PTNCC",
+                        "RU": "RUCBC",
+                        "SE": "SESBA",
+                        "SG": "SGIBG",
+                        "TH": "THCBC",
+                        "TW": "TWNCC",
+                        "US": "USABA",
+                        "ZA": "ZANCC"
+                        }
+>
 
-<#function convertCharSet text>
-<#assign value = text>
-<#assign value = value?replace('&','+')>
-<#assign value = value?replace('*','.')>
-<#assign value = value?replace('$','.')>
-<#assign value = value?replace('%','.')>
-<#assign value = convertToLatinCharSet(value)>
-<#return value>
+<#function filterSpecialChars string>
+    <#local specialChars = {
+        "’": "&apos;",
+        "–":"-"
+    }
+    >
+    <#list specialChars?keys as char>
+        <#local string = string?replace(char, specialChars[char])>
+    </#list>
+    <#return string>
 </#function>
+
+<#assign compBankCtry = getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)>
+<#assign entBankCtry = getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)>
+<#-- This will change, need to map country External ISO Code, then figure out if it's concatenated (WF) or placed in <Cd> (All others) -->
 
 <#function getDbtrMmbId>
-	<#assign bank = cbank.custrecord_2663_file_name_prefix>
-	<#assign country = getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)>
-	<#assign rtnum = cbank.custpage_eft_custrecord_2663_bank_code>
-	<#assign abanum = cbank.custpage_eft_custrecord_bb_2663_us_aba>
-
-
-	<#if bank?starts_with("RBC")>
-		<#return rtnum>
-
-	<#elseif bank?starts_with("WF")>
-		<#if country == "US">
-			<#if abanum?has_content>
-				<#return "USABA" + abanum>
-			<#else>
-				<#return "">
-			</#if>
-		<#elseif country == "CA">
-			<#if rtnum?has_content>
-				<#return "CACPA" + rtnum>
-			<#else>
-				<#return "">
-			</#if>
-		<#else>
-			<#if rtnum?has_content>
-				<#return country + "PID" + rtnum>
-			<#else>
-				<#return "">
-			</#if>
-		</#if>
-
-	<#elseif bank?starts_with("BOFA")>
-		<#if country == "US">
-			<#return abanum>
-		<#else>
-			<#return rtnum>
-		</#if>
-
-	<#elseif bank?starts_with("HSBC")>
-		<#return rtnum>
-
-	<#else>
-		<#return rtnum>
-	</#if>
+    <#assign rtnum = cbank.custpage_eft_custrecord_2663_bank_code>
+    <#assign abacode = cbank.custpage_eft_custrecord_bb_2663_us_aba>
+    <#assign country = cbank.custpage_eft_custrecord_bb_2663_bank_country>
+    
+    <#if abacode?has_content && country == "US">
+        <#return abacode>
+    <#elseif rtnum?has_content>
+        <#return rtnum>
+    <#else>
+        <#return "">
+    </#if>
 </#function>
 
+<#function getCdtrMmbId>
+    <#return transaction.custbody_bb_vb_ebd_loc_clr_cd>
+</#function>
+
+<#function getTranCount>
+<#assign tranCount = 0>
+    <#list payments as payment>
+        <#assign tranCount = tranCount + transHash[payment.internalid]?size>
+    </#list>
+<#return tranCount>
+</#function>
 <#assign totalAmount = computeTotalAmount(payments)>
 
 <#-- template building -->
 #OUTPUT START#
+<#escape x as x?xml>
 <?xml version="1.0" encoding="UTF-8"?>
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
 <CstmrCdtTrfInitn>
-<#escape x as x?xml>
+
 <GrpHdr>
     <MsgId>${cbank.custrecord_2663_file_name_prefix?replace("_", "-")}${pfa.id}-${pfa.custrecord_2663_process_date?date?string("yyyyMMdd")}</MsgId> <#--Max Length = 35;Format = -->
     <CreDtTm>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyy-MM-dd")}T${pfa.custrecord_2663_file_creation_timestamp?time?string("HH:mm:ss")}</CreDtTm>
-    <NbOfTxs>${payments?size?c}</NbOfTxs>
+    <#-- transHash[payment.internalid]?size -->
+    
+    <NbOfTxs>${getTranCount()}</NbOfTxs>
     <CtrlSum>${formatAmount(totalAmount,"dec")}</CtrlSum>
     <InitgPty>
         <Id>
@@ -107,21 +123,40 @@
     <#-- Number of transactions will always be 1. One Bill per Payment<PmtInf> -->
     <PmtTpInf>
         <SvcLvl>
-            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-            <Prtry>NORM</Prtry>
-            <#elseif transaction.custbody_bb_vb_prr_type == "DOMESTIC WIRE" ||
+            <#if transaction.custbody_bb_vb_prr_type == "DOMESTIC WIRE" ||
                  transaction.custbody_bb_vb_prr_type == "DOMESTIC WIRE CANADA" ||
                  transaction.custbody_bb_vb_prr_type == "DOSMESTIC WIRE US" ||
-                 transaction.custbody_bb_vb_prr_type == "FOREIGN WIRE">
-            <Cd>URGP</Cd>
+                 transaction.custbody_bb_vb_prr_type == "FOREIGN WIRE" ||
+                 transaction.custbody_bb_vb_prr_type == "INTERNATIONAL WIRE">
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>URGP</Prtry>
+                <#else>
+                <Cd>URGP</Cd>
+                </#if>
             <#elseif transaction.custbody_bb_vb_prr_type == "SEPA">
-            <Cd>SEPA</Cd>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>SEPA</Prtry>
+                <#else>
+                <Cd>SEPA</Cd>
+                </#if>
             <#elseif transaction.custbody_bb_vb_prr_type == "ACH-CCD">
-            <Cd>NURG</Cd>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>NORM</Prtry>
+                <#else>
+                <Cd>NURG</Cd>
+                </#if>
             <#elseif transaction.custbody_bb_vb_prr_type == "ACH-CTX">
-            <Cd>NURG</Cd>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>NORM</Prtry>
+                <#else>
+                <Cd>NURG</Cd>
+                </#if>
             <#else> <#-- Catch all Other Payment Types -->
-            <Cd>NURG</Cd>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <Prtry>NORM</Prtry>
+                <#else>
+                <Cd>NURG</Cd>
+                </#if>
             </#if>
         </SvcLvl>
         <#if transaction.custbody_bb_vb_prr_type == "ACH-CTX">
@@ -139,61 +174,68 @@
     </PmtTpInf>
     <ReqdExctnDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</ReqdExctnDt>
     <Dbtr>
-        <Nm>${setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name),70)}</Nm>
+        <Nm>${filterSpecialChars(setMaxLength(convertToLatinCharSet(cbank.custrecord_2663_legal_name)?xml,70))}</Nm>
         <#-- DM: Added country field -->
         <#-- I don't think this should be Company Bank, I think it should be subsidiary address -->
         <#if cbank.custrecord_2663_subsidiary.country?has_content>
         <PstlAdr>
-            <StrtNm>${cbank.custrecord_2663_subsidiary.address1}</StrtNm>
             <#if cbank.custrecord_2663_subsidiary.zip?has_content>
             <PstCd>${cbank.custrecord_2663_subsidiary.zip}</PstCd>
             </#if>
             <#if cbank.custrecord_2663_subsidiary.city?has_content>
-            <TwnNm>${cbank.custrecord_2663_subsidiary.city}</TwnNm>
+            <TwnNm>${convertToLatinCharSet(cbank.custrecord_2663_subsidiary.city)}</TwnNm>
             </#if>
             <#if getStateCode(cbank.custrecord_2663_subsidiary.state)?has_content>
                 <CtrySubDvsn>${getStateCode(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
+            <#elseif cbank.custrecord_2663_subsidiary.state?has_content>
+                <CtrySubDvsn>${(cbank.custrecord_2663_subsidiary.state)}</CtrySubDvsn>
             </#if>
+
            <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
            <Ctry>${getCountryCode(cbank.custrecord_2663_subsidiary.country)}</Ctry>
+           <#if cbank.custrecord_2663_subsidiary.address1?has_content>
+           <AdrLine>${filterSpecialChars(setMaxLength((convertToLatinCharSet(cbank.custrecord_2663_subsidiary.address1) + " " + convertToLatinCharSet(cbank.custrecord_2663_subsidiary.address2)), 70)?trim)}</AdrLine>
+           </#if>
         </PstlAdr>
         </#if>
 
         <#if cbank.custpage_eft_custrecord_2663_bank_comp_id?has_content>
-        	<Id>
-        		<OrgId>
-        			<Othr>
-        				<Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
-        				<#if cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
-        				<SchmeNm>
-        					<#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-        						<Prtry>BANK</Prtry>
-        					<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA")>
-        						<Prtry>CHID</Prtry>
-        					<#elseif cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
-        						<Prtry>ACH</Prtry>
-        					</#if>
-        				</SchmeNm>
-        				</#if>
-        			</Othr>
-        		</OrgId>
-        	</Id>
+            <Id>
+                <OrgId>
+                    <Othr>
+                        <Id>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</Id>
+                        <#if !cbank.custrecord_2663_file_name_prefix?starts_with("HSBC")>
+                        <SchmeNm>
+                            <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                                <Prtry>BANK</Prtry>
+                            <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA") && getCountryCode(cbank.custrecord_2663_subsidiary.country) == "BR">
+                                <Prtry>CONVENIO</Prtry>
+                            <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("BOFA")>
+                                <Prtry>CHID</Prtry>
+                            <#elseif cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+                                <Prtry>ACH</Prtry>
+                            </#if>
+                        </SchmeNm>
+                        </#if>
+                    </Othr>
+                </OrgId>
+            </Id>
         </#if>
 
         <#-- VAT NUMBER NOT ON ROOT SUB RECORD -->
 
-        <#-- <#if cbank.custrecord_2663_subsidiary.federalidnumber)?has_content>
+        <#if cbank.custrecord_2663_subsidiary.taxidnum?has_content && getCountryCode(cbank.custrecord_2663_subsidiary.country) == "AR">
             <Id>
                 <OrgId>
                     <Othr>
-                        <Id>${cbank.custrecord_2663_subsidiary.federalidnumber}</Id>
+                        <Id>${cbank.custrecord_2663_subsidiary.taxidnum}</Id>
                         <SchmeNm>
                             <Cd>TXID</Cd>
                         </SchmeNm>
                     </Othr>
                 </OrgId>
             </Id>
-        </#if> -->
+        </#if>
         <#-- DM: <Id> and sub components are O? -->
     </Dbtr>
     <DbtrAcct>
@@ -219,107 +261,147 @@
         <FinInstnId>
             <#if cbank.custpage_eft_custrecord_2663_bic?has_content>
                 <BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
-            <#else>
-                <Othr>
-                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
-                </Othr>
             </#if>
             <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
-            <#if getDbtrMmbId()?has_content>
+
+             <#if getDbtrMmbId()?has_content && !cbank.custpage_eft_custrecord_2663_iban?has_content>
             <ClrSysMmbId>
-                <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
+                <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF") && (clrcodeMap[getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)])??>
+                <MmbId>${clrcodeMap[getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)] + getDbtrMmbId()}</MmbId>
+                <#elseif (clrcodeMap[getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)])??>
                 <ClrSysId>
-                	<Cd>CACPA</Cd>
+                    <Cd>${(clrcodeMap[getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)])}</Cd>
                 </ClrSysId>
-                </#if>
                 <MmbId>${getDbtrMmbId()}</MmbId>
+                <#else>
+                <MmbId>${getDbtrMmbId()}</MmbId>
+                </#if>
             </ClrSysMmbId>
             </#if>
             <Nm>${cbank.custpage_eft_custrecord_2663_bank_name}</Nm>
             <#if cbank.custpage_eft_custrecord_2663_bank_country?has_content>
             <PstlAdr>
-            	<#if cbank.custpage_eft_custrecord_2663_bank_zip?has_content>
-            	<PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
-            	</#if>
+                <#if cbank.custpage_eft_custrecord_2663_bank_zip?has_content>
+                <PstCd>${cbank.custpage_eft_custrecord_2663_bank_zip}</PstCd>
+                </#if>
                 <#if cbank.custpage_eft_custrecord_2663_bank_city?has_content>
-                <TwnNm>${cbank.custpage_eft_custrecord_2663_bank_city}</TwnNm>
+                <TwnNm>${convertToLatinCharSet(cbank.custpage_eft_custrecord_2663_bank_city)}</TwnNm>
+                <#if getStateCode(cbank.custpage_eft_custrecord_2663_bank_state)?has_content>
+                <CtrySubDvsn>${getStateCode(cbank.custpage_eft_custrecord_2663_bank_state)}</CtrySubDvsn>
+                <#elseif cbank.custpage_eft_custrecord_2663_bank_state?has_content>
+                <CtrySubDvsn>${cbank.custpage_eft_custrecord_2663_bank_state}</CtrySubDvsn>
+                </#if>
                 </#if>
                 <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
-                <#-- DM: Commenting this out because throws error when blank -->
-                <#-- <AdrLine>${cbank.custpage_eft_custrecord_2663_address1}</AdrLine> -->
+                <#if cbank.custpage_eft_ccustrecord_2663_bank_address1?has_content>
+           <AdrLine>${filterSpecialChars(setMaxLength(convertToLatinCharSet(cbank.custpage_eft_ccustrecord_2663_bank_address1), 70))}</AdrLine>
+           </#if>
             </PstlAdr>
             </#if>
-    </FinInstnId>
+            <#if !cbank.custpage_eft_custrecord_2663_bic?has_content>
+                <Othr>
+                    <Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
+                </Othr>
+            </#if>
+            
+        </FinInstnId>
+        <#if cbank.custpage_eft_custrecord_2663_branch_num?has_content>
+                 <BrnchId>
+                        <Id>${cbank.custpage_eft_custrecord_2663_branch_num}</Id>
+                    <PstlAdr>
+                        <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry>
+                    </PstlAdr>
+                </BrnchId>
+            </#if>
+        
     </DbtrAgt>
     <CdtTrfTxInf>
         <PmtId>
             <#-- InstrId is O -->
-            <InstrId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
-            <EndToEndId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId>
+            <#-- <InstrId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
+            <EndToEndId>${cbank.custrecord_2663_file_name_prefix?replace("_","")}${payment.tranid?replace(r"0+", "", 'r')?replace("/", "")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</EndToEndId> -->
+            <InstrId>${setMaxLength(transaction.internalid  + entity.internalid + payment.internalid, 15)}</InstrId>
+            <EndToEndId>${setMaxLength(entity.internalid + transaction.internalid + payment.internalid, 15)}</EndToEndId>
         </PmtId>
         <#-- DM: PmTpInf listed as R, but is present at PaymentInformation, so not needed  -->
         <Amt>
-            <InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</InstdAmt>
+            <InstdAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.fxamount,"dec")}</InstdAmt>
         </Amt>
 
         <CdtrAgt>
             <FinInstnId>
                 <#if transaction.custbody_bb_vb_ebd_swift_code?has_content>
                     <BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
-                    <#if transaction.custbody_bb_vb_ebd_loc_clr_cd?has_content>
+                    <#if transaction.custbody_bb_vb_ebd_loc_clr_cd?has_content && !transaction.custbody_bb_vb_ebd_iban?has_content>
                     <ClrSysMmbId>
-                    <#if cbank.custrecord_2663_file_name_prefix?starts_with("RBC")>
-                        <#if getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "US">
-                            <ClrSysId>
-                                <Cd>USABA</Cd>
-                            </ClrSysId>
-                        <#elseif getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "CA">
-                            <ClrSysId>
-                                <Cd>CACPA</Cd>
-                            </ClrSysId>
-                        </#if>
-                    </#if>
+                    <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF") && clrcodeMap[getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)]??>
+                        <MmbId>${clrcodeMap[getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)] + transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                    <#elseif clrcodeMap[getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)]??>
+                    <ClrSysId>
+                        <Cd>${clrcodeMap[getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)]}</Cd>
+                    </ClrSysId>
                     <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                    <#else>
+                    <MmbId>${transaction.custbody_bb_vb_ebd_loc_clr_cd}</MmbId>
+                    </#if>
                 </ClrSysMmbId>
-                	</#if>
-                <#else>
-                    <Othr>
-                        <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
-                    </Othr>
+                    </#if>
                 </#if>
                 
                 <#-- <ClrSysMmbId> Identifies the originating bank. Format CCTTT99999999999 -->
-                
+                <#if transaction.custbody_bb_vb_ebd_bank_name?has_content>
+                <Nm>${transaction.custbody_bb_vb_ebd_bank_name}</Nm>
+                <#else>
                 <Nm>${transaction.custbody_bb_vb_ebd_en_bk_det_ref}</Nm>
+                </#if>
                 <#if transaction.custbody_bb_vb_ebd_acct_cnt?has_content>
                 <PstlAdr>
                     <#if transaction.custbody_bb_vb_ebd_zip_pc?has_content>
                     <PstCd>${transaction.custbody_bb_vb_ebd_zip_pc}</PstCd>
                     </#if>
                     <#if transaction.custbody_bb_vb_ebd_city?has_content>
-                    <TwnNm>${transaction.custbody_bb_vb_ebd_city}</TwnNm>
-                    </#if>
-                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
-                    <#if transaction.custbody_bb_vb_ebd_address?has_content>
-                    <AdrLine>${transaction.custbody_bb_vb_ebd_address}</AdrLine>
+                    <TwnNm>${convertToLatinCharSet(transaction.custbody_bb_vb_ebd_city)}</TwnNm>
                     </#if>
                     <#if getStateCode(transaction.custbody_bb_vb_ebd_stateprov)?has_content>
                     <CtrySubDvsn>${getStateCode(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                    <#elseif (transaction.custbody_bb_vb_ebd_stateprov)?has_content>
+                    <CtrySubDvsn>${(transaction.custbody_bb_vb_ebd_stateprov)}</CtrySubDvsn>
+                    </#if>
+                    <Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+                     <#if transaction.custbody_bb_vb_ebd_address?has_content>
+                     <#-- May need to add NewLine here -->
+                    <AdrLine>${filterSpecialChars(setMaxLength((convertToLatinCharSet(transaction.custbody_bb_vb_ebd_address) + " " + convertToLatinCharSet(transaction.custbody_bb_vb_ebd_address2)), 70)?trim)}</AdrLine>
                     </#if>
                 </PstlAdr>
+                </#if>
+                <#if !transaction.custbody_bb_vb_ebd_swift_code?has_content>
+                    <Othr>
+                        <Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
+                    </Othr>
                 </#if>
             </FinInstnId>
         </CdtrAgt>
         <Cdtr>
-            <#-- DM: MISSING: Need either PrvtId OR orgID -->
-            <Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
+            <Nm>${filterSpecialChars(setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70))}</Nm>
             <#-- DM: Postal Address Ctry listed as R, added -->
             <#if entity.billcountry?has_content>
             <PstlAdr>
-                <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
-                <#if getStateCode(entity.billstate)?has_content >
-                    <CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
-                </#if>
+            <#if entity.billzipcode?has_content>
+            <PstCd>${entity.billzipcode}</PstCd>
+            </#if>
+            <#if entity.billcity?has_content>
+            <TwnNm>${convertToLatinCharSet(entity.billcity)}</TwnNm>
+            </#if>
+            <#if getStateCode(entity.billstate)?has_content>
+                <CtrySubDvsn>${getStateCode(entity.billstate)}</CtrySubDvsn>
+            <#elseif (entity.billstate)?has_content>
+                <CtrySubDvsn>${(entity.billstate)}</CtrySubDvsn>
+            </#if>
+           <#--  <Ctry>${getCountryCode(cbank.custpage_eft_custrecord_2663_bank_country)}</Ctry> -->
+            <Ctry>${getCountryCode(entity.billcountry)}</Ctry>
+            <#if entity.billaddress1?has_content>
+            <AdrLine>${filterSpecialChars(setMaxLength(convertToLatinCharSet(entity.billaddress1) + " " + convertToLatinCharSet(entity.billaddress2), 70)?trim)}</AdrLine>
+            </#if>
             </PstlAdr>
             </#if>
             <#if transaction.custbody_bb_vb_ebd_tax_id?has_content>
@@ -328,38 +410,40 @@
                     <Othr>
                         <Id>${transaction.custbody_bb_vb_ebd_tax_id}</Id>
                         <SchmeNm>
+                            <#if getCountryCode(entity.billcountry) == "BR">
+                            <Cd>EMBARGO</Cd>
+                            <#else>
                             <Cd>TXID</Cd>
+                            </#if>
                         </SchmeNm>
                     </Othr>
                 </OrgId>
             </Id>
             </#if>
-            <#if transaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1")>
-                <CtryOfRes>ID</CtryOfRes>
-                <#-- For local payment currency -->
-                <#if getCurrencySymbol(payment.currency) == "IDR">
+            <#if cbank.custrecord_2663_file_name_prefix?starts_with("HSBC") && getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "ID">
+             <#if getCurrencySymbol(payment.currency) == "IDR">
                     <Id>
                         <OrgId>
-                        <#-- DON'T THINK THESE SHOULD BE HARDCODED IS ID EMPTY?? -->
                             <Othr>
-                                
-                                <#if entity.billcountry == "Indonesia">
-                                    <#if entity.isperson == "No">
-                                        <Issr>/SKN/21</Issr>
-                                    <#else>
-                                        <Issr>/SKN/11</Issr>
-                                    </#if>
+                                <Id>012</Id>
+                            <#if entity.isperson?string == "No">
+                                <#if entity.billcountry?string == "Indonesia">
+                                    <Issr>/SKN/21</Issr>
                                 <#else>
-                                    <#if entity.isperson == "No">
-                                        <Issr>/SKN/22</Issr>
-                                    <#else>
-                                        <Issr>/SKN/12</Issr>
-                                    </#if>
+                                    <Issr>/SKN/22</Issr>
                                 </#if>
+                            <#else>
+                                <#if entity.billcountry?string == "Indonesia">
+                                    <Issr>/SKN/11</Issr>
+                                <#else>
+                                    <Issr>/SKN/12</Issr>
+                                </#if>
+                            </#if>
                             </Othr>
                         </OrgId>
                     </Id>
                 </#if>
+                <CtryOfRes>ID</CtryOfRes>
             </#if>
         </Cdtr>
         <CdtrAcct>
@@ -377,16 +461,22 @@
             </#if>
         </CdtrAcct>
 
-        <#if ransaction.custbody_bb_vb_ebd_swift_code?starts_with("HSSEIDJ1") && getCurrencySymbol(payment.currency) != "IDR">
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("WF")>
+        <Purp>
+            <Prtry>DEP</Prtry>
+        </Purp>
+        </#if>
+
+        <#if cbank.custrecord_2663_file_name_prefix?starts_with("HSBC") && getCurrencySymbol(payment.currency) != "IDR"  && getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt) == "ID">
             <RgltryRptg>
             <#-- DON'T BELIEVE THESE SHOULD BE HARDCODED -->
                 <Dtls>
-                <#if entity.isperson == "No">
+                <#if entity.isperson?string == "No">
                     <Tp>E0N</Tp>
                 <#else>
                     <Tp>E1N</Tp>
                 </#if>
-                    <Cd></Cd>
+                    <Cd>012</Cd>
                 </Dtls>
             </RgltryRptg>
         </#if>
@@ -405,14 +495,11 @@
                     </#if>
                     <RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
                 </RfrdDocInf>
+                <#assign tmptxamt = formatAmount(transaction.taxtotal, "dec")?number / transaction.exchangerate>
                 <RfrdDocAmt>
-                    <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                    <#if formatAmount(transaction.discountamount, "dec") gt 0>
-                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
-                    <#else>
-                        <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(0, "dec")}</DscntApldAmt>
-                    </#if>
-                    <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal?string?number, "dec")}</TaxAmt>
+                    <DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.fxamount ,"dec")}</DuePyblAmt>
+                    <DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount?string?number/transaction.exchangerate,"dec")}</DscntApldAmt>
+                    <TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(tmptxamt, "dec")!"0"}</TaxAmt>
                 </RfrdDocAmt>
             </Strd>
         </RmtInf>
