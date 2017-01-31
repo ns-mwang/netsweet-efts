@@ -1,59 +1,109 @@
-<#-- Comerica EFT XML Template Start -->
+<#-- Author: Michael Wang | mwang@netsuite.com -->
+<#-- Bank Format: Comerica XML -->
+<#-- Banks: Comerica Bank -->
+<#-- cached values -->
+<#assign totalAmount = computeTotalAmount(payments)>
+
+<#function convertSpecialChars text>
+    <#assign value = text>
+    <#assign value = value?replace('>','$gt;')>
+    <#assign value = value?replace('<','&lt;')>
+    <#assign value = value?replace('&','&amp;')>
+    <#assign value = value?replace(''','&apos;')>
+    <#assign value = value?replace('"','&quot;')>
+    <#assign value = convertToLatinCharSet(value)>
+    <#return value>
+</#function>
+
+<#-- template building -->
+#OUTPUT START#
+<BATCHHEADER>BATCH${pfa.id}</BATCHHEADER>
+<#-- CMA Payment List -->
+<#list payments as payment>
+	<#assign paidTransactions = transHash[payment.internalid]>
+	<#assign ebank = ebanks[payment_index]>
+	<#assign entity = entities[payment_index]>
+	<#assign payCurrency = getCurrencySymbol(payment.currency)>
+	<#list paidTransactions as transaction><#-- Looping through each vendor bill in the bill payment record -->
+
 <?xml version="1.0" encoding="UTF-8"?>
-<#-- CMA Request -->
 <CMA>
 	<BankSvcRq>
-		<RqUID>00000000-0000-0000-0000-000000000001</RqUID>
+		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 		<XferAddRq>
-			<RqUID>00000000-0000-0000-0000-000000000001</RqUID>
-			<PmtRefId>20040211ABC20006</PmtRefId>
+			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
+			<PmtRefId>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}${pfa.id}</PmtRefId>
 			<CustId>
 				<SPName>Comerica</SPName>
-				<CustPermId>ABCD_MNG</CustPermId>
+				<CustPermId>MOSY_CNG</CustPermId>		<#-- Set To MOSY_CNG For Modern Systems -->
 			</CustId>
+
 			<XferInfo>
+
 				<DepAcctIdFrom>
-				<AcctId>1234567890</AcctId>
-				<AcctType>DDA</AcctType>
-				<Name>Valued Customer</Name>
-				<BankInfo>
-					<BankIdType>BIC</BankIdType>
-					<BankId>MNBDUS33</BankId> </BankInfo>
+					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
+					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
+					<Name>${setMaxLength(convertSpecialChars(cbank.custrecord_2663_legal_name),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<BankInfo>
+						<BankIdType>BIC</BankIdType>		<#-- Set To BIC -->
+						<BankId>MNBDUS33</BankId>		<#-- Set To MNBDUS33 -->
+					</BankInfo>
 				</DepAcctIdFrom>
-				<Recipients>
-					<Recipient>
-						<DepAcctIdTo>
-							<AcctId>0987654321</AcctId>
-							<AcctType>DDA</AcctType>
-							<Name>Valued Customer</Name>
-							<BankInfo>
-								<BankIdType>ABA</BankIdType>
-								<BankId>021000021</BankId>
-								<Name>JP Morgan Chase</Name>
-								<PostAddr>
-									<Addr1>123 Main Street</Addr1>
-									<Addr2>New York, NY</Addr2>
-									<Country>USA</Country>
-								</PostAddr>
-							</BankInfo>
-						</DepAcctIdTo>
-						<CurAmt>
-							<Amt>1000.00</Amt>
-							<CurCode>USD</CurCode>
-						</CurAmt>
-					</Recipient>
-					<BatchTotal>Total Batch</BatchTotal>
-				</Recipients>
-					<DueDt>2004-02-12</DueDt>
-					<SendDt>M if Category is International</SendDt>
-					<Category>ACH Credit</Category>
+
+				<DepAcctIdTo>
+					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
+					<AcctType>DDA</AcctType>
+					<Name>${setMaxLength(convertSpecialChars(buildEntityName(entity)),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<BankInfo>
+
+					<#if entity.custentity_payment_method == "ACH">
+						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
+					</#if>
+					<#if entity.custentity_payment_method == "Wire">
+						<BankIdType>BIC</BankIdType>		<#-- For International Wire, Set To BIC -->
+					</#if>
+
+						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
+						<Name>${convertSpecialChars(ebank.custrecord_2663_entity_bank_name)}</Name>
+					</BankInfo>
+				</DepAcctIdTo>
+
+					<CurAmt>
+						<Amt>${formatAmount(getAmount(payment),"dec")}</Amt>
+						<CurCode>${payCurrency}</CurCode>
+					</CurAmt>
+
+				<#if entity.custentity_payment_method == "Wire">
+					<SendDt>${${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
+				</#if>
+
+					<DueDt>${transaction.duedate?string("yyyy-MM-dd")}</DueDt>
+
+				<#if entity.custentity_payment_method == "ACH">
+					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
+				</#if>
+				<#if entity.custentity_payment_method == "Wire" || payCurrency == "USD">
+					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
+				</#if>
+				<#if entity.custentity_payment_method == "Wire" || payCurrency != "USD">
+					<Category>International</Category>		<#-- For International Wire, Set To International -->
+				</#if>
+
+				<#if entity.custentity_payment_method == "ACH">
 					<PmtInstruction>
-						<PmtFormat>CCD</PmtFormat>
-						<CompanyEntryDescription>ValuedCust</CompanyEntryDescription>
-						<TransactionCode>22</TransactionCode> <#-- Checking 22:Credit 27:Debit -->
-						<Desc>Addenda Information Addenda Information Addenda Information Addenda Information</Desc>
-					</PmtInstruction> 
+						<PmtFormat>CCD</PmtFormat>		<#-- Set To CCD -->
+						<CompanyEntryDescription>ModernSyst</CompanyEntryDescription>		<#-- Set To First 10 Charaters of Modern Systems -->
+						<TransactionCode>22</TransactionCode>		<#-- Set To 22 -->
+						<Desc>${convertSpecialChars(transaction.transactionnumber)}</Desc>
+					</PmtInstruction>
+				</#if>
+
 			</XferInfo>
+
 		</XferAddRq>
 	</BankSvcRq>
 </CMA>
+	</#list>
+</#list>
+<BATCHTRAILER>${payments?size?c}</BATCHTRAILER><#rt>
+#OUTPUT END#
