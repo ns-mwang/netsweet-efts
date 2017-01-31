@@ -32,7 +32,7 @@
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 		<XferAddRq>
 			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
-			<PmtRefId>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}${pfa.id}</PmtRefId>
+			<PmtRefId>${payment.tranid}</PmtRefId>
 			<CustId>
 				<SPName>Comerica</SPName>		<#-- Set To Comerica -->
 				<CustPermId>MOSY_CNG</CustPermId>		<#-- Set To MOSY_CNG For Modern Systems -->
@@ -58,9 +58,10 @@
 
 					<#if transaction.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
-					</#if>
-					<#if transaction.custbody_eft_payment_method == "Wire">
+					<#elseif transaction.custbody_eft_payment_method == "Wire">
 						<BankIdType>BIC</BankIdType>		<#-- For International Wire, Set To BIC -->
+					<#else>
+						<BankIdType>ABA</BankIdType>
 					</#if>
 
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
@@ -73,7 +74,7 @@
 						<CurCode>${payCurrency}</CurCode>
 					</CurAmt>
 
-				<#if transaction.custbody_eft_payment_method == "Wire">
+				<#if transaction.custbody_eft_payment_method == "Wire" || payCurrency != "USD">
 					<SendDt>${${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
 				</#if>
 
@@ -81,12 +82,12 @@
 
 				<#if transaction.custbody_eft_payment_method == "ACH">
 					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
-				</#if>
-				<#if transaction.custbody_eft_payment_method == "Wire" || payCurrency == "USD">
+				<#elseif transaction.custbody_eft_payment_method == "Wire" || payCurrency == "USD">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
-				</#if>
-				<#if transaction.custbody_eft_payment_methodd == "Wire" || payCurrency != "USD">
+				<#elseif transaction.custbody_eft_payment_method == "Wire" || payCurrency != "USD">
 					<Category>International</Category>		<#-- For International Wire, Set To International -->
+				<#else>
+					<Category>ACH Credit</Category>
 				</#if>
 
 				<#if transaction.custbody_eft_payment_method == "ACH">
