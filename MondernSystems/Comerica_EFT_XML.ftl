@@ -34,7 +34,7 @@
 			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 			<PmtRefId>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}${pfa.id}</PmtRefId>
 			<CustId>
-				<SPName>Comerica</SPName>
+				<SPName>Comerica</SPName>		<#-- Set To Comerica -->
 				<CustPermId>MOSY_CNG</CustPermId>		<#-- Set To MOSY_CNG For Modern Systems -->
 			</CustId>
 
@@ -56,10 +56,10 @@
 					<Name>${setMaxLength(convertSpecialChars(buildEntityName(entity)),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 
-					<#if entity.custentity_payment_method == "ACH">
+					<#if transaction.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
 					</#if>
-					<#if entity.custentity_payment_method == "Wire">
+					<#if transaction.custbody_eft_payment_method == "Wire">
 						<BankIdType>BIC</BankIdType>		<#-- For International Wire, Set To BIC -->
 					</#if>
 
@@ -73,23 +73,23 @@
 						<CurCode>${payCurrency}</CurCode>
 					</CurAmt>
 
-				<#if entity.custentity_payment_method == "Wire">
+				<#if transaction.custbody_eft_payment_method == "Wire">
 					<SendDt>${${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
 				</#if>
 
 					<DueDt>${transaction.duedate?string("yyyy-MM-dd")}</DueDt>
 
-				<#if entity.custentity_payment_method == "ACH">
+				<#if transaction.custbody_eft_payment_method == "ACH">
 					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
 				</#if>
-				<#if entity.custentity_payment_method == "Wire" || payCurrency == "USD">
+				<#if transaction.custbody_eft_payment_method == "Wire" || payCurrency == "USD">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
 				</#if>
-				<#if entity.custentity_payment_method == "Wire" || payCurrency != "USD">
+				<#if transaction.custbody_eft_payment_methodd == "Wire" || payCurrency != "USD">
 					<Category>International</Category>		<#-- For International Wire, Set To International -->
 				</#if>
 
-				<#if entity.custentity_payment_method == "ACH">
+				<#if transaction.custbody_eft_payment_method == "ACH">
 					<PmtInstruction>
 						<PmtFormat>CCD</PmtFormat>		<#-- Set To CCD -->
 						<CompanyEntryDescription>ModernSyst</CompanyEntryDescription>		<#-- Set To First 10 Charaters of Modern Systems -->
