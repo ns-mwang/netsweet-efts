@@ -4,17 +4,6 @@
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 
-<#function convertSpecialChars text>
-    <#assign value = text>
-    <#assign value = value?replace('>','$gt;')>
-    <#assign value = value?replace('<','&lt;')>
-    <#assign value = value?replace('&','&amp;')>
-    <#assign value = value?replace(''','&apos;')>
-    <#assign value = value?replace('"','&quot;')>
-    <#assign value = convertToLatinCharSet(value)>
-    <#return value>
-</#function>
-
 <#-- template building -->
 #OUTPUT START#
 <BATCHHEADER>BATCH${pfa.id}</BATCHHEADER>
@@ -24,87 +13,76 @@
 	<#assign ebank = ebanks[payment_index]>
 	<#assign entity = entities[payment_index]>
 	<#assign payCurrency = getCurrencySymbol(payment.currency)>
-	<#list paidTransactions as transaction><#-- Looping through each vendor bill in the bill payment record -->
-
+	<#assign achEffectiveDate = pfa.custrecord_2663_process_date>
 <?xml version="1.0" encoding="UTF-8"?>
 <CMA>
 	<BankSvcRq>
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 		<XferAddRq>
 			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
-			<PmtRefId>${payment.tranid}</PmtRefId>
+			<PmtRefId>${payment.tranid?replace('/','-')}</PmtRefId>
 			<CustId>
 				<SPName>Comerica</SPName>		<#-- Set To Comerica -->
 				<CustPermId>MOSY_CNG</CustPermId>		<#-- Set To MOSY_CNG For Modern Systems -->
 			</CustId>
-
 			<XferInfo>
-
 				<DepAcctIdFrom>
 					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
-					<Name>${setMaxLength(convertSpecialChars(cbank.custrecord_2663_legal_name),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${setMaxLength(cbank.custrecord_2663_legal_name,22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 						<BankIdType>BIC</BankIdType>		<#-- Set To BIC -->
 						<BankId>MNBDUS33</BankId>		<#-- Set To MNBDUS33 -->
 					</BankInfo>
 				</DepAcctIdFrom>
-
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${setMaxLength(convertSpecialChars(buildEntityName(entity)),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${setMaxLength(buildEntityName(entity),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
-
-					<#if transaction.custbody_eft_payment_method == "ACH">
+					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
-					<#elseif transaction.custbody_eft_payment_method == "Wire">
+					<#elseif payment.custbody_eft_payment_method == "Wire">
 						<BankIdType>BIC</BankIdType>		<#-- For International Wire, Set To BIC -->
 					<#else>
-						<BankIdType>ABA</BankIdType>
+						<BankIdType>ABA</BankIdType>		<#-- Default to ABA If No Payment Method -->
 					</#if>
-
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
-						<Name>${convertSpecialChars(ebank.custrecord_2663_entity_bank_name)}</Name>
+						<Name>${ebank.custrecord_2663_entity_bank_name}</Name>
 					</BankInfo>
 				</DepAcctIdTo>
-
 					<CurAmt>
 						<Amt>${formatAmount(getAmount(payment),"dec")}</Amt>
 						<CurCode>${payCurrency}</CurCode>
 					</CurAmt>
-
-				<#if transaction.custbody_eft_payment_method == "Wire" || payCurrency != "USD">
-					<SendDt>${${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
+				<#if payment.custbody_eft_payment_method == "Wire" && payCurrency != "USD">
+					<SendDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
+					<DueDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</DueDt>
+				<#else>
+					<DueDt>${achEffectiveDate?string("yyyy-MM-dd")}</DueDt>
 				</#if>
-
-					<DueDt>${transaction.duedate?string("yyyy-MM-dd")}</DueDt>
-
-				<#if transaction.custbody_eft_payment_method == "ACH">
+					
+				<#if payment.custbody_eft_payment_method == "ACH">
 					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
-				<#elseif transaction.custbody_eft_payment_method == "Wire" || payCurrency == "USD">
+				<#elseif payment.custbody_eft_payment_method == "Wire" && payCurrency == "USD">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
-				<#elseif transaction.custbody_eft_payment_method == "Wire" || payCurrency != "USD">
+				<#elseif payment.custbody_eft_payment_method == "Wire" && payCurrency != "USD">
 					<Category>International</Category>		<#-- For International Wire, Set To International -->
 				<#else>
-					<Category>ACH Credit</Category>
+					<Category>ACH Credit</Category>		<#-- Default to ACH Credit If No Payment Method -->
 				</#if>
-
-				<#if transaction.custbody_eft_payment_method == "ACH">
+				<#if payment.custbody_eft_payment_method == "ACH">
 					<PmtInstruction>
 						<PmtFormat>CCD</PmtFormat>		<#-- Set To CCD -->
 						<CompanyEntryDescription>ModernSyst</CompanyEntryDescription>		<#-- Set To First 10 Charaters of Modern Systems -->
 						<TransactionCode>22</TransactionCode>		<#-- Set To 22 -->
-						<Desc>${convertSpecialChars(transaction.transactionnumber)}</Desc>
+						<Desc>${payment.transactionnumber}</Desc>
 					</PmtInstruction>
 				</#if>
-
 			</XferInfo>
-
 		</XferAddRq>
 	</BankSvcRq>
 </CMA>
-	</#list>
 </#list>
 <BATCHTRAILER>${payments?size?c}</BATCHTRAILER><#rt>
 #OUTPUT END#
