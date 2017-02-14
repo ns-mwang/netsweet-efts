@@ -55,7 +55,7 @@
 						<Amt>${formatAmount(getAmount(payment),"dec")}</Amt>
 						<CurCode>${payCurrency}</CurCode>
 					</CurAmt>
-				<#if payment.custbody_eft_payment_method == "Wire" && payCurrency != "USD">
+				<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States">
 					<SendDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
 					<DueDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</DueDt>
 				<#else>
@@ -64,9 +64,9 @@
 					
 				<#if payment.custbody_eft_payment_method == "ACH">
 					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
-				<#elseif payment.custbody_eft_payment_method == "Wire" && payCurrency == "USD">
+				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "United States">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
-				<#elseif payment.custbody_eft_payment_method == "Wire" && payCurrency != "USD">
+				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States">
 					<Category>International</Category>		<#-- For International Wire, Set To International -->
 				<#else>
 					<Category>ACH Credit</Category>		<#-- Default to ACH Credit If No Payment Method -->
