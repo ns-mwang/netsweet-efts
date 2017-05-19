@@ -49,10 +49,11 @@
 					</#if>
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
 						<Name>${ebank.custrecord_2663_entity_bank_name}</Name>
-					<#if payment.custbody_eft_payment_method == "Wire">
+					<#-- Canadian Wire Payments Requirement -->
+					<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
 						<PostAddr>
-							<Addr1>${ebank.custrecord_2663_entity_bank_no}</Addr1>
-							<Country>${ebank.custrecord_2663_entity_country}</Country>
+							<Addr1>${ebank.custrecord_2663_entity_bank_code}</Addr1>
+							<Country>CAN</Country>
 						</PostAddr>
 					</#if>
 					</BankInfo>
