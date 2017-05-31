@@ -6,11 +6,12 @@
 
 <#function convertCharSet text>
 <#assign value = text>
-<#assign value = value?replace('&','&amp;')>
-<#assign value = value?replace('>','&gt;')>
-<#assign value = value?replace('<','&lt;')>
-<#assign value = value?replace(''','&apos;')>
-<#assign value = value?replace('"','&quot;')>
+<#assign value = value?replace("&", "&amp;")>
+<#assign value = value?replace('>', "&gt;")>
+<#assign value = value?replace('<', "&lt;")>
+<#assign value = value?replace("'", "&apos;")>
+<#assign value = value?replace('"', '&quot;')>
+<#assign value = convertToLatinCharSet(value)>
 <#return value>
 </#function>
 
@@ -48,7 +49,7 @@
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${convertCharSet(setMaxLength(buildEntityName(entity),22))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
@@ -102,4 +103,4 @@
 </CMA>
 </#list>
 <BATCHTRAILER>${payments?size?c}</BATCHTRAILER><#rt>
-#OUTPUT END
+#OUTPUT END#
