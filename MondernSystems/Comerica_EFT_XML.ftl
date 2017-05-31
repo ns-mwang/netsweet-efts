@@ -4,6 +4,15 @@
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 
+<#function convertSEPACharSet text>
+<#assign value = text>
+<#assign value = value?replace('&','+')>
+<#assign value = value?replace('*','.')>
+<#assign value = value?replace('$','.')>
+<#assign value = value?replace('%','.')>
+<#return value>
+</#function>
+
 <#-- template building -->
 #OUTPUT START#
 <BATCHHEADER>BATCH${pfa.id}</BATCHHEADER>
