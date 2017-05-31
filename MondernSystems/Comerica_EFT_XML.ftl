@@ -53,7 +53,9 @@
 					<BankInfo>
 					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
-					<#elseif payment.custbody_eft_payment_method == "Wire">
+					<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "United States">
+						<BankIdType>ABA</BankIdType>
+					<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States">
 						<BankIdType>BIC</BankIdType>		<#-- For International Wire, Set To BIC -->
 					<#else>
 						<BankIdType>ABA</BankIdType>		<#-- Default to ABA If No Payment Method -->
