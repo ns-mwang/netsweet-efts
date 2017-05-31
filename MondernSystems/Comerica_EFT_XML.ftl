@@ -40,7 +40,7 @@
 				<DepAcctIdFrom>
 					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
-					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,22))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 						<BankIdType>BIC</BankIdType>		<#-- Set To BIC -->
 						<BankId>MNBDUS33</BankId>		<#-- Set To MNBDUS33 -->
@@ -49,7 +49,7 @@
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${convertCharSet(setMaxLength(buildEntityName(entity)),27)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
@@ -76,7 +76,7 @@
 						<CurCode>${payCurrency}</CurCode>
 					</CurAmt>
 				<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States">
-					<SendDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
+					<SendDt>${pfa.custrecord_2663_file_creation_timestamp?string("yyyy-MM-dd")}</SendDt>		<#-- Required for International Wire. Date funds deducted from originating Comerica account. Usually 2 days before the effective date, depends on the currency -->
 					<DueDt>${pfa.custrecord_2663_process_date?string("yyyy-MM-dd")}</DueDt>
 				<#else>
 					<DueDt>${achEffectiveDate?string("yyyy-MM-dd")}</DueDt>
