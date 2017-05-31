@@ -4,12 +4,13 @@
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 
-<#function convertSEPACharSet text>
+<#function converMSCharSet text>
 <#assign value = text>
-<#assign value = value?replace('&','+')>
-<#assign value = value?replace('*','.')>
-<#assign value = value?replace('$','.')>
-<#assign value = value?replace('%','.')>
+<#assign value = value?replace('&','&amp;')>
+<#assign value = value?replace('>','&gt;')>
+<#assign value = value?replace('<','&lt;')>
+<#assign value = value?replace(''','&apos;')>
+<#assign value = value?replace('"','&quot;')>
 <#return value>
 </#function>
 
@@ -38,7 +39,7 @@
 				<DepAcctIdFrom>
 					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
-					<Name>${setMaxLength(cbank.custrecord_2663_legal_name,22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${converMSCharSet(setMaxLength(cbank.custrecord_2663_legal_name,22))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 						<BankIdType>BIC</BankIdType>		<#-- Set To BIC -->
 						<BankId>MNBDUS33</BankId>		<#-- Set To MNBDUS33 -->
@@ -47,7 +48,7 @@
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${setMaxLength(buildEntityName(entity),22)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${converMSCharSet(setMaxLength(buildEntityName(entity),22))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
@@ -57,7 +58,7 @@
 						<BankIdType>ABA</BankIdType>		<#-- Default to ABA If No Payment Method -->
 					</#if>
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
-						<Name>${ebank.custrecord_2663_entity_bank_name}</Name>
+						<Name>$converMSCharSet{ebank.custrecord_2663_entity_bank_name)}</Name>
 					<#-- Canadian Wire Payments Requirement -->
 					<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
 						<PostAddr>
