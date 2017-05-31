@@ -92,4 +92,4 @@
 </CMA>
 </#list>
 <BATCHTRAILER>${payments?size?c}</BATCHTRAILER><#rt>
-#OUTPUT END#
+#OUTPUT END
