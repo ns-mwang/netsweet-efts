@@ -49,7 +49,7 @@
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${convertCharSet(setMaxLength(buildEntityName(entity)),27)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 					<#if payment.custbody_eft_payment_method == "ACH">
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
@@ -67,6 +67,13 @@
 						<PostAddr>
 							<Addr1>${ebank.custrecord_2663_entity_bank_code}</Addr1>
 							<Country>CAN</Country>
+						<#if ebank.custrecord_2663_entity_address1?has_content>
+							<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
+							<City>${ebank.custrecord_2663_entity_city}</City>
+							<StateProv>${ebank.custrecord_2663_entity_state}</StateProv>
+							<PostalCode>${ebank.custrecord_2663_entity_zip}</PostalCode>
+							<Country>CAN</Country>
+						</#if>
 						</PostAddr>
 					</#if>
 					</BankInfo>
