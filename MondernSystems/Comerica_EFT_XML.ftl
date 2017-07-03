@@ -65,13 +65,14 @@
 					<#-- Canadian Wire Payments Requirement -->
 					<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
 						<PostAddr>
-							<Addr1>${ebank.custrecord_2663_entity_bank_code}</Addr1>
-							<Country>CAN</Country>
 						<#if ebank.custrecord_2663_entity_address1?has_content>
 							<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
 							<City>${ebank.custrecord_2663_entity_city}</City>
 							<StateProv>${ebank.custrecord_2663_entity_state}</StateProv>
 							<PostalCode>${ebank.custrecord_2663_entity_zip}</PostalCode>
+							<Country>CAN</Country>
+						<#else>
+							<Addr1>${ebank.custrecord_2663_entity_bank_code}</Addr1>
 							<Country>CAN</Country>
 						</#if>
 						</PostAddr>
