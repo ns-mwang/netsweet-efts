@@ -92,7 +92,7 @@
 							<#if ebank.custrecord_2663_int_bankcity?has_content><City>${ebank.custrecord_2663_int_bankcity}</City></#if>
 							<#if ebank.custrecord_2663_int_bankstate?has_content><StateProv>${ebank.custrecord_2663_int_bankstate}</StateProv></#if>
 							<#if ebank.custrecord_2663_int_bankzip?has_content><PostalCode>${ebank.custrecord_2663_int_bankzip}</PostalCode></#if>
-							<Country>${ebank.custrecord_2663_int_bankcountry}</Country>
+							<Country>${getCountryCode(ebank.custrecord_2663_int_bankcountry)}</Country>
 						</PostAddr>
 						</#if>
 					</BankInfo>
