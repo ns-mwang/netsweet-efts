@@ -80,6 +80,24 @@
 					</#if>
 					</BankInfo>
 				</DepAcctIdTo>
+				<#if payment.custbody_eft_payment_method == "Wire" && "ebank.custrecord_2663_addintdepacct == "true">
+				<IntermediaryDepAcct>
+					<BankInfo>
+						<BankIdType>${ebank.custrecord_2663_int_bankidtype}</BankIdType>
+						<BankId>${ebank.custrecord_2663_int_bankid}</BankId>
+						<Name>${ebank.custrecord_2663_int_bankname}</Name>
+						<#if ebank.custrecord_2663_int_bankcountry?has_content>
+						<PostAddr>
+							<#if ebank.custrecord_2663_int_bankaddr1?has_content><Addr1>${ebank.custrecord_2663_int_bankaddr1}</Addr1></#if>
+							<#if ebank.custrecord_2663_int_bankcity?has_content><City>${ebank.custrecord_2663_int_bankcity}</City></#if>
+							<#if ebank.custrecord_2663_int_bankstate?has_content><StateProv>${ebank.custrecord_2663_int_bankstate}</StateProv></#if>
+							<#if ebank.custrecord_2663_int_bankzip?has_content><PostalCode>${ebank.custrecord_2663_int_bankzip}</PostalCode></#if>
+							<Country>${ebank.custrecord_2663_int_bankcountry}</Country>
+						</PostAddr>
+						</#if>
+					</BankInfo>
+				</IntermediaryDepAcct>
+				</#if>
 					<CurAmt>
 						<Amt>${formatAmount(getAmount(payment),"dec")}</Amt>
 						<CurCode>${payCurrency}</CurCode>
