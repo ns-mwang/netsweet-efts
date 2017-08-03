@@ -45,7 +45,7 @@
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
 					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
-						<BankIdType>ABA</BankIdType>		<#-- Set To ABA For ACH -->
+						<BankIdType>${custpage_eft_custrecord_2663_ach_bankidtype}</BankIdType>
 						<BankId>${custpage_eft_custrecord_2663_bank_code}</BankId>
 					</BankInfo>
 				</DepAcctIdFrom>
@@ -139,8 +139,8 @@
 					<AcctType>DDA</AcctType>
 					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>
 					<BankInfo>
-						<BankIdType>ABA</BankIdType>		<#-- Set To ABA For Check -->
-						<BankId>${custpage_eft_custrecord_2663_bank_code}</BankId>
+						<BankIdType>${custpage_eft_custrecord_2663_check_bankidtype}</BankIdType>
+						<BankId>${custpage_eft_custrecord_2663_bank_num}</BankId>
 					</BankInfo>
 				</DepAcctIdFrom>
 
