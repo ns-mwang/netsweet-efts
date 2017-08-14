@@ -80,7 +80,7 @@
 					</#if>
 					</BankInfo>
 				</DepAcctIdTo>
-				<#if payment.custbody_eft_payment_method == "Wire" && "ebank.custrecord_2663_addintdepacct == "true">
+				<#if payment.custbody_eft_payment_method == "Wire" && "ebank.custrecord_2663_addintdepacct == true>
 				<IntermediaryDepAcct>
 					<BankInfo>
 						<BankIdType>${ebank.custrecord_2663_int_bankidtype}</BankIdType>
