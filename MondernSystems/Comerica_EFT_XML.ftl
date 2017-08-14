@@ -113,8 +113,10 @@
 					<Category>ACH Credit</Category>		<#-- For ACH, Set To ACH Credit -->
 				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "United States">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
-				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States">
-					<Category>International</Category>		<#-- For International Wire, Set To International -->
+				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
+					<Category>Fedwire</Category>		<#-- For Canadian Wire, Set To Fedwire -->	
+				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country != "United States" && ebank.custrecord_2663_entity_country != "Canada">
+					<Category>International</Category>	<#-- For International Wire, Set To International -->
 				<#else>
 					<Category>ACH Credit</Category>		<#-- Default to ACH Credit If No Payment Method -->
 				</#if>
