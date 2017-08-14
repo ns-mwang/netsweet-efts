@@ -52,6 +52,7 @@
 					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</Name><#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<#-- Canadian Wire Payments Requirement -->
 					<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
+					
 					<PostAddr>
 						<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
 						<City>${ebank.custrecord_2663_entity_city}</City>
@@ -73,6 +74,7 @@
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
 						<Name>${convertCharSet(ebank.custrecord_2663_entity_bank_name)}</Name>
 					<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "Canada">
+						
 						<PostAddr>
 							<Addr1>${ebank.custrecord_2663_entity_bank_code}</Addr1>
 							<Country>CAN</Country>
@@ -80,13 +82,14 @@
 					</#if>
 					</BankInfo>
 				</DepAcctIdTo>
-				<#if payment.custbody_eft_payment_method == "Wire" && "ebank.custrecord_2663_addintdepacct == true>
+				<#if payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_addintdepacct == true>
 				<IntermediaryDepAcct>
 					<BankInfo>
 						<BankIdType>${ebank.custrecord_2663_int_bankidtype}</BankIdType>
 						<BankId>${ebank.custrecord_2663_int_bankid}</BankId>
 						<Name>${ebank.custrecord_2663_int_bankname}</Name>
 						<#if ebank.custrecord_2663_int_bankcountry?has_content>
+						
 						<PostAddr>
 							<#if ebank.custrecord_2663_int_bankaddr1?has_content><Addr1>${ebank.custrecord_2663_int_bankaddr1}</Addr1></#if>
 							<#if ebank.custrecord_2663_int_bankcity?has_content><City>${ebank.custrecord_2663_int_bankcity}</City></#if>
