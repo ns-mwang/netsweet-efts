@@ -117,7 +117,7 @@
 				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_entity_country == "United States">
 					<Category>Fedwire</Category>		<#-- For US Wire, Set To Fedwire -->
 				<#elseif payment.custbody_eft_payment_method == "Wire" && ebank.custrecord_2663_addintdepacct == true>
-					<#if custrecord_2663_int_bankcountry == "United States">	
+					<#if ebank.custrecord_2663_int_bankcountry == "United States">	
 					<Category>Fedwire</Category>		<#-- For US Intermediary Bank Wire, Set To Fedwire -->
 					<#else>
 					<Category>International</Category>
