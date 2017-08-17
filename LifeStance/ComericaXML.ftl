@@ -59,7 +59,9 @@
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
 						<Name>${convertCharSet(ebank.custrecord_2663_entity_bank_name)}</Name>
 						<PostAddr>
+							<#if ebank.custrecord_2663_entity_address1?has_content>
 							<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
+							</#if>
 							<Country>${getCountryCode(ebank.custrecord_2663_entity_country)}</Country>
 						</PostAddr>
 					</BankInfo>
