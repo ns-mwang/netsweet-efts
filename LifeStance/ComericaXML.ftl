@@ -26,8 +26,9 @@
 	<#assign entity = entities[payment_index]>
 	<#assign payCurrency = getCurrencySymbol(payment.currency)>
 	<#assign achEffectiveDate = pfa.custrecord_2663_process_date>
+	<#list paidTransactions as transaction>		<#-- Looping through each vendor bill in the bill payment record -->
 
-<#if payment.custbody_2663_comerica_paymentmethod == "ACH Credit">
+<#if transaction.custbody_2663_comerica_paymentmethod == "ACH Credit">
 <CMA>
 	<BankSvcRq>
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
@@ -87,7 +88,7 @@
 	</BankSvcRq>
 </CMA>
 
-<#elseif payment.custbody_2663_comerica_paymentmethod == "Card">
+<#elseif transaction.custbody_2663_comerica_paymentmethod == "Card">
 <CMA>
 	<BankSvcRq>
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
@@ -123,7 +124,7 @@
 	</BankSvcRq>
 </CMA>
 
-<#elseif payment.custbody_2663_comerica_paymentmethod == "Check">
+<#elseif transaction.custbody_2663_comerica_paymentmethod == "Check">
 <CMA>
 	<BankSvcRq>
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
@@ -178,7 +179,7 @@
 <#-- Error Message If No Payment Method -->
 *** THIS TRANSACTION IS MISSING COMERICA PAYMENT METHOD ***
 </#if>
-
+	</#list>
 </#list>
 <BATCHTRAILER>${payments?size?c}</BATCHTRAILER><#rt>
 #OUTPUT END#
