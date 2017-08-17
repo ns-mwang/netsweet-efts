@@ -46,8 +46,8 @@
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
 					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
-						<BankIdType>${custpage_eft_custrecord_2663_ach_bankidtype}</BankIdType>
-						<BankId>${custpage_eft_custrecord_2663_bank_code}</BankId>
+						<BankIdType>${cbank.custpage_eft_custrecord_2663_ach_bankidtype}</BankIdType>
+						<BankId>${cbank.custpage_eft_custrecord_2663_bank_code}</BankId>
 					</BankInfo>
 				</DepAcctIdFrom>
 
