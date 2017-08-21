@@ -131,6 +131,7 @@
 		<XferAddRq>
 			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 			<PmtRefId>${payment.tranid?replace('/','-')}</PmtRefId>
+			<Chknum></Chknum>
 			<CustId>
 				<SPName>Comerica</SPName>
 				<CustPermId>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</CustPermId>
@@ -148,13 +149,13 @@
 				</DepAcctIdFrom>
 
 				<CustPayeeInfo>
-					<PayeeName1>Cust Name 1</PayeeName1>
+					<PayeeName1>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</PayeeName1>
 					<PostAddr>
-						<Addr1>123 Main Street</Addr1>
-						<City>New York</City>
-						<StateProv>NY</StateProv>
-						<PostalCode>21212</PostalCode>
-						<Country>USA</Country>
+						<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
+						<City>${ebank.custrecord_2663_entity_city}</City>
+						<StateProv>${ebank.custrecord_2663_entity_state}</StateProv>
+						<PostalCode>${ebank.custrecord_2663_entity_zip}</PostalCode>
+						<Country>${ebank.custrecord_2663_entity_country}</Country>
 					</PostAddr>
 				</CustPayeeInfo>
 
