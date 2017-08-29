@@ -1,4 +1,5 @@
-<#-- format specific processing -->
+<#-- Wells Fargo Positive Pay Template-->
+<#-- Author: Michael Wang / mwang@netsuite.com -->
 
 <#function getVoidCheckIndicator payment>
     <#assign value = "O">
@@ -10,11 +11,11 @@
 </#function>
 
 <#function getChequeNumber payment>
-	<#assign value = "">
+  <#assign value = "">
     <#if payment.recordtype == "cashrefund">
         <#assign value = payment.otherrefnum>
     <#else>
-    	<#assign value = payment.tranid>
+      <#assign value = payment.tranid>
     </#if>
     <#return value>
 </#function>
@@ -22,10 +23,23 @@
 <#-- template building -->
 
 #OUTPUT START#
-${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}H${setLength("",22)}${setLength(pfa.custrecord_2663_file_creation_timestamp?date?string("MMddyy"),6)}${setLength("",69)}
+<#-- FILE HEADER RECORD -->
+*03<#rt>  <#-- Always *03 -->
+${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}<#rt>  <#-- WF Bank ID (5)-->
+${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}<#rt>  <#-- CSE WF Bank Account Num (15)-->
+0  <#-- File Status Alwats Zero -->
+<#-- DETAIL RECORD -->
 <#list payments as payment>
     <#assign entity = entities[payment_index]>
-${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}${setLength(getVoidCheckIndicator(payment),1)}${setPadding(getChequeNumber(payment),"left","0",10)}${setPadding(formatAmount(getAmount(payment)),"left","0",12)}${setLength(payment.trandate?string("MMddyy"),6)}${setLength("",3)}${setLength(buildEntityName(entity,true),50)}${setLength("",16)}
+${setPadding(getChequeNumber(payment),"left","0",10)}<#rt>  <#-- Check Serial Num (10) -->
+${setLength(pfa.custrecord_2663_file_creation_timestamp?date?string("MMddyy"),6)}<#rt>  <#-- Issue Date (6)(MMddyy) -->
+${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}<#rt>  <#-- Entity Account Num (15) -->
+320<#rt>  <#-- Trans Code Always 320/Check Register -->
+${setPadding(formatAmount(getAmount(payment)),"left","0",12)}<#rt>  <#-- Payment Amount (10) -->
+${setLength(buildEntityName(entity,true),50)}<#rt>  <#-- Payee Info (45-84) -->
 </#list>
-${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",12)}T${setPadding(payments?size?c,"left","0",10)}${setPadding(formatAmount(computeTotalAmount(payments)),"left","0",12)}${setLength("",75)}
+<#-- TRAILER RECORD -->
+&${setLength("",75)}<#rt>
+${setPadding(payments?size?c,"left","0",10)}<#rt>
+${setPadding(formatAmount(computeTotalAmount(payments)),"left","0",12)}<#rt>
 #OUTPUT END#
