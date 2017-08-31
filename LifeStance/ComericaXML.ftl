@@ -59,12 +59,6 @@
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
 						<Name>${convertCharSet(ebank.custrecord_2663_entity_bank_name)}</Name>
-						<PostAddr>
-							<#if ebank.custrecord_2663_entity_address1?has_content>
-							<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
-							</#if>
-							<Country>${getCountryCode(ebank.custrecord_2663_entity_country)}</Country>
-						</PostAddr>
 					</BankInfo>
 				</DepAcctIdTo>
 
@@ -83,6 +77,52 @@
 					<Desc>${payment.tranid}</Desc>
 				</PmtInstruction>
 
+			</XferInfo>
+		</XferAddRq>
+	</BankSvcRq>
+</CMA>
+
+<#if transaction.custbody_2663_comerica_paymentmethod == "Wire">
+<CMA>
+	<BankSvcRq>
+		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
+		<XferAddRq>
+			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
+			<PmtRefId>${payment.tranid?replace('/','-')}</PmtRefId>
+			<CustId>
+				<SPName>Comerica</SPName>		<#-- Set To Comerica -->
+				<CustPermId>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</CustPermId>
+			</CustId>
+			<XferInfo>
+
+				<DepAcctIdFrom>
+					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
+					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
+					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<BankInfo>
+						<BankIdType>${cbank.custpage_eft_custrecord_2663_ach_bankidtype}</BankIdType>
+						<BankId>${cbank.custpage_eft_custrecord_2663_bank_code}</BankId>
+					</BankInfo>
+				</DepAcctIdFrom>
+
+				<DepAcctIdTo>
+					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
+					<AcctType>DDA</AcctType>
+					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</Name><#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<BankInfo>
+						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
+						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
+						<Name>${convertCharSet(ebank.custrecord_2663_entity_bank_name)}</Name>
+					</BankInfo>
+				</DepAcctIdTo>
+
+				<CurAmt>
+					<Amt>${formatAmount(getAmount(payment),"dec")}</Amt>
+					<CurCode>${payCurrency}</CurCode>
+				</CurAmt>
+
+				<DueDt>${achEffectiveDate?string("yyyy-MM-dd")}</DueDt>
+				<Category>Fedwire</Category>
 			</XferInfo>
 		</XferAddRq>
 	</BankSvcRq>
