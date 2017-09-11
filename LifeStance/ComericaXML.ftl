@@ -82,7 +82,7 @@
 	</BankSvcRq>
 </CMA>
 
-<#if transaction.custbody_2663_comerica_paymentmethod == "Wire">
+<#elseif transaction.custbody_2663_comerica_paymentmethod == "Wire">
 <CMA>
 	<BankSvcRq>
 		<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
@@ -171,7 +171,7 @@
 		<XferAddRq>
 			<RqUID>${pfa.custrecord_2663_file_creation_timestamp?date?string("yyyyMMdd")}-0000-0000-0000-0000${pfa.id}</RqUID>
 			<PmtRefId>${payment.tranid?replace('/','-')}</PmtRefId>
-			<Chknum>011001</Chknum>
+			<Chknum></Chknum>	<#-- Left Blank for Comerica System to Fill Check Numbers -->
 			<CustId>
 				<SPName>Comerica</SPName>
 				<CustPermId>${cbank.custpage_eft_custrecord_2663_bank_comp_id}</CustPermId>
@@ -210,8 +210,7 @@
 				<MailInfo>
 					<MailType>US</MailType>
 				</MailInfo>
-				<RemittanceInfo>${payment.memo}</RemittanceInfo>
-
+				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left"," ",12)}</RemittanceInfo>
 			</XferInfo>
 		</XferAddRq>
 	</BankSvcRq>
