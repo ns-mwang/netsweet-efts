@@ -210,7 +210,7 @@
 				<MailInfo>
 					<MailType>US</MailType>
 				</MailInfo>
-				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left"," ",12)}</RemittanceInfo>
+				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left","0",17)}</RemittanceInfo>
 			</XferInfo>
 		</XferAddRq>
 	</BankSvcRq>
