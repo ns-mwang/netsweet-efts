@@ -145,7 +145,7 @@
 <#assign ccdBankNumberHash = 0>
 <#assign ppdBankNumberHash = 0>
 <#assign totalBankNumberHash = 0>
-101 ${setLength(cbank.custpage_eft_custrecord_2663_bank_num, 9)} ${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id, 9)}${setLength(pfa.custrecord_2663_file_creation_timestamp?date?string("yyMMdd"),6)}${setLength(pfa.custrecord_2663_file_creation_timestamp?time?string("HHmm"),4)}${setLength(computeSequenceId(),1)}094101${setLength(cbank.custpage_eft_custrecord_2663_bank_name, 23)}${setLength(cbank.custpage_eft_custrecord_2663_io_bank_name, 23)}${setLength(" ", 7)}
+101 ${setLength(cbank.custpage_eft_custrecord_2663_bank_num, 9)} ${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id, 9)}${setLength(pfa.custrecord_2663_file_creation_timestamp?date?string("yyMMdd"),6)}${setLength(pfa.custrecord_2663_file_creation_timestamp?time?string("HHmm"),4)}${setLength(computeSequenceId(),1)}094101${setLength(cbank.custpage_eft_custrecord_2663_bank_name, 23)}${setLength(cbank.custpage_eft_custrecord_2663_io_bank_name, 23)}${setLength(" ", 8)}
 <#assign recordCount = recordCount + 1>
 <#if (ccdPayments?size > 0) >
     <#assign batchCount = batchCount + 1>    
@@ -167,7 +167,7 @@
     </#if>
     <#assign lineCount = lineCount + batchLineNum>
     <#assign totalBankNumberHash = totalBankNumberHash + ccdBankNumberHash>
-8${getBankServiceClassCode()}${setPadding(batchLineNum,"left","0",6)}${setPadding(ccdBankNumberHash,"left","0",10)}${setPadding(formatAmount(computeTotalDebitAmt(ccdPayments)),"left","0",12)}${setPadding(formatAmount(computeTotalAmount(ccdPayments)),"left","0",12)}${setLength(cbank.custpage_eft_custrecord_2663_issuer_num,10)}                         ${setLength(cbank.custpage_eft_custrecord_2663_bank_num, 8)}${setPadding(batchCount,"left","0",7)}
+8${getBankServiceClassCode()}${setPadding(batchLineNum,"left","0",6)}${setPadding(ccdBankNumberHash,"left","0",10)}${setPadding(formatAmount(computeTotalDebitAmt(ccdPayments)),"left","0",12)}${setPadding(formatAmount(computeTotalAmount(ccdPayments)),"left","0",12)}${setLength(cbank.custpage_eft_custrecord_2663_issuer_num,10)}                         ${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id, 8)}${setPadding(batchCount,"left","0",7)}
 <#assign recordCount = recordCount + 1>
 </#if>
 <#assign batchLineNum = 0>
@@ -191,7 +191,7 @@
     </#if>
     <#assign lineCount = lineCount + batchLineNum>
     <#assign totalBankNumberHash = totalBankNumberHash + ppdBankNumberHash>
-8${getBankServiceClassCode()}${setPadding(batchLineNum,"left","0",6)}${setPadding(ppdBankNumberHash,"left","0",10)}${setPadding(formatAmount(computeTotalDebitAmt(ppdPayments)),"left","0",12)}${setPadding(formatAmount(computeTotalAmount(ppdPayments)),"left","0",12)}${setLength(cbank.custpage_eft_custrecord_2663_issuer_num,10)}                         ${setLength(cbank.custpage_eft_custrecord_2663_bank_num, 8)}${setPadding(batchCount,"left","0",7)}
+8${getBankServiceClassCode()}${setPadding(batchLineNum,"left","0",6)}${setPadding(ppdBankNumberHash,"left","0",10)}${setPadding(formatAmount(computeTotalDebitAmt(ppdPayments)),"left","0",12)}${setPadding(formatAmount(computeTotalAmount(ppdPayments)),"left","0",12)}${setLength(cbank.custpage_eft_custrecord_2663_issuer_num,10)}                         ${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id, 8)}${setPadding(batchCount,"left","0",7)}
 <#assign recordCount = recordCount + 1>
 </#if>
 <#assign recordCount = recordCount + 1>
