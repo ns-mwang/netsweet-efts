@@ -53,7 +53,7 @@
 				<DepAcctIdTo>
 					<AcctId>${ebank.custrecord_2663_entity_acct_no}</AcctId>
 					<AcctType>DDA</AcctType>
-					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</Name><#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</Name><#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 						<BankIdType>ABA</BankIdType>		<#-- For US ACH and Wire, Set To ABA -->
 						<BankId>${ebank.custrecord_2663_entity_bank_no}</BankId>
@@ -97,7 +97,7 @@
 				<DepAcctIdFrom>
 					<AcctId>${cbank.custpage_eft_custrecord_2663_acct_num}</AcctId>
 					<AcctType>DDA</AcctType>		<#-- Set To DDA -->
-					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,27))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
+					<Name>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,22))}</Name>		<#-- ACH Max lengths: PPD/CCD/TEL/WEB is 22 chars -->
 					<BankInfo>
 						<BankIdType>${cbank.custpage_eft_custrecord_2663_ach_bankidtype}</BankIdType>
 						<BankId>${cbank.custpage_eft_custrecord_2663_bank_code}</BankId>
@@ -143,7 +143,7 @@
 				<CardAcctId>
 					<CorpNo>${cbank.custpage_eft_custrecord_2663_card_corpno}</CorpNo>
 					<CompanyNo>${cbank.custpage_eft_custrecord_2663_card_compno}</CompanyNo>
-					<VendorId>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</VendorId>
+					<VendorId>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</VendorId>
 				</CardAcctId>
 
 				<CurAmt>
@@ -188,7 +188,7 @@
 				</DepAcctIdFrom>
 				
 				<CustPayeeInfo>
-					<PayeeName1>${setMaxLength(convertCharSet(buildEntityName(entity)),27)}</PayeeName1>
+					<PayeeName1>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</PayeeName1>
 					<PostAddr>
 						<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
 						<City>${ebank.custrecord_2663_entity_city}</City>
