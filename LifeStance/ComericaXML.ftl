@@ -73,7 +73,7 @@
 					<PmtFormat>CCD</PmtFormat>		<#-- Set To CCD -->
 					<CompanyEntryDescription>${convertCharSet(setMaxLength(cbank.custrecord_2663_legal_name,10))}</CompanyEntryDescription>		<#-- Set To First 10 Charaters of Modern Systems -->
 					<TransactionCode>22</TransactionCode>		<#-- Set To 22 -->
-					<Desc>${payment.tranid}</Desc>
+					<Desc>${payment.tranid?replace('/','-')}</Desc>
 				</PmtInstruction>
 
 			</XferInfo>
@@ -154,7 +154,7 @@
 				<DueDt>${achEffectiveDate?string("yyyy-MM-dd")}</DueDt>
 				<Category>Card</Category>
 				<CardInfo>
-					<InvNumber>${payment.tranid}</InvNumber>
+					<InvNumber>${payment.tranid?replace('/','-')}</InvNumber>
 					<CardRefId>${payment.memo}</CardRefId>
 				</CardInfo>
 
@@ -209,7 +209,7 @@
 				<MailInfo>
 					<MailType>US</MailType>
 				</MailInfo>
-				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left","0",17)}${"\n"}${setPadding("PAYMENT SUBSIDIARY","right"," ",20)}${setPadding(payment.subsidiary,"right"," ",40)}</RemittanceInfo>
+				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\r\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left","0",17)}${"\r\n"}${setPadding("PAYMENT SUBSIDIARY","right"," ",20)}${setPadding(payment.subsidiary,"right"," ",40)}</RemittanceInfo>
 			</XferInfo>
 		</XferAddRq>
 	</BankSvcRq>
