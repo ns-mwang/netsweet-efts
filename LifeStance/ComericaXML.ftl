@@ -209,7 +209,7 @@
 				<MailInfo>
 					<MailType>US</MailType>
 				</MailInfo>
-				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\r\n"}${setPadding(payment.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(getAmount(payment),"dec"),"left","0",17)}${"\r\n"}${setPadding("PAYMENT SUBSIDIARY","right"," ",20)}${setPadding(payment.subsidiary,"right"," ",40)}</RemittanceInfo>
+				<RemittanceInfo>${setPadding("INVOICE DATE","right"," ",20)} ${setPadding("INVOICE NUMBER","right"," ",20)} ${setPadding("NS TRANS NUMBER","right"," ",20)} ${setPadding("INVOICE AMT","left"," ",17)}${"\r\n"}<#list paidTransactions as transaction>${setPadding(transaction.trandate?string("yyyy-MM-dd"),"right"," ",20)} ${setPadding(transaction.tranid,"right"," ",20)} ${setPadding(transaction.transactionnumber,"right"," ",20)} ${setPadding(formatAmount(transaction.amount,"dec"),"left","0",17)}${"\r\n"}${setPadding("PAYMENT SUBSIDIARY:","right"," ",20)}${setPadding(transaction.subsidiary,"right"," ",40)}${"\r\n"}</#list></RemittanceInfo>
 			</XferInfo>
 		</XferAddRq>
 	</BankSvcRq>
