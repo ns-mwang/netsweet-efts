@@ -191,6 +191,7 @@
 					<PayeeName1>${setMaxLength(convertCharSet(buildEntityName(entity)),22)}</PayeeName1>
 					<PostAddr>
 						<Addr1>${ebank.custrecord_2663_entity_address1}</Addr1>
+						<#if ebank.custrecord_2663_entity_address2?has_content><Addr2>${ebank.custrecord_2663_entity_address2}</Addr2></#if>
 						<City>${ebank.custrecord_2663_entity_city}</City>
 						<StateProv>${ebank.custrecord_2663_entity_state}</StateProv>
 						<PostalCode>${ebank.custrecord_2663_entity_zip}</PostalCode>
