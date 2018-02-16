@@ -27,8 +27,8 @@
 *03<#-- Always *03 --><#rt>
 ${setPadding(cbank.custpage_pp_custrecord_2663_bank_comp_id,"left","0",5)}<#-- WF Bank ID (5)--><#rt>
 ${setPadding(cbank.custpage_pp_custrecord_2663_acct_num,"left","0",15)}<#-- CSE WF Account Num (15)--><#rt>
-0<#-- File Status Alwats Zero -->
-
+0
+<#-- File Status Alwats Zero -->
 <#-- DETAIL RECORD -->
 <#list payments as payment>
     <#assign entity = entities[payment_index]>
