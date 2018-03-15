@@ -119,10 +119,10 @@
             font-weight: bold;
         }
         span.title {
-            font-size: 28pt;
+            font-size: 22pt;
         }
         span.number {
-            font-size: 16pt;
+            font-size: 14pt;
         }
         span.itemname {
             font-weight: bold;
@@ -143,8 +143,86 @@
 	<td class="totalboxtop" colspan="5"><b>TOTAL</b></td>
 	</tr>
 	<tr>
-	<td class="address" colspan="3" rowspan="2">${customer.billaddress}</td>
-	<td class="address" colspan="3" rowspan="2">${customer.shipaddress}</td>
+    <td class="address" colspan="3" rowspan="2">
+	<#if customer.billattention?has_content>
+        ${customer.billattention}<br/>
+        </#if>
+        <#if customer.billaddressee?has_content>
+        ${customer.billaddressee}<br/>
+        </#if>
+        
+        <#if customer.billaddr1?has_content>
+        ${customer.billaddr1}<br/>
+        </#if>
+
+        <#if customer.billaddr2?has_content>
+        ${customer.billaddr2}<br/>
+        </#if>
+
+        <#if customer.billaddr3?has_content>
+        ${customer.billaddr3}<br/>
+        </#if>
+        
+        <#if customer.billcity?has_content>
+        ${customer.billcity}<br/>
+        </#if>
+        
+        <#if customer.billstate?has_content>
+        ${customer.billstate}<br/>
+        </#if>
+
+        <#if customer.billzip?has_content>
+        ${customer.billzip}<br/>
+        </#if>
+        
+        <#if customer.billcountry?has_content>
+        ${customer.billcountry}<br/>
+        </#if>
+        
+        <#if customer.billphone?has_content>
+        ${customer.billphone}<br/>
+        </#if>
+    </td>
+    <td class="address" colspan="3" rowspan="2">
+    <#if customer.shipattention?has_content>
+        ${customer.shipattention}<br/>
+        </#if>
+        <#if customer.shipaddressee?has_content>
+        ${customer.shipaddressee}<br/>
+        </#if>
+        
+        <#if customer.shipaddr1?has_content>
+        ${customer.shipaddr1}<br/>
+        </#if>
+
+        <#if customer.shipaddr2?has_content>
+        ${customer.shipaddr2}<br/>
+        </#if>
+
+        <#if customer.shipaddr3?has_content>
+        ${customer.shipaddr3}<br/>
+        </#if>
+        
+        <#if customer.shipcity?has_content>
+        ${customer.shipcity}<br/>
+        </#if>
+        
+        <#if customer.shipstate?has_content>
+        ${customer.shipstate}<br/>
+        </#if>
+
+        <#if customer.shipzip?has_content>
+        ${customer.shipzip}<br/>
+        </#if>
+        
+        <#if customer.shipcountry?has_content>
+        ${customer.shipcountry}<br/>
+        </#if>
+        
+        <#if customer.shipphone?has_content>
+        ${customer.shipphone}<br/>
+        </#if>
+    </td>
 	<td align="right" class="totalboxmid" colspan="5">${toCurrency(ci.custrecord_nsts_ci_pdf_itemtotal,true)}</td>
 	</tr>
 	<tr>
@@ -166,6 +244,7 @@
 <#if invoiceline?has_content>
 
 <table class="itemtable" style="width: 100%; margin-top: 10px;"><!-- start items --><#list invoiceline as item><#if item_index==0>
+    <#assign itemTotal=0> 
 <thead>
 	<tr>
 	<th align="center" colspan="10" rowspan="1">Project</th>
@@ -175,8 +254,8 @@
 </thead>
 </#if><tr>
 	<td align="center" colspan="10" line-height="150%" rowspan="1">${item.job}</td>
-	<td colspan="12">${item.description}</td>
-	<td align="right" colspan="4">${item.amount}</td>
+	<td colspan="12">${item.item.salesdescription}</td>
+	<td align="right" colspan="4">${ci.custrecord_nsts_ci_pdf_subtotal + ci.custrecord_nsts_ci_pdf_tax}</td>
 	</tr>
 	</#list><!-- end items --></table>
 
