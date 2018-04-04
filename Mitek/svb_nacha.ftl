@@ -156,9 +156,11 @@
         <#assign ebank = ccdEbanks[payment_index]>    
         <#assign entity = ccdEntities[payment_index]> 
         <#assign ccdBankNumberHash = ccdBankNumberHash + ebank.custrecord_2663_entity_bank_no?substring(0,8)?number>
-   
-6${getEntityBankAccountType(ebank.custrecord_2663_entity_bank_acct_type)}${setLength(ebank.custrecord_2663_entity_bank_no,8)}${setLength(ebank.custrecord_2663_entity_country_check,1)}${setLength(ebank.custrecord_2663_entity_acct_no,17)}${setPadding(formatAmount(getAmount(payment)),"left","0",10)}${setLength(transaction.tranid,15)}</#list>${setLength(buildEntityName(entity),22)}  0${setLength(cbank.custpage_eft_custrecord_2663_processor_code,4)}${setLength(cbank.custpage_eft_custrecord_2663_bank_code,4)}${setPadding(batchLineNum,"left","0",7)}
+        <#assign paidTransactions = transHash[payment.internalid]>
+        <#list paidTransactions as transaction><#-- Looping through each vendor bill in the bill payment record -->
+6${getEntityBankAccountType(ebank.custrecord_2663_entity_bank_acct_type)}${setLength(ebank.custrecord_2663_entity_bank_no,8)}${setLength(ebank.custrecord_2663_entity_country_check,1)}${setLength(ebank.custrecord_2663_entity_acct_no,17)}${setPadding(formatAmount(getAmount(payment)),"left","0",10)}${setLength(transaction.tranid,15)}${setLength(buildEntityName(entity),22)}  0${setLength(cbank.custpage_eft_custrecord_2663_processor_code,4)}${setLength(cbank.custpage_eft_custrecord_2663_bank_code,4)}${setPadding(batchLineNum,"left","0",7)}
         <#assign recordCount = recordCount + 1>
+        </#list>
     </#list>
     <#if isBalanceLine()>
     <#assign batchLineNum = batchLineNum + 1>
