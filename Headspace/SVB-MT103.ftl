@@ -71,7 +71,6 @@
 
 <#-- Add leading 0's to amount less than $1 -->
 <#-- <#if totalAmt lt 1 || totalAmt gt 0>${setMaxLength(formatAmount(totalAmt,"dec",",")?replace(",","0,"),11)}<#else>${setMaxLength(formatAmount(totalAmt,"dec",","),11)}</#if> -->
-<#assign totalAmt = computeTotalAmount(payments)>
 
 <#-- template building -->
 #OUTPUT START#
@@ -81,8 +80,9 @@
     <#assign entityName = buildEntityName(entity,false)>
     <#assign entityAddress = buildEntityAddress(entity)>
     <#assign referenceNote = getReferenceNote(payment)>
+    <#assign totalAmt = getAmount(payment)>
 :20:${setMaxLength(payment.tranid,16)}
-:32A:${pfa.custrecord_2663_process_date?string("yyyyMMdd")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}${setLength(getCurrencySymbol(payment.currency)?upper_case,3)}<#if totalAmt lt 1 || totalAmt gt 0>${setMaxLength(formatAmount(totalAmt,"dec",",")?replace(",","0,"),11)}<#else>${setMaxLength(formatAmount(totalAmt,"dec",","),11)}</#if>
+:32A:${pfa.custrecord_2663_process_date?string("yyyyMMdd")}${pfa.custrecord_2663_process_date?string("yyyyMMdd")}${setLength(getCurrencySymbol(payment.currency)?upper_case,3)}<#if totalAmt lt 1 && totalAmt gt 0>${setMaxLength(formatAmount(totalAmt,"dec",",")?replace(",","0,"),11)}<#else>${setMaxLength(formatAmount(totalAmt,"dec",","),11)}</#if>
 :50:/${setMaxLength(getBankAccountNumber(cbank),10)}
 :57A:${setMaxLength(ebank.custrecord_2663_entity_bic,35)}
 :59:/${setMaxLength(getEntityAccountNumber(ebank),34)}
