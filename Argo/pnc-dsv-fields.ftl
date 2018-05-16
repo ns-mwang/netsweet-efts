@@ -1,3 +1,4 @@
+<#--P12-->~<#rt><#--Canadian Indicator (1)-->
 <#--P13-->~<#rt><#--Vendor Number (Opt)(10)-->
 <#--P14-->~<#rt><#--Currency Type (Opt)(3)-->
 <#--P15-->~<#rt><#--Trace Number (Opt)(10)-->
