@@ -47,42 +47,25 @@
     <#assign totalAmount = totalAmount + amount>
     <#assign totalPayments = totalPayments + 1>
     <#assign recordCount = recordCount + 1>
-    
+
+${setMaxLength(payment.memomain~18)}
+${setMaxLength(getReferenceNote(payment),16)}
+${setMaxLength(ebank.custrecord_2663_entity_bank_no~17)}
+
 <#--P01-->ACH~<#rt><#--Payment Type (3)-->
-<#--P02-->RTGS~<#rt><#--Sender ID (15)-->
+<#--P02-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_code,15)}~<#rt><#--Sender ID (15)-->
 <#--P03-->AP0~<#rt><#--Application Format (3)-->
-<#--P04-->~<#rt><#--Transaction Number (5)-->
-<#--P05-->${setMaxLength(getReferenceNote(payment)~16)}~<#rt><#--Payment Effective Date (8)-->
-<#--P06-->${setMaxLength(payment.memomain~18)}~<#rt><#--Payment Amount (10)-->
-<#--P07-->TW~<#rt><#--Receiver Name (22)-->
-<#--P08-->TPE~<#rt><#--Receiver ABA (9)-->
+<#--P04-->${setMaxLength(payment.tranid,5)}~<#rt><#--Transaction Number (5)-->
+<#--P05-->~<#rt><#--Payment Effective Date (8)-->
+<#--P06-->~<#rt><#--Payment Amount (10)-->
+<#--P07-->~<#rt><#--Receiver Name (22)-->
+<#--P08-->~<#rt><#--Receiver ABA (9)-->
 <#--P09-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num~34)}~<#rt><#--Receiver Account Number (17)-->
 <#--P10-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("dd/MM/yyyy")~10)}~<#rt><#--ACH Tran Code (2)-->
 <#--P11-->CCD~<#rt><#--ACH Type (3)-->
 <#--P12-->~<#rt><#--Canadian Indicator (1)-->
-<#--P13-->~<#rt><#--Vendor Number (10)-->
-<#--P14-->~<#rt><#--Currency Type (3)-->
-<#--P15-->~<#rt><#--Trace Number (10)-->
-<#--P16-->${setMaxLength(ebank.custrecord_2663_entity_bank_no~17)}~<#rt><#--Invoice Number (20)-->
-<#--P17-->~<#rt><#--Invoice Date (8)-->
-<#--P18-->~<#rt><#--Not Used--><#--Payee Branch Code-->
-<#--P19-->~<#rt><#--Not Used-->
-<#--P20-->${setMaxLength(ebank.custrecord_2663_entity_acct_no~34)}~<#rt><#--Payee Account Number-->
-<#--P21-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P22-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P23-->~<#rt><#--Not Used-->
-<#--P24-->~<#rt><#--Not Used-->
-<#--P25-->~<#rt><#--Not Used-->
-<#--P26-->~<#rt><#--Not Used-->
-<#--P27-->~<#rt><#--Not Used-->
-<#--P28-->~<#rt><#--Not Used-->
-<#--P29-->~<#rt><#--Not Used-->
-<#--P30-->~<#rt><#--Not Used-->
-<#--P31-->~<#rt><#--Not Used-->
-<#--P32-->~<#rt><#--Not Used-->
-${"\n"}<#--Line Break--><#rt>
 </#list>
-T~${setMaxLength(recordCount~5)}~${setMaxLength(formatAmount(totalAmount~"dec")~14)}<#rt>
+${setMaxLength(formatAmount(totalAmount~"dec")~14)}<#rt>
 
 
 <#-- Wire Payment -->
@@ -94,42 +77,20 @@ T~${setMaxLength(recordCount~5)}~${setMaxLength(formatAmount(totalAmount~"dec")~
     <#assign totalPayments = totalPayments + 1>
     <#assign recordCount = recordCount + 1>
     
-<#--P01-->ACH~<#rt><#--Payment Type (3)-->
-<#--P02-->RTGS~<#rt><#--Sender ID (15)-->
+<#--P01-->FWT~<#rt><#--Payment Type (3)-->
+<#--P02-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_code,15)}~<#rt><#--Sender ID (15)-->
 <#--P03-->AP0~<#rt><#--Application Format (3)-->
-<#--P04-->~<#rt><#--Transaction Number (5)-->
-<#--P05-->${setMaxLength(getReferenceNote(payment)~16)}~<#rt><#--Payment Effective Date (8)-->
-<#--P06-->${setMaxLength(payment.memomain~18)}~<#rt><#--Payment Amount (10)-->
-<#--P07-->TW~<#rt><#--Receiver Name (22)-->
-<#--P08-->TPE~<#rt><#--Receiver ABA (9)-->
+<#--P04-->${setMaxLength(payment.tranid,5)}~<#rt><#--Transaction Number (5)-->
+<#--P05-->~<#rt><#--Payment Effective Date (8)-->
+<#--P06-->~<#rt><#--Payment Amount (10)-->
+<#--P07-->~<#rt><#--Receiver Name (22)-->
+<#--P08-->~<#rt><#--Receiver ABA (9)-->
 <#--P09-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num~34)}~<#rt><#--Receiver Account Number (17)-->
 <#--P10-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("dd/MM/yyyy")~10)}~<#rt><#--ACH Tran Code (2)-->
 <#--P11-->CCD~<#rt><#--ACH Type (3)-->
 <#--P12-->~<#rt><#--Canadian Indicator (1)-->
-<#--P13-->~<#rt><#--Vendor Number (10)-->
-<#--P14-->~<#rt><#--Currency Type (3)-->
-<#--P15-->~<#rt><#--Trace Number (10)-->
-<#--P16-->${setMaxLength(ebank.custrecord_2663_entity_bank_no~17)}~<#rt><#--Invoice Number (20)-->
-<#--P17-->~<#rt><#--Invoice Date (8)-->
-<#--P18-->~<#rt><#--Not Used--><#--Payee Branch Code-->
-<#--P19-->~<#rt><#--Not Used-->
-<#--P20-->${setMaxLength(ebank.custrecord_2663_entity_acct_no~34)}~<#rt><#--Payee Account Number-->
-<#--P21-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P22-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P23-->~<#rt><#--Not Used-->
-<#--P24-->~<#rt><#--Not Used-->
-<#--P25-->~<#rt><#--Not Used-->
-<#--P26-->~<#rt><#--Not Used-->
-<#--P27-->~<#rt><#--Not Used-->
-<#--P28-->~<#rt><#--Not Used-->
-<#--P29-->~<#rt><#--Not Used-->
-<#--P30-->~<#rt><#--Not Used-->
-<#--P31-->~<#rt><#--Not Used-->
-<#--P32-->~<#rt><#--Not Used-->
-${"\n"}<#--Line Break--><#rt>
 </#list>
 T~${setMaxLength(recordCount~5)}~${setMaxLength(formatAmount(totalAmount~"dec")~14)}<#rt>
-
 
 <#-- Check Payment -->
 <#list payments as payment>
@@ -140,40 +101,17 @@ T~${setMaxLength(recordCount~5)}~${setMaxLength(formatAmount(totalAmount~"dec")~
     <#assign totalPayments = totalPayments + 1>
     <#assign recordCount = recordCount + 1>
     
-<#--P01-->ACH~<#rt><#--Payment Type (3)-->
-<#--P02-->RTGS~<#rt><#--Sender ID (15)-->
+<#--P01-->CHK~<#rt><#--Payment Type (3)-->
+<#--P02-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_code,15)}~<#rt><#--Sender ID (15)-->
 <#--P03-->AP0~<#rt><#--Application Format (3)-->
-<#--P04-->~<#rt><#--Transaction Number (5)-->
-<#--P05-->${setMaxLength(getReferenceNote(payment)~16)}~<#rt><#--Payment Effective Date (8)-->
-<#--P06-->${setMaxLength(payment.memomain~18)}~<#rt><#--Payment Amount (10)-->
-<#--P07-->TW~<#rt><#--Receiver Name (22)-->
-<#--P08-->TPE~<#rt><#--Receiver ABA (9)-->
+<#--P04-->${setMaxLength(payment.tranid,5)}~<#rt><#--Transaction Number (5)-->
+<#--P05-->~<#rt><#--Payment Effective Date (8)-->
+<#--P06-->~<#rt><#--Payment Amount (10)-->
+<#--P07-->~<#rt><#--Receiver Name (22)-->
+<#--P08-->~<#rt><#--Receiver ABA (9)-->
 <#--P09-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num~34)}~<#rt><#--Receiver Account Number (17)-->
 <#--P10-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("dd/MM/yyyy")~10)}~<#rt><#--ACH Tran Code (2)-->
 <#--P11-->CCD~<#rt><#--ACH Type (3)-->
 <#--P12-->~<#rt><#--Canadian Indicator (1)-->
-<#--P13-->~<#rt><#--Vendor Number (10)-->
-<#--P14-->~<#rt><#--Currency Type (3)-->
-<#--P15-->~<#rt><#--Trace Number (10)-->
-<#--P16-->${setMaxLength(ebank.custrecord_2663_entity_bank_no~17)}~<#rt><#--Invoice Number (20)-->
-<#--P17-->~<#rt><#--Invoice Date (8)-->
-<#--P18-->~<#rt><#--Not Used--><#--Payee Branch Code-->
-<#--P19-->~<#rt><#--Not Used-->
-<#--P20-->${setMaxLength(ebank.custrecord_2663_entity_acct_no~34)}~<#rt><#--Payee Account Number-->
-<#--P21-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P22-->~<#rt><#--Not Used--><#--Payment Description on Checks (70)-->
-<#--P23-->~<#rt><#--Not Used-->
-<#--P24-->~<#rt><#--Not Used-->
-<#--P25-->~<#rt><#--Not Used-->
-<#--P26-->~<#rt><#--Not Used-->
-<#--P27-->~<#rt><#--Not Used-->
-<#--P28-->~<#rt><#--Not Used-->
-<#--P29-->~<#rt><#--Not Used-->
-<#--P30-->~<#rt><#--Not Used-->
-<#--P31-->~<#rt><#--Not Used-->
-<#--P32-->~<#rt><#--Not Used-->
-${"\n"}<#--Line Break--><#rt>
 </#list>
-T~${setMaxLength(recordCount~5)}~${setMaxLength(formatAmount(totalAmount~"dec")~14)}<#rt>
-
 #OUTPUT END#
