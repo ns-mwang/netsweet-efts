@@ -50,20 +50,20 @@
 
 ${setMaxLength(payment.memomain~18)}
 ${setMaxLength(getReferenceNote(payment),16)}
-${setMaxLength(ebank.custrecord_2663_entity_bank_no~17)}
+${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num~34)}
+${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("dd/MM/yyyy")~10)}
 
 <#--P01-->ACH~<#rt><#--Payment Type (3)-->
 <#--P02-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_code,15)}~<#rt><#--Sender ID (15)-->
 <#--P03-->AP0~<#rt><#--Application Format (3)-->
 <#--P04-->${setMaxLength(payment.tranid,5)}~<#rt><#--Transaction Number (5)-->
-<#--P05-->~<#rt><#--Payment Effective Date (8)-->
-<#--P06-->~<#rt><#--Payment Amount (10)-->
+<#--P05-->${pfa.custrecord_2663_process_date?string("yyyyMMdd")}~<#rt><#--Payment Effective Date (8)-->
+<#--P06-->${setMaxLength(formatAmount(getAmount(payment)),10)}~<#rt><#--Payment Amount (10)-->
 <#--P07-->~<#rt><#--Receiver Name (22)-->
-<#--P08-->~<#rt><#--Receiver ABA (9)-->
-<#--P09-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num~34)}~<#rt><#--Receiver Account Number (17)-->
-<#--P10-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("dd/MM/yyyy")~10)}~<#rt><#--ACH Tran Code (2)-->
+<#--P08-->${setLength(ebank.custrecord_2663_entity_bank_no,9)}~<#rt><#--Receiver ABA (9)-->
+<#--P09-->${setMaxLength(ebank.custrecord_2663_entity_acct_no,17)}~<#rt><#--Receiver Account Number (17)-->
+<#--P10-->22~<#rt><#--ACH Tran Code (2) Code 22:Demand Deposit Credit-->
 <#--P11-->CCD~<#rt><#--ACH Type (3)-->
-<#--P12-->~<#rt><#--Canadian Indicator (1)-->
 </#list>
 ${setMaxLength(formatAmount(totalAmount~"dec")~14)}<#rt>
 
