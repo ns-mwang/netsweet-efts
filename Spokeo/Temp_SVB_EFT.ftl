@@ -26,7 +26,7 @@
 <#--- Filed Header Record (1) --->
 <#--P01-->1<#rt><#--Record Type Code (1)-->
 <#--P02-->01<#rt><#--Priority Code-->
-<#--P03--> ${cbank.custpage_eft_custrecord_2663_bank_num}<#rt><#--Immediate Destination _121140399 ("_" = blank)-->
+<#--P03--> ${cbank.custpage_eft_custrecord_2663_bank_num}<#rt><#--Immediate Destination-->
 <#--P04-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Imedediate Origin/Company Identification (Assigned by SVB)-->
 <#--P05-->${pfa.custrecord_2663_file_creation_timestamp?string("yyMMdd")}<#rt><#--File Creation Date (yyMMdd)-->
 <#--P06-->${pfa.custrecord_2663_file_creation_timestamp?string("HHmm")}<#rt><#--File Creation Time (HHmm)-->
@@ -34,19 +34,20 @@
 <#--P08-->094<#rt><#--Record Size-->
 <#--P09-->10<#rt><#--Blocking Factor-->
 <#--P10-->1<#rt><#--Format Code-->
-<#--P11-->${setLength("SILICON VALLEY BANK",23)}<#rt><#--Immediate Destination Name-->
+<#--P11-->${setLength(custpage_eft_custrecord_2663_bank_name,23)}<#rt><#--Immediate Destination Name-->
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
 ${"\r"}<#--Line Break-->
 
-<#--- Batch Header Record (5) --->
+<#if custentity_si_payment_method == "ACH-CCD>
+<#--- CCD Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
-<#--P02-->200<#rt><#--Service Class Code-->
+<#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${setLength(cbank.custrecord_2663_legal_name,16)}<#rt><#--Your Company Name (Short)-->
 <#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
-<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by JPMC-->
+<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
 <#--P06-->CCD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength("GUMGUM INC",10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P07-->${setLength(cbank.custpage_eft_custrecord_2663_print_company_name,10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
@@ -55,7 +56,7 @@ ${"\r"}<#--Line Break-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r"}<#--Line Break-->
 
-<#--- Entry Detail Record (6) --->
+<#--- CCD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
 <#assign entryHash = 0>
@@ -64,7 +65,7 @@ ${"\r"}<#--Line Break-->
     <#assign entity = entities[payment_index]>
     <#assign payAmount = formatAmount(getAmount(payment))>
     <#assign totalPayments = totalPayments + 1>
-    <#assign recordCount = recordCount + 1>
+    <#assign recordCount = recordCount + 2>
     <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#--Entry Hash Calculation sum(P5 to P11)-->
@@ -81,19 +82,73 @@ ${"\r"}<#--Line Break-->
 <#--P04-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Digit the 9th digit of routing number <substring(8)>-->
 <#--P05-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
 <#--P06-->${setPadding(payAmount,"left","0",10)}<#rt><#--Dollar Amount-->
-<#--P07-->${setPadding(ebank.custrecord_2663_entity_bank_code,"right"," ",15)}<#rt><#--Individual Identification Number-->
+<#--P07-->${setPadding(payment.transactionnumber,"right"," ",15)}<#rt><#--Individual Identification Number-->
 <#--P08-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Individual Name-->
-<#--P09-->01<#rt><#--Discretionary Data-->
-<#--P10-->0<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
+<#--P09-->  <#rt><#--Discretionary Data-->
+<#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
-${"\r"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+${"\r"}<#--Line Break--><#rt>
 </#list>
+
+<#elseif custentity_si_payment_method == "ACH-PPD">
+<#--- Batch Header Record (5) --->
+<#--P01-->5<#rt><#--Record Type Code (5)-->
+<#--P02-->220<#rt><#--Service Class Code-->
+<#--P03-->${setLength(cbank.custrecord_2663_legal_name,16)}<#rt><#--Your Company Name (Short)-->
+<#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
+<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
+<#--P06-->PPD<#rt><#--Standard Entry Class Code-->
+<#--P07-->${setLength(cbank.custpage_eft_custrecord_2663_print_company_name,10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
+<#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
+<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
+<#--P11-->1<#rt><#--Originator Status Code = 1-->
+<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
+<#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
+${"\r"}<#--Line Break-->
+
+<#--- PPD Entry Detail Record (6) --->
+<#assign totalPayments = 0>
+<#assign recordCount = 0>
+<#assign entryHash = 0>
+<#list payments as payment>
+    <#assign ebank = ebanks[payment_index]>
+    <#assign entity = entities[payment_index]>
+    <#assign payAmount = formatAmount(getAmount(payment))>
+    <#assign totalPayments = totalPayments + 1>
+    <#assign recordCount = recordCount + 2>
+    <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
+    <#assign paidTransactions = transHash[payment.internalid]>
+    <#--Entry Hash Calculation sum(P5 to P11)-->
+    <#assign P5 = ebank.custrecord_2663_entity_acct_no>
+    <#assign p6 = payAmount>
+    <#assign p7 = ebank.custrecord_2663_entity_bank_code>
+    <#assign p10 = 0>
+    <#assign P11 = traceNumber?number>
+    <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
+    <#--Entry Hash Calculation End-->
+<#--P01-->6<#rt><#--Record Type Code (6)-->
+<#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
+<#--P03-->${ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)}<#rt><#--Receiving DFI ID (Routing Number)-->
+<#--P04-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Digit the 9th digit of routing number <substring(8)>-->
+<#--P05-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
+<#--P06-->${setPadding(payAmount,"left","0",10)}<#rt><#--Dollar Amount-->
+<#--P07-->${setPadding(payment.transactionnumber,"right"," ",15)}<#rt><#--Individual Identification Number-->
+<#--P08-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Individual Name-->
+<#--P09-->  <#rt><#--Discretionary Data-->
+<#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
+<#--P11-->${traceNumber}<#rt><#--Trace Number-->
+<#--- Addenda Detail Record (7) --->
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+${"\r"}<#--Line Break--><#rt>
+</#list>
+</#if>
 
 <#--- Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
-<#--P02-->200<#rt><#--Service Class Code-->
+<#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${recordCount}<#rt><#--Entry/Addenda Count-->
 <#--P04-->${entryHash}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
