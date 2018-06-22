@@ -39,7 +39,7 @@
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
 ${"\r"}<#--Line Break-->
 
-<#if custentity_si_payment_method == "ACH-CCD>
+<#if custentity_si_payment_method == "ACH-CCD">
 <#--- CCD Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
 <#--P02-->220<#rt><#--Service Class Code-->
@@ -87,9 +87,10 @@ ${"\r"}<#--Line Break-->
 <#--P09-->  <#rt><#--Discretionary Data-->
 <#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
+${"\r"}<#--Line Break-->
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r"}<#--Line Break--><#rt>
+${"\r"}<#--Line Break-->
 </#list>
 
 <#elseif custentity_si_payment_method == "ACH-PPD">
@@ -140,9 +141,10 @@ ${"\r"}<#--Line Break-->
 <#--P09-->  <#rt><#--Discretionary Data-->
 <#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
+${"\r"}<#--Line Break-->
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r"}<#--Line Break--><#rt>
+${"\r"}<#--Line Break-->
 </#list>
 </#if>
 
