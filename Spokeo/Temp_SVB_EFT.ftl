@@ -36,12 +36,12 @@
     <#list payments as payment>
         <#assign ebank = ebanks[payment_index]>    
         <#assign entity = entities[payment_index]>
-        <#if entity.custentity_si_payment_method == "ACH-CCD">
+        <#if payment.custbody_si_payment_method == "ACH-CCD">
             <#assign ccdPaymentsStr = ccdPaymentsStr + "payments[" + payment_index?c?string + "],">
             <#assign ccdEbanksStr = ccdEbanksStr + "ebanks[" + payment_index?c?string + "],">
             <#assign ccdEntitiesStr = ccdEntitiesStr + "entities[" + payment_index?c?string + "],">
         </#if>
-        <#if entity.custentity_si_payment_method == "ACH-PPD">
+        <#if payment.custbody_si_payment_method == "ACH-PPD">
             <#assign ppdPaymentsStr = ppdPaymentsStr + "payments[" + payment_index?c?string + "],">
             <#assign ppdEbanksStr = ppdEbanksStr + "ebanks[" + payment_index?c?string + "],">
             <#assign ppdEntitiesStr = ppdEntitiesStr + "entities[" + payment_index?c?string + "],">
@@ -75,8 +75,7 @@
 <#--P11-->${setLength(custpage_eft_custrecord_2663_bank_name,23)}<#rt><#--Immediate Destination Name-->
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
-${"\r\n"}<#--Line Break-->
-
+${"\r\n"}<#--Line Break--><#rt>
 <#if (ccdPayments?size > 0) >
 <#--- CCD Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
@@ -92,8 +91,7 @@ ${"\r\n"}<#--Line Break-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
 <#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break-->
-
+${"\r\n"}<#--Line Break--><#rt>
 <#--- CCD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
@@ -125,12 +123,11 @@ ${"\r\n"}<#--Line Break-->
 <#--P09-->  <#rt><#--Discretionary Data-->
 <#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r\n"}<#--Line Break-->
+${"\r\n"}<#--Line Break--><#rt>
 </#list>
-
 <#elseif (ppdPayments?size > 0) >
 <#--- Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
@@ -146,8 +143,7 @@ ${"\r\n"}<#--Line Break-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
 <#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break-->
-
+${"\r\n"}<#--Line Break--><#rt>
 <#--- PPD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
@@ -179,18 +175,17 @@ ${"\r\n"}<#--Line Break-->
 <#--P09-->  <#rt><#--Discretionary Data-->
 <#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r\n"}<#--Line Break-->
+${"\r\n"}<#--Line Break--><#rt>
 </#list>
 </#if>
-
 <#--- Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
-<#--P03-->${recordCount}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${entryHash}<#rt><#--Entry Hash-->
+<#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
+<#--P04-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
 <#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
@@ -198,12 +193,11 @@ ${"\r\n"}<#--Line Break-->
 <#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
 <#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break-->
-
+${"\r\n"}<#--Line Break--><#rt>
 <#--- File Control Record (9) --->
 <#--Entry Hash Value sum of P4 to P11-->
 <#--P01-->9<#rt><#--Record Type Code (9)-->
-<#--P02-->1<#rt><#--Batch Count-->
+<#--P02-->000001<#rt><#--Batch Count-->
 <#--P03-->${setPadding(computeTotalRecords(recordCount),"left","0",6)}<#rt><#--Block Count-->
 <#--P04-->${setPadding(recordCount,"left","0",8)}<#rt><#--Entry/Addenda Count-->
 <#--P05-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
