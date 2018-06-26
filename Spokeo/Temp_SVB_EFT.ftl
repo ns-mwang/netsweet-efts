@@ -19,8 +19,46 @@
         <#return referenceNote>
     </#function>
 
+    <#function computeTotalRecords recordCount>
+        <#assign value = ((recordCount + 4) / 10) >
+        <#assign value = value?ceiling >    
+        <#return value>
+    </#function>
+
+<#-- Divide Payments, Entities, and Entity Banks into two groups (CCD, PPD) -->
+    <#assign ccdPaymentsStr = "">
+    <#assign ccdEbanksStr = "">
+    <#assign ccdEntitiesStr = "">
+    <#assign ppdPaymentsStr = "">
+    <#assign ppdEbanksStr = "">
+    <#assign ppdEntitiesStr = "">    
+    <#-- avoid sequence concatenation, use sequence strings instead -->
+    <#list payments as payment>
+        <#assign ebank = ebanks[payment_index]>    
+        <#assign entity = entities[payment_index]>
+        <#if entity.custentity_si_payment_method == "ACH-CCD">
+            <#assign ccdPaymentsStr = ccdPaymentsStr + "payments[" + payment_index?c?string + "],">
+            <#assign ccdEbanksStr = ccdEbanksStr + "ebanks[" + payment_index?c?string + "],">
+            <#assign ccdEntitiesStr = ccdEntitiesStr + "entities[" + payment_index?c?string + "],">
+        </#if>
+        <#if entity.custentity_si_payment_method == "ACH-PPD">
+            <#assign ppdPaymentsStr = ppdPaymentsStr + "payments[" + payment_index?c?string + "],">
+            <#assign ppdEbanksStr = ppdEbanksStr + "ebanks[" + payment_index?c?string + "],">
+            <#assign ppdEntitiesStr = ppdEntitiesStr + "entities[" + payment_index?c?string + "],">
+        </#if>    
+    </#list>
+    <#-- convert from strings to sequences -->
+    <#assign ccdPayments = ("[" + removeEnding(ccdPaymentsStr, ",") + "]")?eval>
+    <#assign ccdEbanks = ("[" + removeEnding(ccdEbanksStr, ",") + "]")?eval>
+    <#assign ccdEntities = ("[" + removeEnding(ccdEntitiesStr, ",") + "]")?eval>
+    <#assign ppdPayments = ("[" + removeEnding(ppdPaymentsStr, ",") + "]")?eval>
+    <#assign ppdEbanks = ("[" + removeEnding(ppdEbanksStr, ",") + "]")?eval>
+    <#assign ppdEntities = ("[" + removeEnding(ppdEntitiesStr, ",") + "]")?eval>
+<#-- END: Divide Payments, Entities, and Entity Banks into two groups (CCD, PPD) -->
+
 <#-- cached values -->
 <#assign totalAmount = formatAmount(computeTotalAmount(payments))>
+
 <#-- template building -->
 #OUTPUT START#
 <#--- Filed Header Record (1) --->
@@ -37,9 +75,9 @@
 <#--P11-->${setLength(custpage_eft_custrecord_2663_bank_name,23)}<#rt><#--Immediate Destination Name-->
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 
-<#if custentity_si_payment_method == "ACH-CCD">
+<#if (ccdPayments?size > 0) >
 <#--- CCD Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
 <#--P02-->220<#rt><#--Service Class Code-->
@@ -54,7 +92,7 @@ ${"\r"}<#--Line Break-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
 <#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 
 <#--- CCD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
@@ -90,10 +128,10 @@ ${"\r"}<#--Line Break-->
 ${"\r"}<#--Line Break-->
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 </#list>
 
-<#elseif custentity_si_payment_method == "ACH-PPD">
+<#elseif (ppdPayments?size > 0) >
 <#--- Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
 <#--P02-->220<#rt><#--Service Class Code-->
@@ -108,7 +146,7 @@ ${"\r"}<#--Line Break-->
 <#--P11-->1<#rt><#--Originator Status Code = 1-->
 <#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
 <#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 
 <#--- PPD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
@@ -144,7 +182,7 @@ ${"\r"}<#--Line Break-->
 ${"\r"}<#--Line Break-->
 <#--- Addenda Detail Record (7) --->
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 </#list>
 </#if>
 
@@ -160,13 +198,13 @@ ${"\r"}<#--Line Break-->
 <#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
 <#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r"}<#--Line Break-->
+${"\r\n"}<#--Line Break-->
 
 <#--- File Control Record (9) --->
 <#--Entry Hash Value sum of P4 to P11-->
 <#--P01-->9<#rt><#--Record Type Code (9)-->
 <#--P02-->1<#rt><#--Batch Count-->
-<#--P03-->1<#rt><#--Block Count-->
+<#--P03-->${setPadding(computeTotalRecords(recordCount),"left","0",6)}<#rt><#--Block Count-->
 <#--P04-->${setPadding(recordCount,"left","0",8)}<#rt><#--Entry/Addenda Count-->
 <#--P05-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P06-->000000000000<#rt><#--Total Debit Entry Dollar Amount in File-->
