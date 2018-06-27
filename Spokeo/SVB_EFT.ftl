@@ -122,7 +122,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
 <#--Entry Hash Calculation sum-->
@@ -185,7 +185,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
 <#--- PPD Batch Control Record (8) --->
@@ -247,7 +247,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
 <#--- CCD Batch Control Record (8) --->
@@ -305,7 +305,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P11-->${traceNumber}<#rt><#--Trace Number-->
 ${"\r\n"}<#--Line Break--><#rt>
 <#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
+705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
 <#--- PPD Batch Control Record (8) --->
