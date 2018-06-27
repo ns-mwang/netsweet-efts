@@ -84,7 +84,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
 <#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
 <#--P06-->CCD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength(cbank.custpage_eft_custrecord_2663_print_company_name,10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
@@ -136,7 +136,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
 <#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
 <#--P06-->PPD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength(cbank.custpage_eft_custrecord_2663_print_company_name,10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
