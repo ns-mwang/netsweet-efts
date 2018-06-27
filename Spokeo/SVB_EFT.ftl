@@ -58,6 +58,7 @@
 
 <#-- cached values -->
 <#assign totalAmount = formatAmount(computeTotalAmount(payments))>
+<#assign entryHash = 0>
 
 <#-- template building -->
 #OUTPUT START#
@@ -104,13 +105,9 @@ ${"\r\n"}<#--Line Break--><#rt>
     <#assign recordCount = recordCount + 2>
     <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
-    <#--Entry Hash Calculation sum(P5 to P11)-->
-    <#assign P5 = ebank.custrecord_2663_entity_acct_no>
-    <#assign p6 = payAmount>
-    <#assign p7 = ebank.custrecord_2663_entity_bank_code>
-    <#assign p10 = 0>
-    <#assign P11 = traceNumber?number>
-    <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
+    <#--Entry Hash Calculation sum-->
+    <#assign P03 = ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)>
+    <#assign entryHash = entryHash + P03>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
@@ -136,7 +133,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
 <#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
 <#--P06-->PPD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description (Show's on receiving bank statement)-->
+<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
 <#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
 <#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
@@ -156,13 +153,9 @@ ${"\r\n"}<#--Line Break--><#rt>
     <#assign recordCount = recordCount + 2>
     <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
-    <#--Entry Hash Calculation sum(P5 to P11)-->
-    <#assign P5 = ebank.custrecord_2663_entity_acct_no>
-    <#assign p6 = payAmount>
-    <#assign p7 = ebank.custrecord_2663_entity_bank_code>
-    <#assign p10 = 0>
-    <#assign P11 = traceNumber?number>
-    <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
+    <#--Entry Hash Calculation sum-->
+    <#assign P03 = ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)>
+    <#assign entryHash = entryHash + P03>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
