@@ -58,10 +58,12 @@
 
 <#-- cached values -->
 <#assign totalAmount = formatAmount(computeTotalAmount(payments))>
-<#assign entryHash = 0>
 
 <#-- template building -->
 #OUTPUT START#
+<#assign entryHash = 0>
+<#assign entryHashCCD = 0>
+<#assign entryHashPPD = 0>
 <#--- Filed Header Record (1) --->
 <#--P01-->1<#rt><#--Record Type Code (1)-->
 <#--P02-->01<#rt><#--Priority Code-->
@@ -96,7 +98,6 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--- CCD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
-<#assign entryHash = 0>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
@@ -106,8 +107,7 @@ ${"\r\n"}<#--Line Break--><#rt>
     <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#--Entry Hash Calculation sum-->
-    <#assign P03 = ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)>
-    <#assign entryHash = entryHash + P03>
+    <#assign entryHashCCD = entryHashCCD + ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)?number>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
@@ -125,6 +125,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
+<#assign entryHash = entryHash + entryHashCCD>
 <#elseif (ppdPayments?size > 0) >
 <#--- Batch Header Record (5) --->
 <#--P01-->5<#rt><#--Record Type Code (5)-->
@@ -144,7 +145,6 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--- PPD Entry Detail Record (6) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
-<#assign entryHash = 0>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
@@ -154,8 +154,7 @@ ${"\r\n"}<#--Line Break--><#rt>
     <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#--Entry Hash Calculation sum-->
-    <#assign P03 = ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)>
-    <#assign entryHash = entryHash + P03>
+    <#assign entryHashPPD = entryHashPPD + ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)?number>
     <#--Entry Hash Calculation End-->
 <#--P01-->6<#rt><#--Record Type Code (6)-->
 <#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
@@ -173,6 +172,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
+<#assign entryHash = entryHash + entryHashPPD>
 </#if>
 <#--- Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
