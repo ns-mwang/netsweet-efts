@@ -2,56 +2,61 @@
 <pdf>
 <head>
 	<link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
-    <style type="text/css">* {
-		<#if .locale == "zh_CN">
-			font-family: NotoSans, NotoSansCJKsc, sans-serif;
-		<#elseif .locale == "zh_TW">
-			font-family: NotoSans, NotoSansCJKtc, sans-serif;
-		<#elseif .locale == "ja_JP">
-			font-family: NotoSans, NotoSansCJKjp, sans-serif;
-		<#elseif .locale == "ko_KR">
-			font-family: NotoSans, NotoSansCJKkr, sans-serif;
-		<#elseif .locale == "th_TH">
-			font-family: NotoSans, NotoSansThai, sans-serif;
-		<#else>
-			font-family: NotoSans, sans-serif;
-		</#if>
-		}
-        .check table, .voucher1 table, .voucher2 table {
-            position: relative;
-            overflow: hidden;
-            font-size: 8pt;
-            padding: 0;
-        }
-		td p { align:left }
+	<#if .locale == "zh_CN">
+		<link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+	<#elseif .locale == "zh_TW">
+		<link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+	<#elseif .locale == "ja_JP">
+		<link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+	<#elseif .locale == "ko_KR">
+		<link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+	<#elseif .locale == "th_TH">
+		<link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+	</#if>
+    <style type="text/css">
+	table {
+    position: relative;
+    overflow: hidden;
+    font-size: 10pt;
+    font-family: Calibri, sans-serif;
+    }
+    td p {
+    align:left
+    font-size: 10pt;
+    font-family: Calibri, sans-serif;
+    }
 </style>
 </head>
-<body padding="0in 0in 0in 0in" size="Letter">
+<body padding="0.944cm 0.5905cm 0.944cm 0.5905cm" size="letter">
     <#list records as check>
-<div style="position: relative;font-family: Helvetica,sans-serif;top= -11pt;height: 250pt;width: 612pt;page-break-inside: avoid;font-size: 8pt;">
-<!-- <table style="position: absolute;overflow: hidden;left: 530pt;top: 3.5in;height: 7pt;width: 85pt;font-size: 12pt; letter-spacing: 2pt;"><tr>
-	<td align="center">${check.checknumber}</td>
-	</tr></table> -->
+<table align="center" border="0" cellpadding="1" cellspacing="1" style="height:3.62in;width:7.95in;"><tr>
+	<td>
+	<table style="position: absolute;overflow: hidden;left: 250pt;top: 0;width: 85pt;"><tr>
+		<td align="center">A/c Payee</td>
+		</tr></table>
 
-<table style="position: absolute;overflow: hidden;left: 6in;top: 6in;height: 18pt;width: 175pt;"><tr>
-  <td>${check.trandate}</td>
-  <td>**<#if (check.usertotal?length > 0)>${check.usertotal}<#else>${check.total}</#if></td>
-	</tr></table>
+	<table style="position: absolute;overflow: hidden;left: 14.75cm;top: 0cm;height: 18pt;letter-spacing: 0.2cm;"><tr>
+		<td>${check.trandate?string("ddMMYYY")}</td>
+		</tr></table>
 
-<table style="position: absolute;overflow: hidden;left: 0.85in;top: 5.25in;height: 18pt;width: 572pt;"><tr>
-	<td>${check.totalwords}*********************************************************************</td>
-	</tr></table>
-
-<table style="position: absolute;overflow: hidden;left: 0.85in;top: 6in;height: 18pt;width: 393pt;"><tr>
+	<table style="position: absolute;overflow: hidden;left: 1.0in;top: 1.3cm;height: 18pt;width: 393pt;"><tr>
 		<#if check.entity.printoncheckas?length !=0>
     	<td>${check.entity.printoncheckas}</td>
    		<#else>
      	<td>${check.entity}</td>
    		</#if>
-        </tr>
-  </table>
+		</tr></table>
 
-</div>
+	<table style="position: absolute;overflow: hidden;left: 1.3in;top: 2.1cm;height: 18pt;width: 600pt;"><tr>
+	<td>${check.wordHundredThousands?replace("zero","")} ${check.wordTenThousands?replace("zero","")} ${check.wordThousands?replace("zero","")} Thousand ${check.wordHundreds?replace("zero","")} Hundred ${check.wordTens?replace("zero","")} ${check.wordOnes?replace("zero","")} Paisa</td>
+		</tr></table>
+
+	<table style="position: absolute;overflow: hidden;left: 16cm;top: 2.7cm;height: 18pt;width: 111pt;"><tr>
+		<td><#if (check.usertotal?length > 0)>**${check.usertotal?replace("$","")}<#else>**${check.total?replace("$","")}</#if></td>
+		</tr></table>
+
+	</td>
+	</tr></table>
 </#list>
 </body>
 </pdf>
