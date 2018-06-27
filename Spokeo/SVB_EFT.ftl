@@ -126,12 +126,11 @@ ${"\r\n"}<#--Line Break--><#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
 <#--Entry Hash Calculation sum-->
-<#assign entryHash = entryHash + entryHashCCD + entryHashPPD>
 <#--- CCD Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
+<#--P04-->${setPadding(entryHashCCD,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
 <#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
@@ -189,13 +188,11 @@ ${"\r\n"}<#--Line Break--><#rt>
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
-<#--Entry Hash Calculation sum-->
-<#assign entryHash = entryHash + entryHashCCD + entryHashPPD>
 <#--- PPD Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
+<#--P04-->${setPadding(entryHashPPD,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
 <#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
@@ -257,7 +254,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
+<#--P04-->${setPadding(entryHashCCD,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
 <#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
@@ -311,13 +308,11 @@ ${"\r\n"}<#--Line Break--><#rt>
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(batchLineNum,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
-<#--Entry Hash Calculation sum-->
-<#assign entryHash = entryHash + entryHashCCD + entryHashPPD>
 <#--- PPD Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
 <#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
+<#--P04-->${setPadding(entryHashPPD,"left","0",10)}<#rt><#--Entry Hash-->
 <#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
 <#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
 <#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
@@ -327,6 +322,8 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r\n"}<#--Line Break--><#rt>
 </#if>
+<#--Entry Hash Total Calculation-->
+<#assign entryHash = entryHash + entryHashCCD + entryHashPPD>
 <#--- File Control Record (9) --->
 <#--P01-->9<#rt><#--Record Type Code (9)-->
 <#--P02-->000001<#rt><#--Batch Count-->
