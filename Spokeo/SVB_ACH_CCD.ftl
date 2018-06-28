@@ -76,7 +76,6 @@
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#if (ccdPayments?size > 0) && (ppdPayments?size == 0)>
 <#assign entryHash = 0>
 <#assign entryHashCCD = 0>
 <#assign entryHashPPD = 0>
@@ -125,7 +124,6 @@ ${"\r\n"}<#--Line Break--><#rt>
 705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 </#list>
-<#--Entry Hash Calculation sum-->
 <#--- CCD Batch Control Record (8) --->
 <#--P01-->8<#rt><#--Record Type Code (8)-->
 <#--P02-->220<#rt><#--Service Class Code-->
