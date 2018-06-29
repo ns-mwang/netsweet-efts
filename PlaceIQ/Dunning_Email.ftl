@@ -124,19 +124,18 @@
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-    <#assign invoiceTotal = 0>
-    <#assign openBalance = 0>
-	<#list invoicelist as invoice>
-    <#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number>
-    <#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
+	<#assign invoiceTotal = 0><#assign openBalance = 0><#list invoicelist as invoice><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
 	<td><span>${invoice.duedate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
-	<td><span>${invoice.custbody_advertiser}</span></td> <!-- Advertiser -->
-	<td><span>${invoice.custbody1}</span></td> <!-- Campaign Name -->
-	<td><span>${invoice.custbody6}</span></td> <!-- IO Number -->
+	<td><span>${invoice.custbody_advertiser}</span></td>
+	<!-- Advertiser -->
+	<td><span>${invoice.custbody1}</span></td>
+	<!-- Campaign Name -->
+	<td><span>${invoice.custbody6}</span></td>
+	<!-- IO Number -->
 	<td align="right"><span>${invoice.fxamount?string.number}</span></td>
 	<td align="right"><span>${invoice.fxamountremaining?string.number}</span></td>
 	</tr>
@@ -158,24 +157,23 @@
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-	<#assign invoiceTotal = 0>
-    <#assign openBalance = 0>
-    <#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number>
-    <#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
+	<#assign invoiceTotal = 0><#assign openBalance = 0><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
 	<td><span>${invoice.duedate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
-	<td><span>${invoice.custbody_advertiser}</span></td> <!-- Advertiser -->
-	<td><span>${invoice.custbody1}</span></td> <!-- Campaign Name -->
-	<td><span>${invoice.custbody6}</span></td> <!-- IO Number -->
+	<td><span>${invoice.custbody_advertiser}</span></td>
+	<!-- Advertiser -->
+	<td><span>${invoice.custbody1}</span></td>
+	<!-- Campaign Name -->
+	<td><span>${invoice.custbody6}</span></td>
+	<!-- IO Number -->
 	<td align="right"><span>${invoice.amount?string.number}</span></td>
 	<td align="right"><span>${invoice.amountremaining?string.number}</span></td>
 	</tr>
 </tbody>
 </table>
-<span> </#if> </span>
 
 <table class="total">
 <tbody>
@@ -186,7 +184,7 @@
 	</tr>
 </tbody>
 </table>
-<span> </span>
+</#if>
 
 <p>We would greatly appreciate it if you would respond to this email and confirm receipt of this invoice(s), as well as provide an update regarding payment status. If payment has already been sent, thank you very much, and please provide the check number and check date so we may update our records.</p>
 
