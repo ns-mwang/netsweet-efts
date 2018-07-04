@@ -72,7 +72,7 @@
 <#--P08-->094<#rt><#--Record Size-->
 <#--P09-->10<#rt><#--Blocking Factor-->
 <#--P10-->1<#rt><#--Format Code-->
-<#--P11-->${setLength(custpage_eft_custrecord_2663_bank_name,23)}<#rt><#--Immediate Destination Name-->
+<#--P11-->${setLength(cbank.custpage_eft_custrecord_2663_bank_name,23)}<#rt><#--Immediate Destination Name-->
 <#--P12-->${setLength(cbank.custrecord_2663_print_company_name,23)}<#rt><#--Immediate Origin Name (Company Name Long)-->
 <#--P13-->${setLength(" ",8)}<#rt><#--Reference Code - Leave Blank-->
 ${"\r\n"}<#--Line Break--><#rt>
