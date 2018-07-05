@@ -18,12 +18,6 @@
         </#if>
         <#return referenceNote>
     </#function>
-
-    <#function computeTotalRecords recordCount>
-        <#assign value = ((recordCount + 4) / 10) >
-        <#assign value = value?ceiling >    
-        <#return value>
-    </#function>
     
 <#function buildEntityBillingAddress entity>
 <#assign address = "">
@@ -63,14 +57,15 @@
 Check Date|<#rt>
 Check Number|<#rt>
 Check Amount|<#rt>
-Payee|<#rt>
+Payee/Vendor Name|<#rt>
+Payee/Vendor Number|<#rt>
 Payee Address 1|<#rt>
 Payee Address 2|<#rt>
 Payee Address 3|<#rt>
-Payee City|<#rt>
-Payee State|<#rt>
-Payee Zip|<#rt>
-Payee Country|<#rt>
+Payee Address City|<#rt>
+Payee Address State|<#rt>
+Payee Address Zip|<#rt>
+Payee Address Country|<#rt>
 Mail Code|<#rt>
 Handling Code|<#rt>
 Memo<#rt>
@@ -83,59 +78,22 @@ ${"\r\n"}<#--Line Break-->
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
     <#assign payAmount = formatAmount(getAmount(payment))>
-    <#assign totalPayments = totalPayments + 1>
-    <#assign recordCount = recordCount + 2>
-    <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
     <#assign paidTransactions = transHash[payment.internalid]>
-    <#--Entry Hash Calculation sum(P5 to P11)-->
-    <#assign P5 = ebank.custrecord_2663_entity_acct_no>
-    <#assign p6 = payAmount>
-    <#assign p7 = ebank.custrecord_2663_entity_bank_code>
-    <#assign p10 = 0>
-    <#assign P11 = traceNumber?number>
-    <#assign entryHash = entryHash + P5 + P6 + P7 + P10 + P11>
-    <#--Entry Hash Calculation End-->
-<#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("yyMMdd"),10)}<#rt><#--Check Date-->
-<#--P02-->${setMaxLength(pfa.custrecord_2663_process_date?string("yyMMdd"),10)}<#rt><#--Check Number-->
-<#--P03-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Amount-->
-<#--P04-->${setMaxLength(buildEntityName(entity),"right"," ",22)}<#rt><#--Payee Name-->
-<#--P05-->${setMaxLength(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Payee ID-->
-<#--P06-->${setMaxLength(entity.billaddress1, 40)}<#rt><#--Payee Address 1-->
-<#--P07-->${setMaxLength(entity.billaddress1, 40)}<#rt><#--Payee Address 2-->
-<#--P08-->${setMaxLength(entity.billaddress1, 40)}<#rt><#--Payee Address 3-->
-<#--P09-->${setMaxLength(entity.billcity, 15)}<#rt><#--Payee City-->
-<#--P10-->${setMaxLength(entity.billstate, 15)}<#rt><#--Payee State-->
-<#--P11-->${setMaxLength(entity.billzip, 10)}<#rt><#--Payee Zip-->
-<#--P12-->${setMaxLength(entity.billcountry, 20)}<#rt><#--Payee Country-->
-<#--P13-->0<#rt><#--Mail Code-->
-<#--P14-->1<#rt><#--Handling Code-->
+<#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("yyMMdd"),10)}|<#rt><#--Check Date-->
+<#--P02-->${setMaxLength(payment.tranid,10)}|<#rt><#--Check Number-->
+<#--P03-->${setMaxLength(payAmount, 14)}|<#rt><#--Check Amount-->
+<#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
+<#--P05-->${setMaxLength(entity.entityid, 20)}|<#rt><#--Payee ID-->
+<#--P06-->${setMaxLength(entity.billaddr1, 40)}|<#rt><#--Payee Address 1-->
+<#--P07-->${setMaxLength(entity.billaddr2, 40)}|<#rt><#--Payee Address 2-->
+<#--P08-->${setMaxLength(entity.billaddr3, 40)}|<#rt><#--Payee Address 3-->
+<#--P09-->${setMaxLength(entity.billcity, 15)}|<#rt><#--Payee City-->
+<#--P10-->${setMaxLength(entity.billstate, 15)}|<#rt><#--Payee State-->
+<#--P11-->${setMaxLength(entity.billzip, 10)}|<#rt><#--Payee Zip-->
+<#--P12-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
+<#--P13-->0|<#rt><#--Mail Code-->
+<#--P14-->1|<#rt><#--Handling Code-->
+<#--P15-->${setMaxLength(payment.memo, 40)}|<#rt><#--Memo-->
 ${"\r\n"}<#--Line Break-->
 </#list>
-
-
-
-
-<#--- Batch Control Record (8) --->
-<#--P01-->8<#rt><#--Record Type Code (8)-->
-<#--P02-->220<#rt><#--Service Class Code-->
-<#--P03-->${recordCount}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${entryHash}<#rt><#--Entry Hash-->
-<#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
-<#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
-<#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
-<#--P08-->${setLength(" ",19)}<#rt><#--Message Authentication Code Leave Blank (19)-->
-<#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
-<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
-<#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break-->
-<#--- File Control Record (9) --->
-<#--Entry Hash Value sum of P4 to P11-->
-<#--P01-->9<#rt><#--Record Type Code (9)-->
-<#--P02-->1<#rt><#--Batch Count-->
-<#--P03-->${setPadding(computeTotalRecords(recordCount),"left","0",6)}<#rt><#--Block Count-->
-<#--P04-->${setPadding(recordCount,"left","0",8)}<#rt><#--Entry/Addenda Count-->
-<#--P05-->${setPadding(entryHash,"left","0",10)}<#rt><#--Entry Hash-->
-<#--P06-->000000000000<#rt><#--Total Debit Entry Dollar Amount in File-->
-<#--P07-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount in File-->
-<#--P08-->${setLength(" ",39)}<#rt><#--Leave Blank (39)-->
 #OUTPUT END#
