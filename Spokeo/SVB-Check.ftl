@@ -79,7 +79,7 @@ ${"\r\n"}<#rt><#--Line Break-->
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
     <#assign payAmount = formatAmount(getAmount(payment))>
-<#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
+<#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
 <#--P02-->${setMaxLength(payment.tranid,10)}|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(payAmount,"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
