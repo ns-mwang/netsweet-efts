@@ -79,8 +79,6 @@ ${"\r\n"}<#rt><#--Line Break-->
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
     <#assign payAmount = formatAmount(getAmount(payment))>
-    <#assign paidTransactions = transHash[payment.internalid]>
-    <#--<#list paidTransactions as transaction>-->
 <#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
 <#--P02-->${setMaxLength(payment.tranid,10)}|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(payAmount,"dec"), 14)}|<#rt><#--Check Amount-->
@@ -94,12 +92,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(payment.memo, 40)}|<#rt>Memo-->
-<#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt>Invoice Number-->
-<#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt>Invoice Date-->
-<#--P17-->${setMaxLength(transaction.type, 30)}|<#rt>Invoice Description-->
-<#--P18-->${setMaxLength(formatAmount(transaction.usertotal,"dec"), 14)}<#rt>Invoice Net Amount-->
+<#--P14-->${setMaxLength(payment.memo, 40)}|<#rt><#--Memo-->
 ${"\r\n"}<#rt><#--Line Break-->
-   <#--</#list>-->
 </#list>
 #OUTPUT END#
