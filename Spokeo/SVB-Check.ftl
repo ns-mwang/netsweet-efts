@@ -68,11 +68,7 @@ Payee Address Zip|<#rt>
 Payee Address Country|<#rt>
 Mail Code|<#rt>
 Handling Code|<#rt>
-Memo|<#rt>
-Invoice Number|<#rt>
-Invoice Date|<#rt>
-Invoice Description|<#rt>
-Invoice Net Amount<#rt>
+Memo<#rt>
 ${"\r\n"}<#rt><#--Line Break-->
 <#-- Check Information -->
 <#list payments as payment>
@@ -92,7 +88,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(payment.memo, 40)}|<#rt><#--Memo-->
+<#--P14-->${setMaxLength(payment.memo, 40)}<#rt><#--Memo-->
 ${"\r\n"}<#rt><#--Line Break-->
 </#list>
 #OUTPUT END#
