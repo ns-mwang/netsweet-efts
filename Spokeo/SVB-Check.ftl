@@ -61,7 +61,6 @@ Payee/Vendor Name|<#rt>
 Payee/Vendor Number|<#rt>
 Payee Address 1|<#rt>
 Payee Address 2|<#rt>
-Payee Address 3|<#rt>
 Payee Address City|<#rt>
 Payee Address State|<#rt>
 Payee Address Zip|<#rt>
@@ -74,12 +73,11 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
-    <#assign payAmount = formatAmount(getAmount(payment))>
 <#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
 <#--P02-->${setMaxLength(payment.tranid,10)}|<#rt><#--Check Number-->
-<#--P03-->${setMaxLength(formatAmount(payAmount,"dec"), 14)}|<#rt><#--Check Amount-->
+<#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
-<#--P05-->${setMaxLength(entity.entityid, 20)}|<#rt><#--Payee ID-->
+<#--P05-->${setMaxLength(entity.internalid, 20)}|<#rt><#--Payee ID-->
 <#--P06-->${setMaxLength(entity.billaddress1, 40)}|<#rt><#--Payee Address 1-->
 <#--P07-->${setMaxLength(entity.billaddress2, 40)}|<#rt><#--Payee Address 2-->
 <#--P08-->${setMaxLength(entity.billcity, 15)}|<#rt><#--Payee City-->
