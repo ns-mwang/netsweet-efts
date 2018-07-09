@@ -54,6 +54,7 @@
 <#-- template building -->
 #OUTPUT START#
 <#-- Check Print Headers -->
+Bill Payment Number|
 Check Date|<#rt>
 Check Number|<#rt>
 Check Amount|<#rt>
@@ -61,14 +62,13 @@ Payee/Vendor Name|<#rt>
 Payee/Vendor Number|<#rt>
 Payee Address 1|<#rt>
 Payee Address 2|<#rt>
-Payee Address 3|<#rt>
 Payee Address City|<#rt>
 Payee Address State|<#rt>
 Payee Address Zip|<#rt>
 Payee Address Country|<#rt>
 Mail Code|<#rt>
 Handling Code|<#rt>
-Memo|<#rt>
+Memo<#rt>
 Invoice Number|<#rt>
 Invoice Date|<#rt>
 Invoice Description|<#rt>
@@ -78,14 +78,14 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
-    <#assign payAmount = formatAmount(getAmount(payment))>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#list paidTransactions as transaction>
-<#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
-<#--P02-->${setMaxLength(payment.tranid,10)}|<#rt><#--Check Number-->
-<#--P03-->${setMaxLength(formatAmount(payAmount,"dec"), 14)}|<#rt><#--Check Amount-->
+<#--P00-->${setMaxLength(payment.tranid,15)}|<#rt><#--Bill Payment Number-->
+<#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
+<#--P02-->SVB Check Number|<#rt><#--Check Number-->
+<#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
-<#--P05-->${setMaxLength(entity.entityid, 20)}|<#rt><#--Payee ID-->
+<#--P05-->${setMaxLength(entity.internalid, 20)}|<#rt><#--Payee ID-->
 <#--P06-->${setMaxLength(entity.billaddress1, 40)}|<#rt><#--Payee Address 1-->
 <#--P07-->${setMaxLength(entity.billaddress2, 40)}|<#rt><#--Payee Address 2-->
 <#--P08-->${setMaxLength(entity.billcity, 15)}|<#rt><#--Payee City-->
@@ -94,12 +94,12 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(payment.memo, 40)}|<#rt><#--Memo-->
+<#--P14-->${setMaxLength(payment.memo, 40)}<#rt><#--Memo-->
 <#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength(transaction.type, 30)}|<#rt><#--Invoice Description-->
-<#--P18-->${setMaxLength(formatAmount(transaction.usertotal,"dec"), 14)}<#rt><#--Invoice Net Amount-->
-${"\r\n"}<#rt><#--Line Break-->
+<#--P18-->${setMaxLength(formatAmount(transaction.total,"dec"), 14)}<#rt><#--Invoice Net Amount-->
    </#list>
+${"\r\n"}<#rt><#--Line Break-->
 </#list>
 #OUTPUT END#
