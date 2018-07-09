@@ -54,7 +54,7 @@
 <#-- template building -->
 #OUTPUT START#
 <#-- Check Print Headers -->
-Bill Payment Number|
+Bill Payment Number|<#rt>
 Check Date|<#rt>
 Check Number|<#rt>
 Check Amount|<#rt>
@@ -99,7 +99,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength(transaction.type, 30)}|<#rt><#--Invoice Description-->
 <#--P18-->${setMaxLength(formatAmount(transaction.total,"dec"), 14)}<#rt><#--Invoice Net Amount-->
-   </#list>
 ${"\r\n"}<#rt><#--Line Break-->
+   </#list>
 </#list>
 #OUTPUT END#
