@@ -40,21 +40,65 @@
 <#--P07-->${setLength(" ",10)}<#rt><#--Client File ID-->
 <#--P08-->${setLength(" ",291)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- ACH Payment Record (060) --->
+<#--- Payment Records (060) --->
 <#assign ACHTotalAmount = 0>
 <#assign ACHRecordCount = 0>
+<#assign CHKTotalAmount = 0>
+<#assign CHKRecordCount = 0>
+<#assign WireTotalAmount = 0>
+<#assign WireRecordCount = 0>
+<#assign TotalAmount = 0>
+<#assign TotalRecordCount = 0>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
-    <#assign payAmount = formatAmount(getAmount(payment))>
-    <#assign ACHTotalAmount = ACHTotalAmount + payAmount>
+<#if entity.custentity_2663_eft_payment_method = "ACH">
+    <#assign ACHPayAmount = formatAmount(getAmount(payment))>
+    <#assign ACHTotalAmount = ACHTotalAmount + ACHpayAmount>
     <#assign ACHRecordCount = ACHRecordCount + 1>
+<#--- ACH Payment Record (060) --->
 <#--P01-->060<#rt><#--Record ID (060)-->
 <#--P02-->ACH<#rt><#--Payment Type (ACH)-->
 <#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
 <#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
 <#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->${setPadding(payAmount,"left","0",10)}
+<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->
+<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
+<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
+<#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P10-->${setPadding(ACHpayAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
+<#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
+<#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
+<#--P14-->${setLength(" ",20)}<#rt><#--Filler-->
+<#--P15-->${setLength(" ",35)}<#rt><#--Receiver Address 1-->
+<#--P16-->${setLength(" ",35)}<#rt><#--Receiver Address 2-->
+<#--P17-->${setLength(" ",35)}<#rt><#--Receiver Address 3-->
+<#--P18-->${setLength(" ",27)}<#rt><#--Receiver City-->
+<#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
+<#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
+<#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines (NEED REVIEW)-->
+<#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
+<#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
+<#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P26-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Receiver Account Number-->
+<#--P27-->${setLength("22",2)}<#rt><#--ACH Tran Code (22)-->
+<#--P28-->${setLength("CCD",3)}<#rt><#--ACH Type-->
+<#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
+<#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#elseif entity.custentity_2663_eft_payment_method == "Wire">
+<#--- Wire Payment Record (060) --->
+    <#assign WirePayAmount = formatAmount(getAmount(payment))>
+    <#assign WireTotalAmount = WireTotalAmount + WirePayAmount>
+    <#assign WireRecordCount = WireRecordCount + 1>
+<#--P01-->060<#rt><#--Record ID (060)-->
+<#--P02-->FWT<#rt><#--Payment Type (FWT)-->
+<#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
+<#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
+<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->
 <#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
 <#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
 <#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
@@ -80,20 +124,60 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
 <#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
+<#elseif entity.custentity_2663_eft_payment_method == "Check">
+<#--- Check Payment Record (060) --->
+    <#assign CHKPayAmount = formatAmount(getAmount(payment))>
+    <#assign CHKTotalAmount = CHKTotalAmount + CHKPayAmount>
+    <#assign CHKRecordCount = CHKRecordCount + 1>
+<#--P01-->060<#rt><#--Record ID (060)-->
+<#--P02-->CHK<#rt><#--Payment Type (CHK)-->
+<#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
+<#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
+<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->
+<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
+<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
+<#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P10-->${setPadding(payAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
+<#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
+<#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
+<#--P14-->${setLength(" ",20)}<#rt><#--Filler-->
+<#--P15-->${setLength(" ",35)}<#rt><#--Receiver Address 1-->
+<#--P16-->${setLength(" ",35)}<#rt><#--Receiver Address 2-->
+<#--P17-->${setLength(" ",35)}<#rt><#--Receiver Address 3-->
+<#--P18-->${setLength(" ",27)}<#rt><#--Receiver City-->
+<#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
+<#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
+<#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines (NEED REVIEW)-->
+<#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
+<#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
+<#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P26-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Receiver Account Number-->
+<#--P27-->${setLength("22",2)}<#rt><#--ACH Tran Code (22)-->
+<#--P28-->${setLength("CCD",3)}<#rt><#--ACH Type-->
+<#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
+<#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+</#if>
 </#list>
 <#--- File Trailer Record (090) --->
+<#assign TotalAmount = ACHTotalAmount + WireTotalAmount + CHKTotalAmount>
+<#assign TotalRecordCount = ACHRecordCount + WireRecordCount + CHKRecordCount>
 <#--P01-->090<#rt><#--Record Identifier-->
-<#--P02-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Checks-->
-<#--P03-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Checks-->
+<#--P02-->${setPadding(CHKTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of Checks-->
+<#--P03-->${setPadding(CHKRecordCount,"left","0",7)}<#rt><#--Total Records, Checks-->
 <#--P04-->${setPadding(ACHTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
 <#--P05-->${setPadding(ACHRecordCount,"left","0",7)}<#rt><#--Total Records, ACHs-->
-<#--P06-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Wires-->
-<#--P07-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Wire-->
+<#--P06-->${setPadding(WireTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of Wires-->
+<#--P07-->${setPadding(WireRecordCount,"left","0",7)}<#rt><#--Total Records, Wire-->
 <#--P08-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Cards-->
 <#--P09-->${setPadding("0","left","0",7)}<#rt><#--Total Records,  Cards-->
-<#--P10-->${setPadding("0","left","0",13)}<#rt><#--Total Payment Dollar Amounts-->
-<#--P11-->${setPadding("0","left","0",7)}<#rt><#--Total Payment Records-->
-<#--P12-->${setPadding("0","left","0",13)}<#rt><#--Total File Dollar Amounts-->
-<#--P13-->${setPadding("0","left","0",7)}<#rt><#--Total File Records-->
+<#--P10-->${setPadding(TotalAmount,"left","0",13)}<#rt><#--Total Payment Dollar Amounts-->
+<#--P11-->${setPadding(TotalRecordCount,"left","0",7)}<#rt><#--Total Payment Records-->
+<#--P12-->${setPadding(TotalAmount,"left","0",13)}<#rt><#--Total File Dollar Amounts-->
+<#--P13-->${setPadding(TotalRecordCount,"left","0",7)}<#rt><#--Total File Records-->
 <#--P14-->${setLength(" ",227)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
 #OUTPUT END#
