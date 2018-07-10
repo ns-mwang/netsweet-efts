@@ -40,22 +40,8 @@
 <#--P07-->${setLength(" ",10)}<#rt><#--Client File ID-->
 <#--P08-->${setLength(" ",291)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- ACH Records (5) --->
-<#--P01-->5<#rt><#--Record Type Code (5)-->
-<#--P02-->220<#rt><#--Service Class Code-->
-<#--P03-->${setLength(cbank.custrecord_2663_legal_name,16)}<#rt><#--Your Company Name (Short)-->
-<#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
-<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
-<#--P06-->CCD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description-->
-<#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
-<#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
-<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
-<#--P11-->1<#rt><#--Originator Status Code = 1-->
-<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
-<#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break--><#rt>
-<#--- CCD Entry Detail Record (6) --->
+
+<#--- ACH Payment Record (060) --->
 <#assign totalPayments = 0>
 <#assign recordCount = 0>
 <#list payments as payment>
@@ -98,13 +84,40 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
 <#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- File Control Record (9) --->
-<#--P01-->9<#rt><#--Record Type Code (9)-->
-<#--P02-->000001<#rt><#--Batch Count-->
-<#--P03-->${setPadding(computeTotalRecords(recordCount),"left","0",6)}<#rt><#--Block Count-->
-<#--P04-->${setPadding(recordCount,"left","0",8)}<#rt><#--Entry/Addenda Count-->
-<#--P05-->${setPadding(entryHashCCD,"left","0",10)}<#rt><#--Entry Hash-->
-<#--P06-->000000000000<#rt><#--Total Debit Entry Dollar Amount in File-->
-<#--P07-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount in File-->
-<#--P08-->${setLength(" ",39)}<#rt><#--Leave Blank (39)-->
+
+
+
+<#--- File Trailer Record (090) --->
+<#--P01-->090<#rt><#--Record Identifier-->
+<#--P02-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Checks-->
+<#--P03-->${setLength(" ",7)}<#rt><#--Total Records, Checks-->
+<#--P04-->${setLength(" ",13)}<#rt><#--Total Dollar amount of ACHs-->
+<#--P05-->${setLength(" ",7)}<#rt><#--Total Records, ACHs-->
+<#--P06-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Wires-->
+<#--P07-->${setLength(" ",7)}<#rt><#--Total Records, Wire-->
+<#--P08-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Cards-->
+<#--P09-->${setLength(" ",7)}<#rt><#--Total Records,  Cards-->
+<#--P10-->${setLength(" ",13)}<#rt><#--Total Payment Dollar Amounts-->
+<#--P11-->${setLength(" ",7)}<#rt><#--Total Payment Records-->
+<#--P12-->${setLength(" ",13)}<#rt><#--Total File Dollar Amounts-->
+<#--P13-->${setLength(" ",7)}<#rt><#--Total File Records-->
+<#--P14-->${setLength(" ",227)}<#rt><#--Filler-->
 #OUTPUT END#
+
+
+
+<#--- ACH Records (5) --->
+<#--P01-->5<#rt><#--Record Type Code (5)-->
+<#--P02-->220<#rt><#--Service Class Code-->
+<#--P03-->${setLength(cbank.custrecord_2663_legal_name,16)}<#rt><#--Your Company Name (Short)-->
+<#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
+<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
+<#--P06-->CCD<#rt><#--Standard Entry Class Code-->
+<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description-->
+<#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
+<#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
+<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
+<#--P11-->1<#rt><#--Originator Status Code = 1-->
+<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
+<#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
+${"\r\n"}<#--Line Break--><#rt>
