@@ -40,84 +40,59 @@
 <#--P07-->${setLength(" ",10)}<#rt><#--Client File ID-->
 <#--P08-->${setLength(" ",291)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-
 <#--- ACH Payment Record (060) --->
-<#assign totalPayments = 0>
-<#assign recordCount = 0>
+<#assign ACHTotalAmount = 0>
+<#assign ACHRecordCount = 0>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
     <#assign payAmount = formatAmount(getAmount(payment))>
-    <#assign totalPayments = totalPayments + 1>
-    <#assign recordCount = recordCount + 2>
-    <#assign traceNumber = cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8) + setPadding(recordCount,"left","0",7)?string>
-    <#assign paidTransactions = transHash[payment.internalid]>
-    <#--Entry Hash Calculation sum-->
-    <#assign entryHashCCD = entryHashCCD + ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)?number>
-    <#--Entry Hash Calculation End-->
-<#--P01-->6<#rt><#--Record Type Code (6)-->
-<#--P02-->22<#rt><#--Transaction Code (27: Automated Deposit)-->
-<#--P03-->${ebank.custrecord_2663_entity_bank_no?string?substring(0, 8)}<#rt><#--Receiving DFI ID (Routing Number)-->
-<#--P04-->${ebank.custrecord_2663_entity_bank_no?string?substring(8)}<#rt><#--Check Digit the 9th digit of routing number <substring(8)>-->
-<#--P05-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Bank Account Number-->
-<#--P06-->${setPadding(payAmount,"left","0",10)}<#rt><#--Dollar Amount-->
-<#--P07-->${setPadding(payment.transactionnumber,"right"," ",15)}<#rt><#--Individual Identification Number-->
-<#--P08-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Individual Name-->
-<#--P09-->  <#rt><#--Discretionary Data-->
-<#--P10-->1<#rt><#--Addenda Record Indicatior (0:No 1:Yes)-->
-<#--P11-->${traceNumber}<#rt><#--Trace Number-->
+    <#assign ACHTotalAmount = ACHTotalAmount + payAmount>
+    <#assign ACHRecordCount = ACHRecordCount + 1>
+<#--P01-->060<#rt><#--Record ID (060)-->
+<#--P02-->ACH<#rt><#--Payment Type (ACH)-->
+<#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
+<#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
+<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->${setPadding(payAmount,"left","0",10)}
+<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
+<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
+<#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P10-->${setPadding(payAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
+<#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
+<#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
+<#--P14-->${setLength(" ",20)}<#rt><#--Filler-->
+<#--P15-->${setLength(" ",35)}<#rt><#--Receiver Address 1-->
+<#--P16-->${setLength(" ",35)}<#rt><#--Receiver Address 2-->
+<#--P17-->${setLength(" ",35)}<#rt><#--Receiver Address 3-->
+<#--P18-->${setLength(" ",27)}<#rt><#--Receiver City-->
+<#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
+<#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
+<#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
+<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines *NEED REVIEW*-->
+<#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
+<#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
+<#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P26-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Receiver Account Number-->
+<#--P27-->${setLength("22",2)}<#rt><#--ACH Tran Code (22)-->
+<#--P28-->${setLength("CCD",3)}<#rt><#--ACH Type-->
+<#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
+<#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- Addenda Detail Record (7) --->
-705${setLength("RefNo:" + getReferenceNote(payment),80)}0001${setPadding(traceNumber,"left","0",7)}<#rt>
-${"\r\n"}<#--Line Break--><#rt>
-</#list>
-<#--- CCD Batch Control Record (8) --->
-<#--P01-->8<#rt><#--Record Type Code (8)-->
-<#--P02-->220<#rt><#--Service Class Code-->
-<#--P03-->${setPadding(recordCount,"left","0",6)}<#rt><#--Entry/Addenda Count-->
-<#--P04-->${setPadding(entryHashCCD,"left","0",10)}<#rt><#--Entry Hash-->
-<#--P05-->000000000000<#rt><#--Total Debit Entry Dollar Amount-->
-<#--P06-->${setPadding(totalAmount,"left","0",12)}<#rt><#--Total Credit Entry Dollar Amount-->
-<#--P07-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Company Identification-->
-<#--P08-->${setLength(" ",19)}<#rt><#--Message Authentication Code Leave Blank (19)-->
-<#--P09-->${setLength(" ",6)}<#rt><#--Reserved Leave Blank (6)-->
-<#--P10-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, Chase Routing Number 8 digits without check digit-->
-<#--P11-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break--><#rt>
-
-
-
 <#--- File Trailer Record (090) --->
 <#--P01-->090<#rt><#--Record Identifier-->
-<#--P02-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Checks-->
-<#--P03-->${setLength(" ",7)}<#rt><#--Total Records, Checks-->
-<#--P04-->${setLength(" ",13)}<#rt><#--Total Dollar amount of ACHs-->
-<#--P05-->${setLength(" ",7)}<#rt><#--Total Records, ACHs-->
-<#--P06-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Wires-->
-<#--P07-->${setLength(" ",7)}<#rt><#--Total Records, Wire-->
-<#--P08-->${setLength(" ",13)}<#rt><#--Total Dollar amount of Cards-->
-<#--P09-->${setLength(" ",7)}<#rt><#--Total Records,  Cards-->
-<#--P10-->${setLength(" ",13)}<#rt><#--Total Payment Dollar Amounts-->
-<#--P11-->${setLength(" ",7)}<#rt><#--Total Payment Records-->
-<#--P12-->${setLength(" ",13)}<#rt><#--Total File Dollar Amounts-->
-<#--P13-->${setLength(" ",7)}<#rt><#--Total File Records-->
+<#--P02-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Checks-->
+<#--P03-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Checks-->
+<#--P04-->${setPadding("ACHTotalAmount","left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
+<#--P05-->${setPadding(ACHRecordCount,"left","0",7)}<#rt><#--Total Records, ACHs-->
+<#--P06-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Wires-->
+<#--P07-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Wire-->
+<#--P08-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Cards-->
+<#--P09-->${setPadding("0","left","0",7)}<#rt><#--Total Records,  Cards-->
+<#--P10-->${setPadding("0","left","0",13)}<#rt><#--Total Payment Dollar Amounts-->
+<#--P11-->${setPadding("0","left","0",7)}<#rt><#--Total Payment Records-->
+<#--P12-->${setPadding("0","left","0",13)}<#rt><#--Total File Dollar Amounts-->
+<#--P13-->${setPadding("0","left","0",7)}<#rt><#--Total File Records-->
 <#--P14-->${setLength(" ",227)}<#rt><#--Filler-->
 #OUTPUT END#
-
-
-
-<#--- ACH Records (5) --->
-<#--P01-->5<#rt><#--Record Type Code (5)-->
-<#--P02-->220<#rt><#--Service Class Code-->
-<#--P03-->${setLength(cbank.custrecord_2663_legal_name,16)}<#rt><#--Your Company Name (Short)-->
-<#--P04-->${setLength(" ",20)}<#rt><#--Company Discretionary Data - Leave Blank (20)-->
-<#--P05-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)}<#--ACH Company Identification. Assigned by SVB-->
-<#--P06-->CCD<#rt><#--Standard Entry Class Code-->
-<#--P07-->${setLength("Vendor Pay",10)}<#rt><#--Company Entry Description-->
-<#--P08-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Company Descriptive Date (Show's on receiving bank statement)-->
-<#--P09-->${pfa.custrecord_2663_process_date?string("yyMMdd")}<#rt><#--Effective Entry Date (Show's on receiving bank statement)-->
-<#--P10-->   <#rt><#--(3) Settlement Date (Left blank, SVB to fill in automatically-->
-<#--P11-->1<#rt><#--Originator Status Code = 1-->
-<#--P12-->${cbank.custpage_eft_custrecord_2663_bank_num?string?substring(0, 8)}<#rt><#--Originating Financial Institution, SVB Routing Number-->
-<#--P13-->${setPadding(pfa.id,"left","0",7)}<#rt><#--Batch Number-->
-${"\r\n"}<#--Line Break--><#rt>
