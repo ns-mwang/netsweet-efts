@@ -51,7 +51,7 @@ ${"\r\n"}<#--Line Break--><#rt>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
 <#if payment.custbody_2663_eft_payment_method = "ACH">
-    <#assign ACHPayAmount = formatAmount(getAmount(payment))>
+    <#assign ACHPayAmount = getAmount(payment)>
     <#assign ACHTotalAmount = ACHTotalAmount + ACHPayAmount>
     <#assign ACHRecordCount = ACHRecordCount + 1>
 <#--- ACH Payment Record (060) --->
@@ -64,7 +64,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
 <#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
 <#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P10-->${setPadding(ACHPayAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P10-->${setPadding(formatAmount(ACHPayAmount),"left","0",10)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
 <#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
 <#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
@@ -88,7 +88,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 <#elseif payment.custbody_2663_eft_payment_method == "Wire">
 <#--- Wire Payment Record (060) --->
-    <#assign WirePayAmount = formatAmount(getAmount(payment))>
+    <#assign WirePayAmount = getAmount(payment)>
     <#assign WireTotalAmount = WireTotalAmount + WirePayAmount>
     <#assign WireRecordCount = WireRecordCount + 1>
 <#--P01-->060<#rt><#--Record ID (060)-->
@@ -97,7 +97,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->${setLength("USD",3)}<#rt><#--Currency Type-->
 <#--P05-->${setLength(" ",10)}<#rt><#--Filler-->
 <#--P06-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
-<#--P07-->${setPadding(WirePayAmount,"left","0",13)}<#rt><#--Payment Amount-->
+<#--P07-->${setPadding(formatAmount(WirePayAmount),"left","0",13)}<#rt><#--Payment Amount-->
 <#--P08-->${setPadding(buildEntityName(entity),"right"," ",35)}<#rt><#--Beneficiary Name-->
 <#--P09-->${setLength(" ",35)}<#rt><#--IBAN Account  Number (BOP and PRO only)-->
 <#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Address 1-->
@@ -144,7 +144,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 ${"\r\n"}<#--Line Break--><#rt>
 <#elseif payment.custbody_2663_eft_payment_method == "Check">
 <#--- Check Payment Record (060) --->
-    <#assign CHKPayAmount = formatAmount(getAmount(payment))>
+    <#assign CHKPayAmount = getAmount(payment)>
     <#assign CHKTotalAmount = CHKTotalAmount + CHKPayAmount>
     <#assign CHKRecordCount = CHKRecordCount + 1>
 <#--P01-->060<#rt><#--Record ID (060)-->
@@ -156,7 +156,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
 <#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
 <#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P10-->${setPadding(CHKPayAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P10-->${setPadding(formatAmount(CHKPayAmount),"left","0",10)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
 <#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
 <#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
@@ -186,17 +186,17 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#assign TotalAmount = ACHTotalAmount + WireTotalAmount + CHKTotalAmount>
 <#assign TotalRecordCount = ACHRecordCount + WireRecordCount + CHKRecordCount>
 <#--P01-->090<#rt><#--Record Identifier-->
-<#--P02-->${setPadding(CHKTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of Checks-->
+<#--P02-->${setPadding(formatAmount(CHKTotalAmount),"left","0",13)}<#rt><#--Total Dollar amount of Checks-->
 <#--P03-->${setPadding(CHKRecordCount,"left","0",7)}<#rt><#--Total Records, Checks-->
-<#--P04-->${setPadding(ACHTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
+<#--P04-->${setPadding(formatAmount(ACHTotalAmount),"left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
 <#--P05-->${setPadding(ACHRecordCount,"left","0",7)}<#rt><#--Total Records, ACHs-->
-<#--P06-->${setPadding(WireTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of Wires-->
+<#--P06-->${setPadding(formatAmount(WireTotalAmount),"left","0",13)}<#rt><#--Total Dollar amount of Wires-->
 <#--P07-->${setPadding(WireRecordCount,"left","0",7)}<#rt><#--Total Records, Wire-->
 <#--P08-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Cards-->
 <#--P09-->${setPadding("0","left","0",7)}<#rt><#--Total Records,  Cards-->
-<#--P10-->${setPadding(TotalAmount,"left","0",13)}<#rt><#--Total Payment Dollar Amounts-->
+<#--P10-->${setPadding(formatAmount(TotalAmount),"left","0",13)}<#rt><#--Total Payment Dollar Amounts-->
 <#--P11-->${setPadding(TotalRecordCount,"left","0",7)}<#rt><#--Total Payment Records-->
-<#--P12-->${setPadding(TotalAmount,"left","0",13)}<#rt><#--Total File Dollar Amounts-->
+<#--P12-->${setPadding(formatAmount(TotalAmount),"left","0",13)}<#rt><#--Total File Dollar Amounts-->
 <#--P13-->${setPadding(TotalRecordCount,"left","0",7)}<#rt><#--Total File Records-->
 <#--P14-->${setLength(" ",227)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
