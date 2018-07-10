@@ -52,7 +52,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
-<#if entity.custentity_2663_eft_payment_method = "ACH">
+<#if payment.custbody_2663_eft_payment_method = "ACH">
     <#assign ACHPayAmount = formatAmount(getAmount(payment))>
     <#assign ACHTotalAmount = ACHTotalAmount + ACHpayAmount>
     <#assign ACHRecordCount = ACHRecordCount + 1>
@@ -66,7 +66,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
 <#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
 <#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P10-->${setPadding(ACHpayAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P10-->${setPadding(ACHPayAmount,"left","0",10)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
 <#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
 <#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
@@ -88,43 +88,63 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
 <#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#elseif entity.custentity_2663_eft_payment_method == "Wire">
+<#elseif payment.custbody_2663_eft_payment_method == "Wire">
 <#--- Wire Payment Record (060) --->
     <#assign WirePayAmount = formatAmount(getAmount(payment))>
     <#assign WireTotalAmount = WireTotalAmount + WirePayAmount>
     <#assign WireRecordCount = WireRecordCount + 1>
 <#--P01-->060<#rt><#--Record ID (060)-->
 <#--P02-->FWT<#rt><#--Payment Type (FWT)-->
-<#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
-<#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
-<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->
-<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
-<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
-<#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P10-->${setPadding(payAmount,"left","0",10)}<#rt><#--Payment Amount-->
-<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
-<#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
-<#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
-<#--P14-->${setLength(" ",20)}<#rt><#--Filler-->
-<#--P15-->${setLength(" ",35)}<#rt><#--Receiver Address 1-->
-<#--P16-->${setLength(" ",35)}<#rt><#--Receiver Address 2-->
-<#--P17-->${setLength(" ",35)}<#rt><#--Receiver Address 3-->
-<#--P18-->${setLength(" ",27)}<#rt><#--Receiver City-->
-<#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
-<#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
-<#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines (NEED REVIEW)-->
-<#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
-<#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
-<#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P26-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Receiver Account Number-->
-<#--P27-->${setLength("22",2)}<#rt><#--ACH Tran Code (22)-->
-<#--P28-->${setLength("CCD",3)}<#rt><#--ACH Type-->
-<#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
-<#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
+<#--P03-->${setLength(" ",15)}<#rt><#--Filler-->
+<#--P04-->${setLength("USD",3)}<#rt><#--Currency Type-->
+<#--P05-->${setLength(" ",10)}<#rt><#--Filler-->
+<#--P06-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
+<#--P07-->${setPadding(WirePayAmount,"left","0",13)}<#rt><#--Payment Amount-->
+<#--P08-->${setPadding(buildEntityName(entity),"right"," ",35)}<#rt><#--Beneficiary Name-->
+<#--P09-->${setLength(" ",35)}<#rt><#--IBAN Account  Number (BOP and PRO only)-->
+<#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Address 1-->
+<#--P11-->${setLength(" ",35)}<#rt><#--Beneficiary Address 2-->
+<#--P12-->${setLength(" ",35)}<#rt><#--Beneficiary Address 3-->
+<#--P13-->${setLength(" ",1)}<#rt><#--Internal Use Only Client Should Send Spaces-->
+<#--P14-->${setLength(" ",20)}<#rt><#--Internal Use Only Client Should Send Spaces-->
+<#--P15-->${setLength(" ",21)}<#rt><#--Filler-->
+<#--P16-->${setLength("1",5)}<#rt><#--Number of Remittance Lines-->
+<#--P17-->${setPadding(ebank.custrecord_2663_entity_bank_no,"right"," ",12)}<#rt><#--Beneficiary Bank ID-->
+<#--P18-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Beneficiary Account Number-->
+<#--P19-->${setLength("A",1)}<#rt><#--Beneficiary Bank Type (ABA = A)-->
+<#--P20-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P21-->${setLength(" ",1)}<#rt><#--Beneficiary Account Type-->
+<#--P22-->${setLength(" ",8)}<#rt><#--Repetitive Wire Code-->
+<#--P23-->${setLength(" ",30)}<#rt><#--Client Transaction ID-->
+<#--P24-->${setLength(" ",1)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#elseif entity.custentity_2663_eft_payment_method == "Check">
+<#--- Wire Payment Record (080) --->
+<#--P01-->080<#rt><#--Record ID (080)-->
+<#--P02-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 1-->
+<#--P03-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 2-->
+<#--P04-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 3-->
+<#--P05-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 4-->
+<#--P06-->${setLength(" ",16)}<#rt><#--Reference for Beneficiary-->
+<#--P07-->${setLength(" ",3)}<#rt><#--Advice Code-->
+<#--P08-->${setLength(" ",35)}<#rt><#--Advice Description -->
+<#--P09-->${setLength(" ",153)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#--- Wire Payment Record (085) --->
+<#--P01-->085<#rt><#--Record ID (085)-->
+<#--P02-->${setLength(" ",35)}<#rt><#--Receiving Bank Name-->
+<#--P03-->${setLength(" ",35)}<#rt><#--Receiving Bank Address 1-->
+<#--P04-->${setLength(" ",35)}<#rt><#--Receiving Bank Address 2-->
+<#--P05-->${setLength(" ",35)}<#rt><#--Receiving Bank City-->
+<#--P06-->${setLength(" ",2)}<#rt><#--Filler-->
+<#--P07-->${setLength("A",1)}<#rt><#--Receiving Bank Type-->
+<#--P08-->${setLength(" ",12)}<#rt><#--Receiving Bank ID-->
+<#--P09-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Name-->
+<#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Address 1-->
+<#--P11-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Address 2-->
+<#--P12-->${setLength(" ",35)}<#rt><#--Beneficiary Bank City-->
+<#--P13-->${setLength(" ",52)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#elseif payment.custbody_2663_eft_payment_method == "Check">
 <#--- Check Payment Record (060) --->
     <#assign CHKPayAmount = formatAmount(getAmount(payment))>
     <#assign CHKTotalAmount = CHKTotalAmount + CHKPayAmount>
@@ -138,7 +158,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
 <#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
 <#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P10-->${setPadding(payAmount,"left","0",10)}<#rt><#--Payment Amount-->
+<#--P10-->${setPadding(CHKPayAmount,"left","0",10)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
 <#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
 <#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
