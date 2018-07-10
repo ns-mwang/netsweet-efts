@@ -78,14 +78,16 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
+    <#assign billcount = 0>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#list paidTransactions as transaction>
+    <#assign billcount = billcount + 1>
 <#--P00-->${setMaxLength(payment.tranid,15)}|<#rt><#--Bill Payment Number-->
 <#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
 <#--P02-->SVB Check Number|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
-<#--P05-->${setMaxLength(entity.internalid, 20)}|<#rt><#--Payee ID-->
+<#--P05-->${setMaxLength(entity.internalid + "/" + billcount, 20)}|<#rt><#--Payee ID-->
 <#--P06-->${setMaxLength(entity.billaddress1, 40)}|<#rt><#--Payee Address 1-->
 <#--P07-->${setMaxLength(entity.billaddress2, 40)}|<#rt><#--Payee Address 2-->
 <#--P08-->${setMaxLength(entity.billcity, 15)}|<#rt><#--Payee City-->
@@ -94,7 +96,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(payment.memo, 40)}<#rt><#--Memo-->
+<#--P14-->${setMaxLength(payment.memo, 40)}|<#rt><#--Memo-->
 <#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength(transaction.type, 30)}|<#rt><#--Invoice Description-->
