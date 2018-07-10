@@ -47,14 +47,12 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#assign CHKRecordCount = 0>
 <#assign WireTotalAmount = 0>
 <#assign WireRecordCount = 0>
-<#assign TotalAmount = 0>
-<#assign TotalRecordCount = 0>
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
 <#if payment.custbody_2663_eft_payment_method = "ACH">
     <#assign ACHPayAmount = formatAmount(getAmount(payment))>
-    <#assign ACHTotalAmount = ACHTotalAmount + ACHpayAmount>
+    <#assign ACHTotalAmount = ACHTotalAmount + ACHPayAmount>
     <#assign ACHRecordCount = ACHRecordCount + 1>
 <#--- ACH Payment Record (060) --->
 <#--P01-->060<#rt><#--Record ID (060)-->
@@ -183,6 +181,8 @@ ${"\r\n"}<#--Line Break--><#rt>
 </#if>
 </#list>
 <#--- File Trailer Record (090) --->
+<#assign TotalAmount = 0>
+<#assign TotalRecordCount = 0>
 <#assign TotalAmount = ACHTotalAmount + WireTotalAmount + CHKTotalAmount>
 <#assign TotalRecordCount = ACHRecordCount + WireRecordCount + CHKRecordCount>
 <#--P01-->090<#rt><#--Record Identifier-->
