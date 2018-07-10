@@ -40,7 +40,7 @@
 <#--P07-->${setLength(" ",10)}<#rt><#--Client File ID-->
 <#--P08-->${setLength(" ",291)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- Payment Records (060) --->
+<#--- Payment Records --->
 <#assign ACHTotalAmount = 0>
 <#assign ACHRecordCount = 0>
 <#assign CHKTotalAmount = 0>
