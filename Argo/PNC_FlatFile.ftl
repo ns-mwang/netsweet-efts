@@ -32,8 +32,8 @@
 #OUTPUT START#
 <#--- Filed Header Record (010) --->
 <#--P01-->010<#rt><#--Record Identifier-->
-<#--P02-->${cbank.custpage_eft_custrecord_2663_bank_comp_id}<#rt><#--Sender Identification Number-->
-<#--P03-->AP0<#rt><#--Business Application Format ${cbank.custpage_eft_custrecord_2663_bank_code}-->
+<#--P02-->${setLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,15)}<#rt><#--Sender Identification Number-->
+<#--P03-->${setLength(cbank.custpage_eft_custrecord_2663_bank_code,3)}<#rt><#--Business Application Format-->
 <#--P04-->${setLength(cbank.custrecord_2663_print_company_name,16)}<#rt><#--Customer Name-->
 <#--P05-->${pfa.custrecord_2663_file_creation_timestamp?string("yyyyMMdd")}<#rt><#--Transmission Date (yyyyMMdd)-->
 <#--P06-->${pfa.custrecord_2663_file_creation_timestamp?string("HHmm")}<#rt><#--Transmission Time (HHmm)-->
@@ -70,7 +70,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
 <#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
 <#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines *NEED REVIEW*-->
+<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines (NEED REVIEW)-->
 <#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
 <#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
 <#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
@@ -80,11 +80,12 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
 <#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
+</#list>
 <#--- File Trailer Record (090) --->
 <#--P01-->090<#rt><#--Record Identifier-->
 <#--P02-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Checks-->
 <#--P03-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Checks-->
-<#--P04-->${setPadding("ACHTotalAmount","left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
+<#--P04-->${setPadding(ACHTotalAmount,"left","0",13)}<#rt><#--Total Dollar amount of ACHs-->
 <#--P05-->${setPadding(ACHRecordCount,"left","0",7)}<#rt><#--Total Records, ACHs-->
 <#--P06-->${setPadding("0","left","0",13)}<#rt><#--Total Dollar amount of Wires-->
 <#--P07-->${setPadding("0","left","0",7)}<#rt><#--Total Records, Wire-->
