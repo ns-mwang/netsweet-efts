@@ -106,12 +106,12 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P13-->${setLength(" ",1)}<#rt><#--Internal Use Only Client Should Send Spaces-->
 <#--P14-->${setLength(" ",20)}<#rt><#--Internal Use Only Client Should Send Spaces-->
 <#--P15-->${setLength(" ",21)}<#rt><#--Filler-->
-<#--P16-->${setLength("1",5)}<#rt><#--Number of Remittance Lines-->
+<#--P16-->${setLength("00001",5)}<#rt><#--Number of Remittance Lines-->
 <#--P17-->${setPadding(ebank.custrecord_2663_entity_bank_no,"right"," ",12)}<#rt><#--Beneficiary Bank ID-->
 <#--P18-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Beneficiary Account Number-->
 <#--P19-->${setLength("A",1)}<#rt><#--Beneficiary Bank Type (ABA = A)-->
 <#--P20-->${setLength(" ",3)}<#rt><#--Filler-->
-<#--P21-->${setLength(" ",1)}<#rt><#--Beneficiary Account Type-->
+<#--P21-->${setLength("D",1)}<#rt><#--Beneficiary Account Type-->
 <#--P22-->${setLength(" ",8)}<#rt><#--Repetitive Wire Code-->
 <#--P23-->${setLength(" ",30)}<#rt><#--Client Transaction ID-->
 <#--P24-->${setLength(" ",1)}<#rt><#--Filler-->
@@ -134,7 +134,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->${setLength(" ",35)}<#rt><#--Receiving Bank Address 2-->
 <#--P05-->${setLength(" ",35)}<#rt><#--Receiving Bank City-->
 <#--P06-->${setLength(" ",2)}<#rt><#--Filler-->
-<#--P07-->${setLength("A",1)}<#rt><#--Receiving Bank Type-->
+<#--P07-->${setLength(" ",1)}<#rt><#--Receiving Bank Type-->
 <#--P08-->${setLength(" ",12)}<#rt><#--Receiving Bank ID-->
 <#--P09-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Name-->
 <#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Address 1-->
