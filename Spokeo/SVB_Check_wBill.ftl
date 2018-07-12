@@ -54,7 +54,6 @@
 <#-- template building -->
 #OUTPUT START#
 <#-- Check Print Headers -->
-Bill Payment Number|<#rt>
 Check Date|<#rt>
 Check Number|<#rt>
 Check Amount|<#rt>
@@ -82,9 +81,8 @@ ${"\r\n"}<#rt><#--Line Break-->
     <#assign paidTransactions = transHash[payment.internalid]>
     <#list paidTransactions as transaction>
     <#assign billcount = billcount + 1>
-<#--P00-->${setMaxLength(payment.tranid,15)}|<#rt><#--Bill Payment Number-->
 <#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
-<#--P02-->SVB Check Number|<#rt><#--Check Number-->
+<#--P02-->${setMaxLength(payment.tranid,15)}|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
 <#--P05-->${setMaxLength(entity.internalid + "/" + billcount, 20)}|<#rt><#--Payee ID-->
