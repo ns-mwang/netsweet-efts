@@ -67,17 +67,29 @@ Payee Address Zip|<#rt>
 Payee Address Country|<#rt>
 Mail Code|<#rt>
 Handling Code|<#rt>
-Memo<#rt>
+Memo|<#rt>
 Invoice Number|<#rt>
 Invoice Date|<#rt>
 Invoice Description|<#rt>
 Invoice Net Amount<#rt>
 ${"\r\n"}<#rt><#--Line Break-->
+<#-- Calculate Total Original Bill Amount -->
+<#list payments as payment>
+    <#assign ebank = ebanks[payment_index]>
+    <#assign entity = entities[payment_index]>
+    <#assign TotalOrigAmount = 0>
+    <#assign paidTransactions = transHash[payment.internalid]>
+    <#list paidTransactions as transaction>
+        <#assign TotalOrigAmount = TotalOrigAmount + transaction.total>
+    </#list>
+</#list>
 <#-- Check Information -->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
     <#assign billcount = 0>
+    <#assign payAmount = getAmount(payment)>
+    <#assign TotalCredits = TotalOrigAmount - payAmount>
     <#assign paidTransactions = transHash[payment.internalid]>
     <#list paidTransactions as transaction>
     <#assign billcount = billcount + 1>
@@ -97,7 +109,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P14-->${setMaxLength(transaction.tranid, 40)}|<#rt><#--Memo-->
 <#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
-<#--P17-->${setMaxLength(transaction.type, 30)}|<#rt><#--Invoice Description-->
+<#--P17-->${setMaxLength("Bill", 30)}|<#rt><#--Invoice Description-->
 <#--P18-->${setMaxLength(formatAmount(transaction.total,"dec"), 14)}<#rt><#--Invoice Net Amount-->
 ${"\r\n"}<#rt><#--Line Break-->
    </#list>
