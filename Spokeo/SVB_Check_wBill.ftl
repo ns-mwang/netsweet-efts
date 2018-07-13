@@ -93,7 +93,7 @@ ${"\r\n"}<#rt><#--Line Break-->
     <#assign paidTransactions = transHash[payment.internalid]>
     <#list paidTransactions as transaction>
     <#assign billcount = billcount + 1>
-<#--P01-->${setMaxLength(pfa.custrecord_2663_file_creation_timestamp?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
+<#--P01-->${setMaxLength(pfa.custrecord_2663_process_date?string("MMddyyyy"),10)}|<#rt><#--Check Date-->
 <#--P02-->${setMaxLength(payment.tranid,15)}|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
@@ -110,7 +110,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength("Bill", 30)}|<#rt><#--Invoice Description-->
-<#--P18-->${setMaxLength(formatAmount(transaction.total,"dec"), 14)}<#rt><#--Invoice Net Amount-->
+<#--P18-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}<#rt><#--Invoice Net Amount-->
 ${"\r\n"}<#rt><#--Line Break-->
    </#list>
 </#list>
