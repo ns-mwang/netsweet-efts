@@ -106,7 +106,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(transaction.tranid, 40)}|<#rt><#--Memo-->
+<#--P14-->${setMaxLength(transaction.memo, 50)}|<#rt><#--Memo-->
 <#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength("Bill", 30)}|<#rt><#--Invoice Description-->
