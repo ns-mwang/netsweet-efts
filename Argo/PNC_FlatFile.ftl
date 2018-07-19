@@ -208,7 +208,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P17-->${setPadding(entity.billstate,"right"," ",2)}<#rt><#--Payee State-->
 <#--P18-->${setPadding(entity.billzipcode?replace("-",""),"right"," ",9)}<#rt><#--Payee Zip Code-->
 <#--P19-->${setLength(" ",1)}<#rt><#--Filler-->
-<#--P20-->${setPadding(entity.billcountry,"right"," ",3)}<#rt><#--Payee Country-->
+<#--P20-->${setPadding(getCountryCode(entity.billcountry),"right"," ",3)}<#rt><#--Payee Country-->
 <#--P21-->${setPadding(RemitNumber,"left","0",5)}<#rt><#--Number of Remittance Lines-->
 <#--P22-->${setLength(" ",10)}<#rt><#--Filler-->
 <#--P23-->${setLength(" ",50)}<#rt><#--Payment data-->
