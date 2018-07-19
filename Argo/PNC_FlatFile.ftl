@@ -47,23 +47,19 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#assign CHKRecordCount = 0>
 <#assign WireTotalAmount = 0>
 <#assign WireRecordCount = 0>
-<#assign RemitNumber = 0>
-<#-- Calculate ACH Remittance Number -->
-<#list payments as payment>
-<#if payment.custbody_2663_eft_payment_method = "ACH">
-    <#assign paidTransactions = transHash[payment.internalid]>
-       <#list paidTransactions as transaction>
-          <#assign RemitNumber + 1>
-       </#list>
-</#list>
 <#-- Payment Records Loop -->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
 <#if payment.custbody_2663_eft_payment_method = "ACH">
+    <#assign RemitNumber = 0>
     <#assign ACHPayAmount = getAmount(payment)>
     <#assign ACHTotalAmount = ACHTotalAmount + ACHPayAmount>
     <#assign ACHRecordCount = ACHRecordCount + 1>
+    <#assign paidTransactions = transHash[payment.internalid]>
+       <#list paidTransactions as transaction>
+          <#assign RemitNumber = RemitNumber + 1>
+       </#list>   
 <#--- ACH Payment Record (060) --->
 <#--P01-->060<#rt><#--Record ID (060)-->
 <#--P02-->ACH<#rt><#--Payment Type (ACH)-->
@@ -96,8 +92,6 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
 <#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#assign paidTransactions = transHash[payment.internalid]>
-   <#list paidTransactions as transaction>
 <#--- ACH Remittance Header Record : 070-01  (One record per payment (060) Record) --->
 <#--P01-->070<#rt><#--Record Identifier (070)-->
 <#--P01-->01<#rt><#--Sub-Record Identifier (01)-->
@@ -106,6 +100,9 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P30-->${setLength(" ",1)}<#rt><#--Filler-->
 <#--P30-->${setLength(" ",20)}<#rt><#--Filler-->
 <#--P30-->${setLength(" ",284)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#assign paidTransactions = transHash[payment.internalid]>
+   <#list paidTransactions as transaction>
 <#-- ACH Remittance Detail Record : 070-06 -->
 <#--P01-->070<#rt><#--Record Identifier (070)-->
 <#--P01-->06<#rt><#--Sub-Record Identifier (06)-->
@@ -116,12 +113,14 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P30-->${setPadding("0","left","0",10)}<#rt><#--Adjusted Amount-->
 <#--P30-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Net Amount-->
 <#--P30-->${setLength(" ",248)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+   </#list>
 <#-- ACH Remittance Trailer Record: 070-09 -->
 <#--P30-->070<#rt><#--Record Identifier (070)-->
 <#--P30-->09<#rt><#--Sub-record Identifier (09)-->
 <#--P30-->${setPadding("0","left","0",26)}<#rt><#--Zeros-->
 <#--P30-->${setLength(" ",319)}<#rt><#--Filler-->
-   </#list>
+${"\r\n"}<#--Line Break--><#rt>
 <#elseif payment.custbody_2663_eft_payment_method == "Wire">
 <#--- Wire Payment Record (060) --->
     <#assign WirePayAmount = getAmount(payment)>
