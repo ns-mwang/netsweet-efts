@@ -47,6 +47,16 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#assign CHKRecordCount = 0>
 <#assign WireTotalAmount = 0>
 <#assign WireRecordCount = 0>
+<#assign RemitNumber = 0>
+<#-- Calculate ACH Remittance Number -->
+<#list payments as payment>
+<#if payment.custbody_2663_eft_payment_method = "ACH">
+    <#assign paidTransactions = transHash[payment.internalid]>
+       <#list paidTransactions as transaction>
+          <#assign RemitNumber + 1>
+       </#list>
+</#list>
+<#-- Payment Records Loop -->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
@@ -76,16 +86,42 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P19-->${setLength(" ",2)}<#rt><#--Receiver State-->
 <#--P20-->${setLength(" ",9)}<#rt><#--Receiver Zip-->
 <#--P21-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P22-->${setPadding("0","left","0",5)}<#rt><#--Number of Remittance Lines (NEED REVIEW)-->
+<#--P22-->${setPadding(RemitNumber,"left","0",5)}<#rt><#--Number of Remittance Lines-->
 <#--P23-->${setLength(" ",10)}<#rt><#--Filler-->
 <#--P24-->${setPadding(ebank.custrecord_2663_entity_bank_no,"left","0",9)}<#rt><#--Receiver ABA (Transit Routing)-->
 <#--P25-->${setLength(" ",3)}<#rt><#--Filler-->
 <#--P26-->${setPadding(ebank.custrecord_2663_entity_acct_no,"right"," ",17)}<#rt><#--Receiver Account Number-->
 <#--P27-->${setLength("22",2)}<#rt><#--ACH Tran Code (22)-->
-<#--P28-->${setLength("CCD",3)}<#rt><#--ACH Type-->
+<#--P28-->${setLength("CTX",3)}<#rt><#--ACH Type-->
 <#--P29-->${setLength(" ",20)}<#rt><#--Discretionary Data-->
 <#--P30-->${setLength(" ",9)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
+<#assign paidTransactions = transHash[payment.internalid]>
+   <#list paidTransactions as transaction>
+<#--- ACH Remittance Header Record : 070-01  (One record per payment (060) Record) --->
+<#--P01-->070<#rt><#--Record Identifier (070)-->
+<#--P01-->01<#rt><#--Sub-Record Identifier (01)-->
+<#--P01-->${setLength(" ",10)}<#rt><#--Vendor Number-->
+<#--P01-->${setLength(" ",30)}<#rt><#--Client Transaction ID-->
+<#--P30-->${setLength(" ",1)}<#rt><#--Filler-->
+<#--P30-->${setLength(" ",20)}<#rt><#--Filler-->
+<#--P30-->${setLength(" ",284)}<#rt><#--Filler-->
+<#-- ACH Remittance Detail Record : 070-06 -->
+<#--P01-->070<#rt><#--Record Identifier (070)-->
+<#--P01-->06<#rt><#--Sub-Record Identifier (06)-->
+<#--P01-->${setLength(transaction.trandate?string("yyyyMMdd"),8)}<#rt><#--Invoice Date-->
+<#--P01-->${setLength(transaction.tranid,20)}<#rt><#--Invoice Number-->
+<#--P30-->${setLength("Memo:" + transaction.memo,20)}<#rt><#--Descriptive Text-->
+<#--P30-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Invoice Gross Amount-->
+<#--P30-->${setPadding("0","left","0",10)}<#rt><#--Adjusted Amount-->
+<#--P30-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Net Amount-->
+<#--P30-->${setLength(" ",248)}<#rt><#--Filler-->
+<#-- ACH Remittance Trailer Record: 070-09 -->
+<#--P30-->070<#rt><#--Record Identifier (070)-->
+<#--P30-->09<#rt><#--Sub-record Identifier (09)-->
+<#--P30-->${setPadding("0","left","0",26)}<#rt><#--Zeros-->
+<#--P30-->${setLength(" ",319)}<#rt><#--Filler-->
+   </#list>
 <#elseif payment.custbody_2663_eft_payment_method == "Wire">
 <#--- Wire Payment Record (060) --->
     <#assign WirePayAmount = getAmount(payment)>
