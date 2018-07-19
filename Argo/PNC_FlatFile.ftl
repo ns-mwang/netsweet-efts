@@ -201,12 +201,12 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P10-->${setPadding(formatAmount(CHKPayAmount),"left","0",13)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(entity.billaddressee,"right"," ",35)}<#rt><#--Payee Name 1-->
 <#--P12-->${setPadding(" ","right"," ",35)}<#rt><#--Payee Name 2 -->
-<#--P13-->${setPadding(entity.billaddr1,"right"," ",35)}<#rt><#--Payee Address 1-->
-<#--P14-->${setPadding(entity.billaddr2,"right"," ",35)}<#rt><#--Payee Address 2-->
+<#--P13-->${setPadding(entity.billaddress1,"right"," ",35)}<#rt><#--Payee Address 1-->
+<#--P14-->${setPadding(entity.billaddress2,"right"," ",35)}<#rt><#--Payee Address 2-->
 <#--P15-->${setPadding(" ","right"," ",35)}<#rt><#--Payee Address 3-->
 <#--P16-->${setPadding(entity.billcity,"right"," ",27)}<#rt><#--Payee City-->
 <#--P17-->${setPadding(entity.billstate,"right"," ",2)}<#rt><#--Payee State-->
-<#--P18-->${setPadding(entity.billzip?replace("-",""),"right"," ",9)}<#rt><#--Payee Zip Code-->
+<#--P18-->${setPadding(entity.billzipcode?replace("-",""),"right"," ",9)}<#rt><#--Payee Zip Code-->
 <#--P19-->${setLength(" ",1)}<#rt><#--Filler-->
 <#--P20-->${setPadding(entity.billcountry,"right"," ",3)}<#rt><#--Payee Country-->
 <#--P21-->${setPadding(RemitNumber,"left","0",5)}<#rt><#--Number of Remittance Lines-->
