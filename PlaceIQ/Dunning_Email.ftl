@@ -119,12 +119,12 @@
 	<th><span>Due Date</span></th>
 	<th><span>Days Late</span></th>
 	<th><span>Advertiser</span></th>
-	<th><span>Capaign Name</span></th>
+	<th><span>Campaign Name</span></th>
 	<th><span>IO Number</span></th>
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-	<#assign invoiceTotal = 0><#assign openBalance = 0><#list invoicelist as invoice><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
+	<#assign invoiceTotal = 0><#assign openBalance = 0><#list invoicelist as invoice><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string?number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
@@ -136,8 +136,8 @@
 	<!-- Campaign Name -->
 	<td><span>${invoice.custbody6}</span></td>
 	<!-- IO Number -->
-	<td align="right"><span>${invoice.fxamount?string.number}</span></td>
-	<td align="right"><span>${invoice.fxamountremaining?string.number}</span></td>
+	<td align="right"><span>${invoice.fxamount}</span></td>
+	<td align="right"><span>${invoice.fxamountremaining}</span></td>
 	</tr>
 	</#list>
 </tbody>
@@ -152,7 +152,7 @@
 	<th><span>Due Date</span></th>
 	<th><span>Days Late</span></th>
 	<th><span>Advertiser</span></th>
-	<th><span>Capaign Name</span></th>
+	<th><span>Campaign Name</span></th>
 	<th><span>IO Number</span></th>
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
@@ -163,14 +163,14 @@
 	<td><span>${invoice.trandate}</span></td>
 	<td><span>${invoice.duedate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
-	<td><span>${invoice.custbody_advertiser}</span></td>
 	<!-- Advertiser -->
-	<td><span>${invoice.custbody1}</span></td>
+	<td><span>${invoice.custbody_advertiser}</span></td>
 	<!-- Campaign Name -->
-	<td><span>${invoice.custbody6}</span></td>
+	<td><span>${invoice.custbody1}</span></td>
 	<!-- IO Number -->
-	<td align="right"><span>${invoice.amount?string.number}</span></td>
-	<td align="right"><span>${invoice.amountremaining?string.number}</span></td>
+	<td><span>${invoice.custbody6}</span></td>
+	<td align="right"><span>${invoice.amount}</span></td>
+	<td align="right"><span>${invoice.amountremaining}</span></td>
 	</tr>
 </tbody>
 </table>
