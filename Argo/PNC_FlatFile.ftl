@@ -109,9 +109,9 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P02-->06<#rt><#--Sub-Record Identifier (06)-->
 <#--P03-->${setLength(transaction.trandate?string("yyyyMMdd"),8)}<#rt><#--Invoice Date-->
 <#--P04-->${setLength(transaction.tranid,20)}<#rt><#--Invoice Number-->
-<#--P05-->${setLength("Memo:" + transaction.memo,20)}<#rt><#--Descriptive Text-->
+<#--P05-->${setLength("Memo: " + transaction.memo,30)}<#rt><#--Descriptive Text-->
 <#--P06-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Invoice Gross Amount-->
-<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Adjusted Amount-->
+<#--P07-->${setPadding("0","left","0",13)}<#rt><#--Adjusted Amount-->
 <#--P08-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Net Amount-->
 <#--P09-->${setLength(" ",248)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
@@ -229,9 +229,9 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P02-->06<#rt><#--Sub-Record Identifier (06)-->
 <#--P03-->${setLength(transaction.trandate?string("yyyyMMdd"),8)}<#rt><#--Invoice Date-->
 <#--P04-->${setLength(transaction.tranid,20)}<#rt><#--Invoice Number-->
-<#--P05-->${setLength("Memo:" + transaction.memo,20)}<#rt><#--Descriptive Text-->
+<#--P05-->${setLength("Memo: " + transaction.memo,30)}<#rt><#--Descriptive Text-->
 <#--P06-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Invoice Gross Amount-->
-<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Adjusted Amount-->
+<#--P07-->${setPadding("0","left","0",13)}<#rt><#--Adjusted Amount-->
 <#--P08-->${setPadding(formatAmount(transaction.total),"left","0",13)}<#rt><#--Net Amount-->
 <#--P09-->${setLength(" ",248)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
