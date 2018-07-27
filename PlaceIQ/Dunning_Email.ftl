@@ -116,32 +116,38 @@
 	<tr>
 	<th><span>Invoice #</span></th>
 	<th><span>Invoice Date</span></th>
-	<th><span>Due Date</span></th>
 	<th><span>Days Late</span></th>
 	<th><span>Advertiser</span></th>
 	<th><span>Campaign Name</span></th>
-	<th><span>IO Number</span></th>
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-	<#assign invoiceTotal = 0><#assign openBalance = 0><#list invoicelist as invoice><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string?number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
+	<#assign invoiceTotal = 0><#assign openBalance = 0><#list invoicelist as invoice><#assign invoiceTotal = invoiceTotal + invoice.amount?string?number><#assign openBalanceTotal = openBalanceTotal + invoice.amountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
-	<td><span>${invoice.duedate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
+    <!-- Advertiser -->
 	<td><span>${invoice.custbody_advertiser}</span></td>
-	<!-- Advertiser -->
+    <!-- Campaign Name -->
 	<td><span>${invoice.custbody1}</span></td>
-	<!-- Campaign Name -->
-	<td><span>${invoice.custbody6}</span></td>
-	<!-- IO Number -->
 	<td align="right"><span>${invoice.amount}</span></td>
 	<td align="right"><span>${invoice.amountremaining}</span></td>
 	</tr>
 	</#list>
 </tbody>
 </table>
+
+<table class="total">
+<tbody>
+	<tr>
+	<td><span><b>Total</b></span></td>
+	<td align="right"><span>${invoiceTotal}</span></td>
+	<td align="right"><span>${openBalanceTotal}</span></td>
+	</tr>
+</tbody>
+</table>
+
 <span> <#elseif invoice??> <!-- for invoice dunning --> </span>
 
 <table class="body">
@@ -149,26 +155,21 @@
 	<tr>
 	<th><span>Invoice #</span></th>
 	<th><span>Invoice Date</span></th>
-	<th><span>Due Date</span></th>
 	<th><span>Days Late</span></th>
 	<th><span>Advertiser</span></th>
 	<th><span>Campaign Name</span></th>
-	<th><span>IO Number</span></th>
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-	<#assign invoiceTotal = 0><#assign openBalance = 0><#assign invoiceTotal = invoiceTotal + invoice.fxamount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.fxamountremaining?string.number>
+	<#assign invoiceTotal = 0><#assign openBalance = 0><#assign invoiceTotal = invoiceTotal + invoice.amount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.amountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
-	<td><span>${invoice.duedate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
 	<!-- Advertiser -->
 	<td><span>${invoice.custbody_advertiser}</span></td>
 	<!-- Campaign Name -->
 	<td><span>${invoice.custbody1}</span></td>
-	<!-- IO Number -->
-	<td><span>${invoice.custbody6}</span></td>
 	<td align="right"><span>${invoice.amount}</span></td>
 	<td align="right"><span>${invoice.amountremaining}</span></td>
 	</tr>
