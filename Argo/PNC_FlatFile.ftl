@@ -213,6 +213,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P22-->${setLength(" ",10)}<#rt><#--Filler-->
 <#--P23-->${setLength(" ",50)}<#rt><#--Payment data-->
 <#--P24-->${setLength(" ",13)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
 <#--- CHK Remittance Header Record : 070-01  (One record per payment (060) Record) --->
 <#--P01-->070<#rt><#--Record Identifier (070)-->
 <#--P02-->01<#rt><#--Sub-Record Identifier (01)-->
