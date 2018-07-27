@@ -136,8 +136,8 @@
 	<!-- Campaign Name -->
 	<td><span>${invoice.custbody6}</span></td>
 	<!-- IO Number -->
-	<td align="right"><span>${invoice.fxamount}</span></td>
-	<td align="right"><span>${invoice.fxamountremaining}</span></td>
+	<td align="right"><span>${invoice.amount}</span></td>
+	<td align="right"><span>${invoice.amountremaining}</span></td>
 	</tr>
 	</#list>
 </tbody>
