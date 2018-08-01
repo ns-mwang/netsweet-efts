@@ -127,9 +127,9 @@
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
 	<td><span>${invoice.daysoverdue}</span></td>
-    <!-- Advertiser -->
+	<!-- Advertiser -->
 	<td><span>${invoice.custbody_advertiser}</span></td>
-    <!-- Campaign Name -->
+	<!-- Campaign Name -->
 	<td><span>${invoice.custbody1}</span></td>
 	<td align="right"><span>${invoice.amount}</span></td>
 	<td align="right"><span>${invoice.amountremaining}</span></td>
@@ -147,7 +147,6 @@
 	</tr>
 </tbody>
 </table>
-
 <span> <#elseif invoice??> <!-- for invoice dunning --> </span>
 
 <table class="body">
