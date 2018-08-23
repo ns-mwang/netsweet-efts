@@ -160,7 +160,10 @@
 	<th><span>Invoice Amount</span></th>
 	<th><span>Open Balance</span></th>
 	</tr>
-	<#assign invoiceTotal = 0><#assign openBalance = 0><#assign invoiceTotal = invoiceTotal + invoice.amount?string.number><#assign openBalanceTotal = openBalanceTotal + invoice.amountremaining?string.number>
+	<#assign invoiceTotal = 0>
+	<#assign openBalance = 0>
+	<#assign invoiceTotal = invoiceTotal + invoice.amount?string.number>
+	<#assign openBalanceTotal = openBalanceTotal + invoice.amountremaining?string.number>
 	<tr>
 	<td><span>${invoice.tranid}<#if invoice.custbody_3805_dunning_procedure != "">*</#if></span></td>
 	<td><span>${invoice.trandate}</span></td>
