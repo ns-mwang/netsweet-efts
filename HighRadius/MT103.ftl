@@ -82,10 +82,10 @@
 :32A:${pfa.custrecord_2663_process_date?string("yyyyMMddyyyyMMdd")}${setLength(getCurrencySymbol(payment.currency)?upper_case,3)}${formatAmount(getAmount(payment),"dec",",")}
 :36:1.000000A
 :50:/${getBankAccountNumber(cbank)}
-${setLength(removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_statement_name),35)}
-${setLength(removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_address1),35)}
-${setLength(removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_address2),35)}
-${setLength(removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_country),35)}
+${removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_statement_name)}
+${removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_address1)}
+${removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_address2)}
+${removeInvalidCharacter(cbank.custpage_eft_custrecord_2663_bank_country)}
 :57D:${ebank.custrecord_2663_entity_bic}
 <#if ebank.custrecord_2663_entity_bank_name?has_content>
 ${removeInvalidCharacter(ebank.custrecord_2663_entity_bank_name)}
