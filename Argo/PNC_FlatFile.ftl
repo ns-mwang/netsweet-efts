@@ -178,6 +178,62 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P12-->${setLength(" ",35)}<#rt><#--Beneficiary Bank City-->
 <#--P13-->${setLength(" ",52)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
+<#elseif payment.custbody_2663_eft_payment_method == "International Wire">
+<#--- Wire Payment Record (060) --->
+    <#assign WirePayAmount = getAmount(payment)>
+    <#assign WireTotalAmount = WireTotalAmount + WirePayAmount>
+    <#assign WireRecordCount = WireRecordCount + 1>
+<#--P01-->060<#rt><#--Record ID (060)-->
+<#--P02-->BOP<#rt><#--Payment Type (BOP: Intl Wire)-->
+<#--P03-->${setLength(" ",15)}<#rt><#--Filler-->
+<#--P04-->${setLength(getCurrencySymbol(payment.currency),3)}<#rt><#--Currency Type-->
+<#--P05-->${setLength(" ",10)}<#rt><#--Filler-->
+<#--P06-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
+<#--P07-->${setPadding(formatAmount(WirePayAmount),"left","0",13)}<#rt><#--Payment Amount-->
+<#--P08-->${setPadding(buildEntityName(entity),"right"," ",35)}<#rt><#--Beneficiary Name-->
+<#--P09-->${setLength(ebank.custrecord_2663_entity_iban,35)}<#rt><#--IBAN Account  Number (BOP and PRO only)-->
+<#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Address 1-->
+<#--P11-->${setLength(" ",35)}<#rt><#--Beneficiary Address 2-->
+<#--P12-->${setLength(" ",35)}<#rt><#--Beneficiary Address 3-->
+<#--P13-->${setLength(" ",1)}<#rt><#--Internal Use Only Client Should Send Spaces-->
+<#--P14-->${setLength(" ",20)}<#rt><#--Internal Use Only Client Should Send Spaces-->
+<#--P15-->${setLength(" ",21)}<#rt><#--Filler-->
+<#--P16-->${setLength("00001",5)}<#rt><#--Number of Remittance Lines-->
+<#--P17-->${setPadding(ebank.custrecord_2663_entity_swift,"right"," ",12)}<#rt><#--Beneficiary Bank ID-->
+<#--P18-->${setPadding(ebank.custrecord_2663_entity_iban,"right"," ",17)}<#rt><#--Beneficiary Account Number-->
+<#--P19-->${setLength("S",1)}<#rt><#--Beneficiary Bank Type (Swift = S)-->
+<#--P20-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P21-->${setLength("D",1)}<#rt><#--Beneficiary Account Type-->
+<#--P22-->${setLength(" ",8)}<#rt><#--Repetitive Wire Code-->
+<#--P23-->${setLength(" ",30)}<#rt><#--Client Transaction ID-->
+<#--P24-->${setLength(" ",1)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#--- Wire Payment Record (080) --->
+<#--P01-->080<#rt><#--Record ID (080)-->
+<#--P02-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 1-->
+<#--P03-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 2-->
+<#--P04-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 3-->
+<#--P05-->${setLength(" ",35)}<#rt><#--Originator to Beneficiary Text 4-->
+<#--P06-->${setLength(" ",16)}<#rt><#--Reference for Beneficiary-->
+<#--P07-->${setLength(" ",3)}<#rt><#--Advice Code-->
+<#--P08-->${setLength(" ",35)}<#rt><#--Advice Description -->
+<#--P09-->${setLength(" ",153)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
+<#--- Wire Payment Record (085) --->
+<#--P01-->085<#rt><#--Record ID (085)-->
+<#--P02-->${setLength(" ",35)}<#rt><#--Receiving Bank Name-->
+<#--P03-->${setLength(" ",35)}<#rt><#--Receiving Bank Address 1-->
+<#--P04-->${setLength(" ",35)}<#rt><#--Receiving Bank Address 2-->
+<#--P05-->${setLength(" ",35)}<#rt><#--Receiving Bank City-->
+<#--P06-->${setLength(" ",2)}<#rt><#--Filler-->
+<#--P07-->${setLength("S",1)}<#rt><#--Receiving Bank Type-->
+<#--P08-->${setLength(ebank.custrecord_2663_entity_bic,12)}<#rt><#--Receiving Bank ID-->
+<#--P09-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Name-->
+<#--P10-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Address 1-->
+<#--P11-->${setLength(" ",35)}<#rt><#--Beneficiary Bank Address 2-->
+<#--P12-->${setLength(" ",35)}<#rt><#--Beneficiary Bank City-->
+<#--P13-->${setLength(" ",52)}<#rt><#--Filler-->
+${"\r\n"}<#--Line Break--><#rt>
 <#elseif payment.custbody_2663_eft_payment_method == "Check">
 <#--- Check Payment Record (060) --->
     <#assign CHKPayAmount = getAmount(payment)>
