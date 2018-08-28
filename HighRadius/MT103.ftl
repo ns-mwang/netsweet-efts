@@ -123,7 +123,7 @@ ${removeInvalidCharacter(referenceNote?substring(70))}
 </#if>
 </#if>
 :71A:/${ebank.custrecord_2663_customer_code}
--
+:END:
 </#list>
 #REMOVE EOL#
 #OUTPUT END#
