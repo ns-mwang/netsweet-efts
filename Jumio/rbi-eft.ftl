@@ -51,9 +51,10 @@
 <#--P02-->${recordCount},<#rt><#--Beneficiary Code (Sequence Number)-->
 <#--P03-->${ebank.custrecord_2663_entity_acct_no},<#rt><#--Beneficiary Account Number-->
 <#--P04-->${formatAmount(getAmount(payment),"dec")},<#rt><#--Instrument Amount-->
-<#--P05-->${setMaxLength(buildEntityName(entity),22)},<#rt><#--Beneficiary Name-->
+<#--P05-->${setMaxLength(buildEntityName(entity)?replace(" ",""),22)?replace(",","")},<#rt><#--Beneficiary Name-->
 <#--P06-->${setMaxLength(payment.memomain,20)},<#rt><#--Instruction Reference Number-->
 <#--P07-->${setMaxLength(getReferenceNote(payment),20)},<#rt><#--Customer Reference Number-->
+<#--P05-->${setMaxLength(buildEntityName(entity)?replace(" ",""),22)?replace(",","")},<#rt><#--Beneficiary Name-->
 <#--P08-->${pfa.custrecord_2663_process_date?string("dd/MM/yyyy")},<#rt><#--Cheque Date-->
 <#--P09-->${ebank.custrecord_2663_entity_bank_no},<#rt><#--IFSC COD-->
 <#--P10-->${setMaxLength(ebank.custrecord_2663_entity_bank_name,20)},<#rt><#--BENE BANK-->
