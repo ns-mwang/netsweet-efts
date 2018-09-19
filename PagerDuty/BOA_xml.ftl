@@ -1,6 +1,25 @@
 <#-- Author: Michael Wang | mwang@netsuite.com -->
 <#-- Bank Format: iso 20022 xml | pain.001.001.03 -->
-<#-- Banks: BoA, HSBC, RBC, Wells Fargo -->
+<#-- Banks: BoA -->
+
+<#function getReferenceNote payment>
+    <#assign paidTransactions = transHash[payment.internalid]>
+    <#assign referenceNote = "">
+    <#assign paidTransactionsCount = paidTransactions?size>
+    <#if (paidTransactionsCount >= 1)>
+        <#list paidTransactions as transaction>
+            <#if transaction.tranid?has_content>
+                <#if referenceNote?has_content>
+                    <#assign referenceNote = referenceNote + ", " + transaction.tranid>
+                <#else>
+                    <#assign referenceNote = transaction.tranid>
+                </#if>
+            </#if>
+        </#list>
+    </#if>
+    <#return referenceNote>
+</#function>
+
 <#-- cached values -->
 <#assign totalAmount = computeTotalAmount(payments)>
 <#-- template building -->
@@ -18,10 +37,10 @@
 		<Id>
 			<OrgId>
 			<#-- Payment Types That Use Swift Codes -->
-				<#--<BIOCrBEI>${cbank.custrecord_2663_swift_code}</BIOCrBEI>-->
+				<#--<BIOCrBEI>${cbank.custpage_eft_custrecord_2663_swift_code}</BIOCrBEI>-->
 			<#-- Payment Types That Use BANK CODE (ABA/TRANSIT/BRANCH CODE) -->
 				<Othr>
-					<Id>${cbank.custrecord_2663_bank_code}</Id>
+					<Id>${cbank.custpage_eft_custrecord_2663_bank_code}</Id>
 				</Othr>
 			</OrgId>
 		</Id>
@@ -87,16 +106,13 @@
 		</Id>
 		<Ccy>${getCurrencySymbol(cbank.custrecord_2663_currency)}</Ccy>
 	</DbtrAcct>
-	<DbtrAgt>
+	<#--<DbtrAgt> (TBD if this tag is needed. MW 09/19/18)
 		<FinInstnId>
-			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC><#-- Needs Clarification -->
+			<BIC>${cbank.custpage_eft_custrecord_2663_bic}</BIC>
 		</FinInstnId>
-	</DbtrAgt>
-	<#-- SEPA = SLEV, Non SEPA = SHAR
-	<#if transaction.custbody_bb_vb_prr_type == "SEPA">
-	<ChrgBr>SLEV</ChrgBr>
-	</#if>
-	<ChrgBr>SHAR</ChrgBr>-->
+	</DbtrAgt>-->
+	<#-- SEPA = SLEV, Non SEPA = SHAR -->
+	<ChrgBr>SHAR</ChrgBr>
 	<CdtTrfTxInf>
 		<PmtId>
 			<InstrId>${cbank.custrecord_2663_file_name_prefix}${payment.tranid}_${pfa.custrecord_2663_process_date?string("yyyyMMdd")}</InstrId>
@@ -111,7 +127,7 @@
 					<BIC>${transaction.custbody_bb_vb_ebd_swift_code}</BIC>
 				<#else>
 					<Othr>
-						<Id>${transaction.custbody_bb_vb_ebd_bank_id}</Id>
+						<Id>${ebank.custrecord_2663_entity_acct_no}</Id>
 					</Othr>
 				</#if>
 			</FinInstnId>
@@ -119,7 +135,7 @@
 		<Cdtr>
 			<Nm>${setMaxLength(convertToLatinCharSet(buildEntityName(entity)),70)}</Nm>
 		<PstlAdr>
-			<Ctry>${getCountryCode(transaction.custbody_bb_vb_ebd_acct_cnt)}</Ctry>
+			<Ctry>${getCountryCode(ebank.custrecord_2663_entity_country)}</Ctry>
 		</PstlAdr>
 		</Cdtr>
 		<CdtrAcct>
@@ -131,28 +147,13 @@
 		<#else>
 				<Id>
 					<Othr>
-						<Id>${transaction.custbody_bb_vb_ebd_bank_acct}</Id>
+						<Id>${ebank.custrecord_2663_entity_acct_no}</Id>
 					</Othr>
 				</Id>
 		</#if>
 		</CdtrAcct>
 		<RmtInf>
-			<Strd>
-        			<RfrdDocInf>
-					<Tp>
-						<CdOrPrtry>
-                    					<Cd>CINV</Cd>
-                        			</CdOrPrtry>
-                    			</Tp>
-                			<Nb>SOLT02001038</Nb>
-                			<RltdDt>${transaction.trandate?string("yyyy-MM-dd")}</RltdDt>
-                		</RfrdDocInf>
-                		<RfrdDocAmt>
-                			<DuePyblAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(getAmount(payment),"dec")}</DuePyblAmt>
-                  			<DscntApldAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.discountamount,"dec")}</DscntApldAmt>
-                 			<TaxAmt Ccy="${getCurrencySymbol(payment.currency)}">${formatAmount(transaction.taxtotal,"dec")}</TaxAmt>
-              			</RfrdDocAmt>
-         		</Strd>
+			<Ustrd>${setMaxLength(convertToLatinCharSet(getReferenceNote(payment)),140)}</Ustrd>
 		</RmtInf>
 	</CdtTrfTxInf>
 </PmtInf>
