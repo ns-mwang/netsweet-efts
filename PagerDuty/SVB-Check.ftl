@@ -97,7 +97,7 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P02-->${setMaxLength(payment.tranid,15)}|<#rt><#--Check Number-->
 <#--P03-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}|<#rt><#--Check Amount-->
 <#--P04-->${setMaxLength(buildEntityName(entity),60)}|<#rt><#--Payee Name-->
-<#--P05-->${setMaxLength(entity.internalid + "/" + billcount, 20)}|<#rt><#--Payee ID-->
+<#--P05-->${setMaxLength(payment.entity, 20)}|<#rt><#--Payee ID-->
 <#--P06-->${setMaxLength(entity.billaddress1, 40)}|<#rt><#--Payee Address 1-->
 <#--P07-->${setMaxLength(entity.billaddress2, 40)}|<#rt><#--Payee Address 2-->
 <#--P08-->${setMaxLength(entity.billcity, 15)}|<#rt><#--Payee City-->
@@ -106,11 +106,11 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P11-->${setMaxLength(entity.billcountry, 20)}|<#rt><#--Payee Country-->
 <#--P12-->0|<#rt><#--Mail Code-->
 <#--P13-->1|<#rt><#--Handling Code-->
-<#--P14-->${setMaxLength(transaction.memo, 50)}|<#rt><#--Memo-->
-<#--P15-->${setMaxLength(transaction.tranid, 10)}|<#rt><#--Invoice Number-->
+<#--P14-->${setMaxLength(payment.memo, 50)}|<#rt><#--Memo-->
+<#--P15-->${setMaxLength(transaction.tranid, 20)}|<#rt><#--Invoice Number (20)-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
-<#--P17-->${setMaxLength("Bill", 30)}|<#rt><#--Invoice Description-->
-<#--P18-->${setMaxLength(formatAmount(getAmount(payment),"dec"), 14)}<#rt><#--Invoice Net Amount-->
+<#--P17-->${setMaxLength(transaction.memo, 20)}|<#rt><#--Invoice Description (20)-->
+<#--P18-->${setMaxLength(formatAmount(transaction.amount,"dec"), 14)}<#rt><#--Invoice Net Amount-->
 ${"\r\n"}<#rt><#--Line Break-->
    </#list>
 </#list>
