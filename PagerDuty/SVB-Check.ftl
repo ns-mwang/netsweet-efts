@@ -111,6 +111,8 @@ ${"\r\n"}<#rt><#--Line Break-->
 <#--P16-->${setMaxLength(transaction.trandate?string("MMddyyyy"), 10)}|<#rt><#--Invoice Date-->
 <#--P17-->${setMaxLength(transaction.memo, 20)}|<#rt><#--Invoice Description (20)-->
 <#--P18-->${setMaxLength(formatAmount(transaction.amount,"dec"), 14)}<#rt><#--Invoice Net Amount-->
+<#--P19-->${setMaxLength(formatAmount(transaction.amount,"dec"), 14)}<#rt><#--Invoice Net Amount-->
+<#--P20-->${setMaxLength(formatAmount(transaction.amount,"dec"), 14)}<#rt><#--Invoice Net Amount-->
 ${"\r\n"}<#rt><#--Line Break-->
    </#list>
 </#list>
