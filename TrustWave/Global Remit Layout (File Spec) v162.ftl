@@ -19,12 +19,6 @@
         <#return referenceNote>
     </#function>
 
-    <#function computeTotalRecords recordCount>
-        <#assign value = ((recordCount + 4) / 10) >
-        <#assign value = value?ceiling >    
-        <#return value>
-    </#function>
-
 <#-- cached values -->
 <#assign totalAmount = formatAmount(computeTotalAmount(payments))>
 
@@ -40,28 +34,33 @@
 <#--P07-->${setLength(" ",347)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
 <#--- Payment Records --->
-<#assign ACHTotalAmount = 0>
-<#assign ACHRecordCount = 0>
-<#assign CHKTotalAmount = 0>
-<#assign CHKRecordCount = 0>
-<#assign WireTotalAmount = 0>
-<#assign WireRecordCount = 0>
+<#assign TotalAmount = 0>
+<#assign RecordCount = 0>
 <#-- Payment Records Loop -->
 <#list payments as payment>
     <#assign ebank = ebanks[payment_index]>
-    <#assign entity = entities[payment_index]>   
+    <#assign entity = entities[payment_index]>
+    <#assign PayAmount = getAmount(payment)>
+    <#assign TotalAmount = TotalAmount + PayAmount>
+    <#assign RecordCount = RecordCount + 1>
+    <#-- Calculate Remittance Numbers for Field P22 -->
+    <#assign RemitNumber = 0>
+    <#assign paidTransactions = transHash[payment.internalid]>
+       <#list paidTransactions as transaction>
+          <#assign RemitNumber = RemitNumber + 1>
+       </#list>   
 <#--- Remittance Detail (01) --->
 <#--P01-->01<#rt><#--Record Type (01)-->
-<#--P02-->ACH<#rt><#--Credit or Debit Identifier-->
-<#--P03--> <#rt><#--Remittance Amount-->
-<#--P04-->${setLength(" ",10)}<#rt><#--Remittance Decimal Places-->
-<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P06-->${setLength("USD",3)}<#rt><#--Corporate Card Number-->
-<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Requesting Control Account-->
-<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Basic Control Account-->
-<#--P09-->${setLength(" ",3)}<#rt><#--Amex Market Code-->
+<#--P02-->+<#rt><#--Credit or Debit Identifier-->
+<#--P03-->${setPadding(formatAmount(PayAmount),"left","0",20)}<#rt><#--Remittance Amount-->
+<#--P04-->2<#rt><#--Remittance Decimal Places-->
+<#--P05-->${setLength("0",42)}<#rt><#--Filler-->
+<#--P06-->${setPadding("123456789000000","left","0",20)}<#rt><#--Corporate Card Number-->
+<#--P07-->${setPadding("0","left","0",19)}<#rt><#--Requesting Control Account ***NEEDS REVIEW***-->
+<#--P08-->${setPadding("0","left","0",19)}<#rt><#--Basic Control Account-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}
+<#--P09-->${setPadding("0","left","0",19)}<#rt><#--Amex Market Code ***NEEDS REVIEW***-->
 <#--P10-->${setPadding(formatAmount(ACHPayAmount),"left","0",10)}<#rt><#--Global Client Origin Identifier-->
-<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Sender ID or Load Number-->
+<#--P11-->${setPadding("0","left","0",19)}<#rt><#--Sender ID or Load Number ***NEEDS REVIEW***-->${setPadding(buildEntityName(entity),"right"," ",22)}
 <#--P12-->${setLength(" ",13)}<#rt><#--Book Number-->
 <#--P13-->${setLength(" ",15)}<#rt><#--ISO 4217 Currency Code-->
 <#--P14-->${setLength(" ",20)}<#rt><#--ISO 3166-1 Country Code-->
