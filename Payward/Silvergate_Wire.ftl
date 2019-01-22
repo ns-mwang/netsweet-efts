@@ -35,12 +35,12 @@
     <#assign ebank = ebanks[payment_index]>
     <#assign entity = entities[payment_index]>
 <#--Debit Field Properties Information-->
-<#--P01-->${setLength(cbank.custpage_eft_custrecord_2663_bank_num,9)}<#rt><#--ABA/TRC-->
+<#--P01-->${setLength(cbank.custpage_eft_custrecord_2663_bank_num,9)},<#rt><#--ABA/TRC-->
 <#--P02-->C,<#rt><#--Account Type-->
 <#--P03-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num,35)},<#rt><#--Account Number-->
-<#--P04-->$formatAmount(getAmount(payment))},<#rt><#--Amount-->
+<#--P04-->$formatAmount(getAmount(payment),"dec")},<#rt><#--Amount-->
 <#--P05-->${pfa.custrecord_2663_process_date?string("yyyyMMdd")},<#rt><#--Send on Date-->
-<#--P06-->${setLength(payment.currency,3)},<#rt><#--Currency-->
+<#--P06-->${setLength(getCurrencySymbol(payment.currency),3)},<#rt><#--Currency-->
 <#--Recipient Field Properties Information-->
 <#--P07-->${setMaxLength(ebank.custrecord_2663_bankidtype,5)},<#rt><#--Bank ID type-->
 <#--P08-->${setMaxLength(ebank.custrecord_2663_entity_bank_no,11)},<#rt><#--Bank ID-->
