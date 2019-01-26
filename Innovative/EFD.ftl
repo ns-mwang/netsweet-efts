@@ -69,7 +69,7 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P04-->,<#rt><#--Branch Code (Not used for US Payments)-->
 <#--P05-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num,31)},<#rt><#--Originator Account Number-->
 <#--P06-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_num,9)},<#rt><#--ABA Routing Number for US-->
-<#--P07-->${setLength(getCurrencySymbol(payment.currency),3)},<#rt><#--Originator Account Currency-->
+<#--P07-->USD,<#rt><#--Originator Account Currency-->
 <#--P08-->PAY,<#rt><#--Payment or Collection-->
 <#--P09-->C,<#rt><#--Transaction Handling Code-->
 <#--P10-->C,<#rt><#--Posting Indicator (C=Consolidated;S=Single)-->
@@ -77,14 +77,45 @@ ${"\r\n"}<#--Line Break--><#rt>
 <#--P12-->,<#rt><#--Priority Indicator (Not Used)-->
 <#--P13-->${setMaxLength(payment.tranid,16)},<#rt><#--Transaction Reference-->
 <#--P14-->,<#rt><#--Receiving Party Mail Handling Code (Not Used)-->
+<#-- Ordering Party Details -->
+<#--P15-->${setLength(" ",35)}<#rt><#--Ordering Party Name-->
+<#--P16-->${setLength(" ",35)}<#rt><#--Ordering Party ID-->
+<#--P17-->,<#rt><#--Ordering Party Addr 1 (Optional)-->
+<#--P18-->,<#rt><#--Ordering Party Addr 2 (Optional)-->
+<#--P19-->,<#rt><#--Ordering Party City (Optional)-->
+<#--P20-->,<#rt><#--Ordering Party State Code (Optional)-->
+<#--P21-->,<#rt><#--Ordering Party Zip (Optional)-->
+<#--P22-->US,<#rt><#--Ordering Party ISO Country Code (US)-->
+<#-- Receiving Party Details -->
+<#--P23-->${setLength(" ",35)}<#rt><#--Receiving Party Name-->
+<#--P24-->${setLength(" ",35)}<#rt><#--Receiving Party ID-->
+<#--P25-->,<#rt><#--Receiving Party Addr 1 (Optional)-->
+<#--P26-->,<#rt><#--Receiving Party Addr 2 (Optional)-->
+<#--P27-->,<#rt><#--Receiving Party City (Optional)-->
+<#--P28-->,<#rt><#--Receiving Party State Code (Optional)-->
+<#--P29-->,<#rt><#--Receiving Party Zip (Optional)-->
+<#--P30-->US,<#rt><#--Receiving Party ISO Country Code (US)-->
+<#-- Transaction Details and Charges -->
+<#--P31-->${setMaxLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)},<#rt><#--Effective Entry Date-->
+<#--P32-->,<#rt><#--Transaction Description (Optional)-->
+<#--P33-->${setLength(getCurrencySymbol(payment.currency),3)},<#rt><#--Trasaction Currency Code-->
+<#--P34-->${setMaxLength(formatAmount(getAmount(payment)),18)}<#rt><#--Transaction Amount-->
+<#--P35-->${setMaxLength(" ",9)}<#rt><#--Charges Indicator-->
+<#--P36-->${setMaxLength(" ",9)}<#rt><#--Check Number-->
+<#--P37-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank Name-->
+<#--P38-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank Account Type-->
+<#--P39-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank ID (Not Used-->
+<#--P40-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank SWIFT-->
+<#--P41-->${setMaxLength(ebank.custrecord_2663_entity_acct_no,35)},<#rt><#--Receiving Bank Account Number-->
+<#--P42-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank Branch Number (Not Used)-->
+<#--P43-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank City Name-->
+<#--P44-->${setMaxLength(" ",9)}<#rt><#--Receiving Bank ISO Country Code-->
+
+
+
 
 
 ${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)},<#rt><#--Payment Effective Date-->
-<#--P10-->${setPadding(formatAmount(ACHPayAmount),"left","0",10)}<#rt><#--Payment Amount-->
-<#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
-<#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
-<#--P13-->${setLength(" ",15)}<#rt><#--Individual ID-->
-<#--P14-->${setLength(" ",20)}<#rt><#--Filler-->
 <#--P15-->${setLength(" ",35)}<#rt><#--Receiver Address 1-->
 <#--P16-->${setLength(" ",35)}<#rt><#--Receiver Address 2-->
 <#--P17-->${setLength(" ",35)}<#rt><#--Receiver Address 3-->
