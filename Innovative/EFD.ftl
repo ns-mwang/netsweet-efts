@@ -34,14 +34,14 @@
 <#--P00-->BULKCSV,<#rt><#--File Type-->
 <#--P01-->${setMaxLength(cbank.custrecord_2663_print_company_name,35)},<#rt><#--Company Name-->
 <#--P02-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)},<#rt><#--Company ID-->
-<#--P03-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_code,4)},<#rt><#--Company EFT Key-->
+<#--P03-->${setMaxLength(cbank.custpage_eft_custrecord_2663_issuer_num,4)},<#rt><#--Company EFT Key-->
 <#--P04-->${pfa.custrecord_2663_file_creation_timestamp?string("yyyyMMdd")},<#rt><#--Creation Date (CCYYMMDD)-->
 <#--P05-->,<#rt><#--File Name-->
 <#--P06-->TEST,<#rt><#--Test/Production indicator-->
 <#--P07-->${setLength(" ",10)}<#rt><#--Client File ID-->
 <#--P08-->${setLength(" ",291)}<#rt><#--Filler-->
 ${"\r\n"}<#--Line Break--><#rt>
-<#--- Payment Records --->
+<#--- Transaction Record --->
 <#assign ACHTotalAmount = 0>
 <#assign ACHRecordCount = 0>
 <#assign CHKTotalAmount = 0>
@@ -62,16 +62,24 @@ ${"\r\n"}<#--Line Break--><#rt>
        <#list paidTransactions as transaction>
           <#assign RemitNumber = RemitNumber + 1>
        </#list>   
-<#--- ACH Payment Record (060) --->
-<#--P01-->060<#rt><#--Record ID (060)-->
-<#--P02-->ACH<#rt><#--Payment Type (ACH)-->
-<#--P03--> <#rt><#--Canadian Indicator (C or Space)-->
-<#--P04-->${setLength(" ",10)}<#rt><#--Vendor Number (OPT)-->
-<#--P05-->${setLength(" ",4)}<#rt><#--Filler-->
-<#--P06-->${setLength("USD",3)}<#rt><#--Currency Type-->
-<#--P07-->${setPadding("0","left","0",10)}<#rt><#--Trace Number-->
-<#--P08-->${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)}<#rt><#--Payment Effective Date-->
-<#--P09-->${setLength(" ",3)}<#rt><#--Filler-->
+<#--P00-->TRN,<#rt><#--Record Type-->
+<#--P01-->ACH,<#rt><#--Transaction Type-->
+<#--P02-->CCD,<#rt><#--Alternate Transaction Type (US ACH CCD)-->
+<#--P03-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_comp_id,10)},<#rt><#--US ACH Company ID-->
+<#--P04-->,<#rt><#--Branch Code (Not used for US Payments)-->
+<#--P05-->${setMaxLength(cbank.custpage_eft_custrecord_2663_acct_num,31)},<#rt><#--Originator Account Number-->
+<#--P06-->${setMaxLength(cbank.custpage_eft_custrecord_2663_bank_num,9)},<#rt><#--ABA Routing Number for US-->
+<#--P07-->${setLength(getCurrencySymbol(payment.currency),3)},<#rt><#--Originator Account Currency-->
+<#--P08-->PAY,<#rt><#--Payment or Collection-->
+<#--P09-->C,<#rt><#--Transaction Handling Code-->
+<#--P10-->C,<#rt><#--Posting Indicator (C=Consolidated;S=Single)-->
+<#--P11-->,<#rt><#--Consolidated Reference (Not Used)-->
+<#--P12-->,<#rt><#--Priority Indicator (Not Used)-->
+<#--P13-->${setMaxLength(payment.tranid,16)},<#rt><#--Transaction Reference-->
+<#--P14-->,<#rt><#--Receiving Party Mail Handling Code (Not Used)-->
+
+
+${setLength(pfa.custrecord_2663_process_date?string("yyyyMMdd"),8)},<#rt><#--Payment Effective Date-->
 <#--P10-->${setPadding(formatAmount(ACHPayAmount),"left","0",10)}<#rt><#--Payment Amount-->
 <#--P11-->${setPadding(buildEntityName(entity),"right"," ",22)}<#rt><#--Receiver Name-->
 <#--P12-->${setLength(" ",13)}<#rt><#--Filler-->
