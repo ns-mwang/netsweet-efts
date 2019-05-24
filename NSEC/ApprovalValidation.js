@@ -72,16 +72,16 @@ function validateTransactionSaveRecord()
 	            break;   
 	        case 'intercompanyjournalentry':
 	        	setTotalDebitAmountInJE();            
-	            break;    
-	        /* Deactivated for employee center PO issue by MW 052119 */
-	        case 'purchaseorder':
+	            break;
+	        /*case 'purchaseorder':
 	        	var stEmp = nlapiGetFieldValue('employee');
 	        	var stReqFld = nlapiGetFieldValue(FLD_REQUESTOR);
 	        	
-	        	/*if (stEmp != stReqFld){
+	        	if (stEmp != stReqFld){
 	        		nlapiSetFieldValue(FLD_REQUESTOR,stEmp,false);
-	        	}*/
+	        	}
 	        	break;
+		*/
 	        case 'expensereport':
 	        	var stEmp = nlapiGetFieldValue('entity');
 	        	var stReqFld = nlapiGetFieldValue(FLD_REQUESTOR);
@@ -424,7 +424,7 @@ function checkValueFieldChanged(type, name, linenum)
 	            //alert('enter: '+stRequestor+ ' dept:'+nlapiLookupField('employee', stRequestor, 'department'));
 	            if(stRequestor != '') {
 	            	if(stRecType == 'purchaseorder'){
-	            		nlapiSetFieldValue('employee', stRequestor,false,true);
+	            		//michaelw: nlapiSetFieldValue('employee', stRequestor,false,true);
 	            		nlapiSetFieldValue('department', getRequestorDepartment(stRequestor),false);
 	            	}
 	            	if(stRecType == 'expensereport' || stRecType == 'purchaserequisition'){
@@ -540,7 +540,7 @@ function setDefaultValuesPageInit(type)
 	    	nlapiSetFieldValue(FLD_DELEGATE, 'F' , false, true);
 	    	if(FLD_EMPLOYEE_VAL)
 	    		nlapiSetFieldValue(FLD_EMPLOYEE_VAL, nlapiGetUser(), false, true);
-	    	if(FLD_REQUESTOR)
+		if(FLD_REQUESTOR)
 	    		nlapiSetFieldValue(FLD_REQUESTOR, nlapiGetUser(), false, true);
 	    }
 	    try{
@@ -596,14 +596,14 @@ function setDefaultValuesPageInit(type)
 	            switch (stRecType) {
 	                case 'purchaseorder':
 	                    stRequestor = nlapiGetFieldValue(FLD_REQUESTOR);
-	                    nlapiSetFieldValue('employee', nlapiGetUser(), false, true);
-	                    //nlapiSetFieldValue(FLD_REQUESTOR, nlapiGetUser(), false, true);
-	                    //nlapiDisableField('employee', true);
+	                    //michaelw nlapiSetFieldValue('employee', nlapiGetUser(), false, true);
+	                    //michaelw nlapiSetFieldValue(FLD_REQUESTOR, nlapiGetUser(), false, true);
+	                    //michaelw nlapiDisableField('employee', true);
 	                    break;
 	                case 'vendorbill':
-	                    //stRequestor = nlapiGetFieldValue(FLD_REQUESTOR);
+	                    stRequestor = nlapiGetFieldValue(FLD_REQUESTOR);
 	                    stRequestor = nlapiGetUser();
-	                    nlapiSetFieldValue(FLD_REQUESTOR, stRequestor, false, true);
+	                    //nlapiSetFieldValue(FLD_REQUESTOR, stRequestor, false, true);
 	                    break;
 	                case 'expensereport':
 	                	var stRequestor = nlapiGetUser();
