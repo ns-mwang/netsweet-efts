@@ -422,10 +422,11 @@ function checkValueFieldChanged(type, name, linenum)
 	        if(name == FLD_REQUESTOR) {
 	            stRequestor = nlapiGetFieldValue(FLD_REQUESTOR);
 	            //alert('enter: '+stRequestor+ ' dept:'+nlapiLookupField('employee', stRequestor, 'department'));
-	            if(stRequestor != '') {
-	            	if(stRecType == 'purchaseorder'){
-	            		//michaelw: nlapiSetFieldValue('employee', stRequestor,false,true);
-	            		nlapiSetFieldValue('department', getRequestorDepartment(stRequestor),false);
+		if(stRequestor != '') {
+	        	if(stRecType == 'purchaseorder'){
+	            		//nlapiSetFieldValue('employee', stRequestor,false,true);
+	            		nlapiSetFieldValue('department', getRequestorDepartment(stRequestor),true);
+				nlapiDisableField(department, true);
 	            	}
 	            	if(stRecType == 'expensereport' || stRecType == 'purchaserequisition'){
 	            		nlapiSetFieldValue('entity', stRequestor,false,true);
@@ -642,6 +643,9 @@ function setDefaultValuesPageInit(type)
 	                nlapiSetFieldValue('department', getRequestorDepartment(stRequestor));
 	            }
 	        }
+		/*if(((stRecType == 'purchaseorder') ||(stRecType == 'expensereport'))&& (nlapiGetContext().getRoleCenter().toUpperCase() == 'EMPLOYEE')){
+	        	nlapiDisableField('department', true);
+	        }*/
 	        /*disable requestor field if employee - MW: This function is not needed. 5/16/19
 	        if(((stRecType == 'purchaseorder') ||(stRecType == 'expensereport'))&& (nlapiGetContext().getRoleCenter().toUpperCase() == 'EMPLOYEE')){
 	        	nlapiDisableField(FLD_REQUESTOR, true);
